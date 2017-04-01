@@ -1,4 +1,6 @@
-#pragma once
+#ifndef InputValidatorH
+#define InputValidatorH
+
 class InputValidator
 {
 	char* path;
@@ -8,3 +10,5 @@ public:
 
 	bool isInputValid(); //Validates files exist and board is OK. Outputs propper messages.
 };
+
+#endif

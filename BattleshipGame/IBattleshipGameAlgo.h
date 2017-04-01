@@ -1,4 +1,5 @@
-#pragma once
+#ifndef IBattleshipGameAlgoH
+#define IBattleshipGameAlgoH
 
 #include <utility> // for std::pair
 
@@ -14,3 +15,5 @@ public:
 	virtual std::pair<int, int> attack() = 0; // ask player for his move
 	virtual void notifyOnAttackResult(int player, int row, int col, AttackResult result) = 0; // notify on last move result
 };
+
+#endif
