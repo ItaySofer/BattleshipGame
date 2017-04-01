@@ -2,9 +2,6 @@
 #include "StringUtils.h"
 #include <string>
 
-extern int RowNum;
-extern int ColNum;
-
 BattleshipGameAlgo::BattleshipGameAlgo(std:: string path, std::string attackFileSuffix) {
 	std::string fileName = getCompleteAttackFilePath(path, attackFileSuffix);
 	attackFile = std::ifstream(fileName);

@@ -5,6 +5,9 @@
 #include <fstream>
 #include <vector>
 
+extern int RowNum;
+extern int ColNum;
+
 class BattleshipGameAlgo: public IBattleshipGameAlgo {
 	std::ifstream attackFile;
 
