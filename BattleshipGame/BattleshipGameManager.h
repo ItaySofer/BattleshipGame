@@ -1,6 +1,6 @@
 #ifndef BattleshipGameManagerH
 #define BattleshipGameManagerH
-
+//test
 #include "IBattleshipGameAlgo.h"
 
 class BattleshipGameManager {
