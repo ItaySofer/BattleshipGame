@@ -4,7 +4,6 @@
 
 int main(int argc, char* argv[])
 {
-	//test 
 	char* workDirectory;
 	char* path;
 	path = argc == 1 ? workDirectory : argv[1];
