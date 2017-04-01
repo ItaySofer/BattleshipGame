@@ -6,7 +6,7 @@ class BattleshipGameManager {
 	IBattleshipGameAlgo& playerB;
 
 public:
-	BattleshipGameManager(IBattleshipGameAlgo* plrA, IBattleshipGameAlgo* plrB) : playerA(*plrA), playerB(*plrB) {};
+	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {};
 	~BattleshipGameManager() = default;
 	
 	void initGame(); //initiates board, calls players' "setBoard" methods

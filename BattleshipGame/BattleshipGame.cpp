@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
 	IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(PlayerIndex::PlayerA);
 	IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(PlayerIndex::PlayerB);
-	BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
+	BattleshipGameManager battleshipManneger = BattleshipGameManager(*playerA, *playerB);
 	battleshipManneger.initGame();
 	battleshipManneger.playGame();
 
