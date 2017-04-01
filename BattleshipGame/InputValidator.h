@@ -6,5 +6,5 @@ class InputValidator
 public:
 	InputValidator(char* p) : path(p) {};
 
-	bool validateInput(); //Validates files exist and board is OK. Outputs propper messages.
+	bool isInputValid(); //Validates files exist and board is OK. Outputs propper messages.
 };

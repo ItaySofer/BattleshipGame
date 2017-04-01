@@ -9,7 +9,7 @@ int main(int argc, char* argv[])
 	path = argc == 1 ? workDirectory : argv[1];
 
 	InputValidator inputValidator = InputValidator(path);
-	if (!inputValidator.validateInput()) {
+	if (!inputValidator.isInputValid()) {
 		return;
 	}
 
