@@ -123,6 +123,7 @@
     <ClCompile Include="BattleshipGameManager.cpp" />
     <ClCompile Include="InputValidator.cpp" />
     <ClCompile Include="StringUtils.cpp" />
+    <ClCompile Include="StringUtilsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameAlgo.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputValidator.h" />
     <ClInclude Include="StringUtils.h" />
+    <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
