@@ -13,8 +13,8 @@ int main(int argc, char* argv[])
 		return;
 	}
 
-	IBattleshipGameAlgo* playerA = new BattleshipGameAlgo("attack-a");
-	IBattleshipGameAlgo* playerB = new BattleshipGameAlgo("attack-b");
+	IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(PlayerIndex::PlayerA);
+	IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(PlayerIndex::PlayerB);
 	BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
 	battleshipManneger.initGame();
 	battleshipManneger.playGame();

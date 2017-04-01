@@ -1,8 +1,12 @@
 #include "IBattleshipGameAlgo.h"
 
+enum class PlayerIndex {
+	PlayerA, PlayerB
+};
+
 class BattleshipGameAlgo: public IBattleshipGameAlgo {
 public:
-	BattleshipGameAlgo(char* attackFileSuffix); //initiates player (path to attack file? already initiates attack file itself?)
+	BattleshipGameAlgo(PlayerIndex playerIndex); //initiates player (path to attack file? already initiates attack file itself?)
 	~BattleshipGameAlgo() = default;
 
 	void setBoard(const char** board, int numRows, int numCols) override; // called once to notify player on his board
