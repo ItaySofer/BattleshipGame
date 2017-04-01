@@ -2,6 +2,9 @@
 #include "BattleshipGameAlgo.h"
 #include "InputValidator.h"
 
+int RowNum = 10;
+int ColNum = 10;
+
 int main(int argc, char* argv[])
 {
 	char* workDirectory;
@@ -13,8 +16,8 @@ int main(int argc, char* argv[])
 		return;
 	}
 
-	IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(PlayerIndex::PlayerA);
-	IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(PlayerIndex::PlayerB);
+	IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(path, "attack-a");
+	IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(path, "attack-b");
 	BattleshipGameManager battleshipManneger = BattleshipGameManager(*playerA, *playerB);
 	battleshipManneger.initGame();
 	battleshipManneger.playGame();
