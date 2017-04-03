@@ -3,6 +3,8 @@
 
 #include "StringUtils.h"
 #include <string>
+#include <iostream>
+#include <vector>
 
 class StringUtilsTest
 {
