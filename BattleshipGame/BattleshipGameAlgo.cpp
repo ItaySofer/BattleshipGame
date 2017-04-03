@@ -44,6 +44,10 @@ bool BattleshipGameAlgo::isValidAttackMove(std::vector<std::string> pos)
 		return false;
 	}
 
+	if(!StringUtils::isNumber(pos[0]) || !StringUtils::isNumber(pos[1])) {
+		return false;
+	}
+
 	if (std::stoi(pos[0]) > RowNum || std::stoi(pos[1]) > ColNum) {
 		return false;
 	}

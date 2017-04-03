@@ -52,3 +52,15 @@ void StringUtilsTest::splitTest()
 		std::cout << + "\n";
 	}
 }
+
+void StringUtilsTest::isNumberNumberTest() {
+	if (!StringUtils::isNumber("10")){
+		std::cout << "isNumberNumberTest Failed: Expected is true but was false\n";
+	}
+}
+
+void StringUtilsTest::isNumberNotNumberTest() {
+	if (StringUtils::isNumber("itay")) {
+		std::cout << "isNumberNotNumberTest Failed: Expected is false but was true\n";
+	}
+}

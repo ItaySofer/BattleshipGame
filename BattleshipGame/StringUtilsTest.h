@@ -13,6 +13,8 @@ public:
 		replaceAllOneCrAppearanceTest();
 		replaceAllMultipleSpaceAppearancesTest();
 		splitTest();
+		isNumberNumberTest();
+		isNumberNotNumberTest();
 	}
 
 private:
@@ -20,6 +22,8 @@ private:
 	static void replaceAllOneCrAppearanceTest();
 	static void replaceAllMultipleSpaceAppearancesTest();
 	static void splitTest();
+	static void isNumberNumberTest();
+	static void isNumberNotNumberTest();
 };
 
 #endif
