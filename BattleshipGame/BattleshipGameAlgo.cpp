@@ -28,7 +28,7 @@ std::pair<int, int> BattleshipGameAlgo::attack() {
 		StringUtils::split(line, ",", pos);
 
 		if (isValidAttackMove(pos)) {
-			return std::pair<int, int>(std::stoi(pos[0]), std::stoi(pos[1]));
+			return std::pair<int, int>(std::stoi(pos[0]) - 1, std::stoi(pos[1]) - 1);
 		}
 	}
 	
@@ -48,7 +48,7 @@ bool BattleshipGameAlgo::isValidAttackMove(std::vector<std::string> pos)
 		return false;
 	}
 
-	if (std::stoi(pos[0]) > RowNum || std::stoi(pos[1]) > ColNum) {
+	if (std::stoi(pos[0]) == 0 || std::stoi(pos[0]) > RowNum || std::stoi(pos[1]) == 0 || std::stoi(pos[1]) > ColNum) {
 		return false;
 	}
 
