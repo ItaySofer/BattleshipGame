@@ -12,7 +12,7 @@ void playGame(){
 void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile, BattleBoard& gameBoard){
 
 	std::ifstream fin(boardFile);
-	gameBoard.R = RAW;
+	gameBoard.R = ROW;
 	gameBoard.C = COL;
 	gameBoard.matrix = new std::string[gameBoard.R];
 	for (int i = 0; i < gameBoard.R; ++i)

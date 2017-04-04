@@ -6,7 +6,7 @@
 #include <string>
 #include <fstream>
 
-#define RAW 10
+#define ROW 10
 #define COL 10
 #define NUM_OF_ERR_MESSAGE 13
 #define NUM_OF_SHIP_TYPES 4
