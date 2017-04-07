@@ -12,7 +12,7 @@ class BattleshipGameAlgo: public IBattleshipGameAlgo {
 	std::ifstream attackFile;
 
 public:
-	BattleshipGameAlgo(std::string path, std::string attackFileSuffix); //initiates player (path to attack file? already initiates attack file itself?)
+	BattleshipGameAlgo(std::string attackFilePath); //initiates player (path to attack file? already initiates attack file itself?)
 	~BattleshipGameAlgo() override;
 
 	void setBoard(const char** board, int numRows, int numCols) override; // called once to notify player on his board

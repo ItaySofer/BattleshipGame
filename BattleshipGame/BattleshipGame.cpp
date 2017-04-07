@@ -1,9 +1,9 @@
 #include "BattleshipGameManager.h"
 #include "BattleshipGameManagerTest.h"
 #include "BattleshipGameAlgo.h"
-#include "InputValidator.h"
+#include "InputProcessor.h"
 #include "StringUtilsTest.h"
-
+//testCommit
 #define TEST true
 
 int RowNum = 10;
@@ -19,15 +19,19 @@ int main(int argc, char* argv[])
 		char* path;
 		path = argc == 1 ? workDirectory : argv[1];
 
-		InputValidator inputValidator = InputValidator(path);
-		if (!inputValidator.isInputValid()) {
+		InputProcessor inputProcessor = InputProcessor(path);
+		if (!inputProcessor.isInputValid()) {
 			return;
 		}
 
-		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(path, "attack-a");
-		IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(path, "attack-b");
+		std::string playerAAttackFilePath = inputProcessor.getPlayerAAttackFilePath();
+		std::string playerBAttackFilePath = inputProcessor.getPlayerBAttackFilePath();
+		std::string boardFilePath = inputProcessor.getBoardFilePath();
+
+		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(playerAAttackFilePath);
+		IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(playerBAttackFilePath);
 		BattleshipGameManager battleshipManneger = BattleshipGameManager(*playerA, *playerB);
-		battleshipManneger.initGame();
+		battleshipManneger.initGame(boardFilePath);
 		battleshipManneger.playGame();
 
 		delete playerA;

@@ -2,9 +2,8 @@
 #include "StringUtils.h"
 #include <string>
 
-BattleshipGameAlgo::BattleshipGameAlgo(std:: string path, std::string attackFileSuffix) {
-	std::string fileName = getCompleteAttackFilePath(path, attackFileSuffix);
-	attackFile = std::ifstream(fileName);
+BattleshipGameAlgo::BattleshipGameAlgo(std:: string attackFilePath) {
+	attackFile = std::ifstream(attackFilePath);
 }
 
 BattleshipGameAlgo:: ~BattleshipGameAlgo() {
