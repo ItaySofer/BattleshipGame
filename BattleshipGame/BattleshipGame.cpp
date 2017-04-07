@@ -2,7 +2,7 @@
 #include "BattleshipGameAlgo.h"
 #include "InputValidator.h"
 #include "StringUtilsTest.h"
-
+//test commit
 #define TEST true
 
 int RowNum = 10;
