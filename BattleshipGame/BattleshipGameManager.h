@@ -2,6 +2,7 @@
 #define BattleshipGameManagerH
 
 #include "IBattleshipGameAlgo.h"
+#include "StringUtils.h"
 #include <iostream>
 #include <string>
 #include <fstream>

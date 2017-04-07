@@ -63,6 +63,7 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile, B
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		std::getline(fin, gameBoard.matrix[i]);
+		StringUtils::replaceAll(gameBoard.matrix[i], "\r", "");
 		//resize each matrix row to size=gameBoard.C, add ' ' if needed 
 		gameBoard.matrix[i].resize(gameBoard.C, ' ');
 	}
