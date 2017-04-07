@@ -3,10 +3,10 @@
 
 bool BattleshipGameManager::initGame(const std::string boardFile){
 	//Read board file to matrix
-	readBoardFileToMatrix(boardFile, gameBoard);
+	readBoardFileToMatrix(boardFile);
 
 	//Validate board
-	if (!validateBoard(gameBoard)) return false;
+	if (!validateBoard()) return false;
 
 	//Send each player his board
 	sendBoard(true);//player A
@@ -53,7 +53,7 @@ void BattleshipGameManager::playGame(){
 	//TODO: IMPLEMENT
 };
 
-void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile, BattleBoard& gameBoard){
+void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
 
 	std::ifstream fin(boardFile);
 	gameBoard.R = ROW;
@@ -82,7 +82,7 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile, B
 
 }
 
-bool BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
+bool BattleshipGameManager::validateBoard(){
 	int Acount = 0;
 	int Bcount = 0;
 	bool isValidRight;
@@ -99,7 +99,7 @@ bool BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
 				//check if need to check ship to the right
 				if ((i == 0) || (gameBoard.matrix[i - 1][j] != gameBoard.matrix[i][j])){
 					//Check to the right
-					isValidRight = isValidShipRight(i, j, gameBoard);
+					isValidRight = isValidShipRight(i, j);
 					if (isValidRight){
 						(std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) ? Acount++ : Bcount++;
 					}
@@ -107,7 +107,7 @@ bool BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
 				//check if need to check ship to the bottom
 				if ((j == 0) || (gameBoard.matrix[i][j - 1] != gameBoard.matrix[i][j])){
 					//Check to the bottom
-					isValidBottom = isValidShipBottom(i, j, gameBoard);
+					isValidBottom = isValidShipBottom(i, j);
 					if (isValidBottom){
 						(std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) ? Acount++ : Bcount++;
 					}
@@ -163,7 +163,7 @@ bool BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
 	return valid;
 }
 
-bool BattleshipGameManager::isValidShipRight(int x, int y, const BattleBoard& gameBoard){
+bool BattleshipGameManager::isValidShipRight(int x, int y){
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 
@@ -179,7 +179,7 @@ bool BattleshipGameManager::isValidShipRight(int x, int y, const BattleBoard& ga
 	return (size == getSize(type));
 }
 
-bool BattleshipGameManager::isValidShipBottom(int x, int y, const BattleBoard& gameBoard){
+bool BattleshipGameManager::isValidShipBottom(int x, int y){
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 

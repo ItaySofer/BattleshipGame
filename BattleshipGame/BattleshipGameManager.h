@@ -68,10 +68,10 @@ public:
 	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
 	//Output propper messages ("Player _ won. Points: ...")
 
-	void readBoardFileToMatrix(const std::string boardFile, BattleBoard& gameBoard);//initiate game board from file.
-	bool validateBoard(const BattleBoard& gameBoard);//check if board is valid according to game specifications
-	bool isValidShipRight(int x, int y, const BattleBoard& gameBoard);//check if a valid ship starts at (x,y) position to the right
-	bool isValidShipBottom(int x, int y, const BattleBoard& gameBoard);//check if a valid ship starts at (x,y) position to the bottom
+	void readBoardFileToMatrix(const std::string boardFile);//initiate game board from file.
+	bool validateBoard();//check if board is valid according to game specifications
+	bool isValidShipRight(int x, int y);//check if a valid ship starts at (x,y) position to the right
+	bool isValidShipBottom(int x, int y);//check if a valid ship starts at (x,y) position to the bottom
 	int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
