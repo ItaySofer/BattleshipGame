@@ -1,9 +1,9 @@
 
 #include "BattleshipGameManager.h"
 
-bool BattleshipGameManager::initGame(const std::string boardFile){
+bool BattleshipGameManager::initGame(const std::string boardFilePath){
 	//Read board file to matrix
-	readBoardFileToMatrix(boardFile);
+	readBoardFileToMatrix(boardFilePath);
 
 	//Validate board
 	if (!validateBoard()) return false;
@@ -59,7 +59,6 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
 	gameBoard.R = NUM_ROWS;
 	gameBoard.C = NUM_COLS;
 	gameBoard.matrix = new std::string[gameBoard.R];
-	char* temp;
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		std::getline(fin, gameBoard.matrix[i]);

@@ -1,7 +1,7 @@
 #include "BattleshipGameManagerTest.h"
 #include "BattleshipGameAlgo.h"
 
-static void checkTestBoards()
+void BattleshipGameManagerTest::checkTestBoards()
 {
 	BattleshipGameManager gameManager();
 	//bad_board_0.sboard

@@ -2,6 +2,7 @@
 #define BattleshipGameManagerH
 
 #include "IBattleshipGameAlgo.h"
+#include "BattleBoard.h"
 #include "StringUtils.h"
 #include "Macros.h"
 #include <iostream>
@@ -9,9 +10,17 @@
 #include <fstream>
 
 class BattleshipGameManager {
-	IBattleshipGameAlgo& playerA;
-	IBattleshipGameAlgo& playerB;
 
+public:
+	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {};
+	~BattleshipGameManager() = default;
+
+	bool initGame(const std::string boardFilePath); //initiates board, calls players' "setBoard" methods
+	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
+					 //Output propper messages ("Player _ won. Points: ...")
+
+private:
+	//ENUMs
 	enum class shipSize {
 		bSize = 1,
 		pSize,
@@ -35,59 +44,38 @@ class BattleshipGameManager {
 		AJACENT_ON_BOARD,			//"Adjacent Ships on Board"
 		ERR_MGS_MAX
 	};
-		
-	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] ={	std::make_pair(false, "Wrong size or shape for ship d for player A"),
-																	std::make_pair(false, "Wrong size or shape for ship m for player A"),
-																	std::make_pair(false, "Wrong size or shape for ship p for player A"),
-																	std::make_pair(false, "Wrong size or shape for ship b for player A"),
-																	std::make_pair(false, "Wrong size or shape for ship d for player B"),
-																	std::make_pair(false, "Wrong size or shape for ship m for player B"),
-																	std::make_pair(false, "Wrong size or shape for ship p for player B"),
-																	std::make_pair(false, "Wrong size or shape for ship b for player B"),
-																	std::make_pair(false, "Too many ships for player A"),
-																	std::make_pair(false, "Too few ships for player A"),
-																	std::make_pair(false, "Too many ships for player B"),
-																	std::make_pair(false, "Too few ships for player B"),
-																	std::make_pair(false, "Adjacent Ships on Board")
-																};
 
-	char typeArr[NUM_OF_SHIP_TYPES*2] = {'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b'};
-
-public:
-	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {};
-	~BattleshipGameManager() = default;
-
-	bool initGame(const std::string boardFile); //initiates board, calls players' "setBoard" methods
-	void sendBoard(bool isPlayerA);
-	void modifyBoard(char** board, bool isPlayerA);
-	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
-	//Output propper messages ("Player _ won. Points: ...")
-
+	//Functions
 	void readBoardFileToMatrix(const std::string boardFile);//initiate game board from file.
 	bool validateBoard();//check if board is valid according to game specifications
+	void sendBoard(bool isPlayerA);
+	void modifyBoard(char** board, bool isPlayerA);
+
 	bool isValidShipRight(int x, int y);//check if a valid ship starts at (x,y) position to the right
 	bool isValidShipBottom(int x, int y);//check if a valid ship starts at (x,y) position to the bottom
 	int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
+	//Variables
+	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship d for player A"),
+		std::make_pair(false, "Wrong size or shape for ship m for player A"),
+		std::make_pair(false, "Wrong size or shape for ship p for player A"),
+		std::make_pair(false, "Wrong size or shape for ship b for player A"),
+		std::make_pair(false, "Wrong size or shape for ship d for player B"),
+		std::make_pair(false, "Wrong size or shape for ship m for player B"),
+		std::make_pair(false, "Wrong size or shape for ship p for player B"),
+		std::make_pair(false, "Wrong size or shape for ship b for player B"),
+		std::make_pair(false, "Too many ships for player A"),
+		std::make_pair(false, "Too few ships for player A"),
+		std::make_pair(false, "Too many ships for player B"),
+		std::make_pair(false, "Too few ships for player B"),
+		std::make_pair(false, "Adjacent Ships on Board")
+	};
+	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
+
+	IBattleshipGameAlgo& playerA;
+	IBattleshipGameAlgo& playerB;
 	BattleBoard gameBoard;
-};
-
-class BattleBoard
-{
-public:
-	int R;
-	int C;
-	std::string* matrix;
-
-	BattleBoard() : matrix(NULL) {}
-	~BattleBoard()
-	{
-		if (matrix != NULL)
-		{
-			delete[] matrix;
-		}
-	}
 };
 
 #endif
