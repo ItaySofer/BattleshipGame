@@ -26,14 +26,11 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 
-		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(inputProcessor.getPlayerAAttackFilePath());
-		IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(inputProcessor.getPlayerBAttackFilePath());
-		BattleshipGameManager battleshipManneger = BattleshipGameManager(*playerA, *playerB);
+		BattleshipGameAlgo playerA(inputProcessor.getPlayerAAttackFilePath());
+		BattleshipGameAlgo playerB(inputProcessor.getPlayerBAttackFilePath());
+		BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
 		battleshipManneger.initGame(inputProcessor.getBoardFilePath());
 		battleshipManneger.playGame();
-
-		delete playerA;
-		delete playerB;
 	}
 }
 
