@@ -1,4 +1,5 @@
 #include "BattleshipGameManager.h"
+#include "BattleshipGameManagerTest.h"
 #include "BattleshipGameAlgo.h"
 #include "InputValidator.h"
 #include "StringUtilsTest.h"
@@ -12,6 +13,7 @@ int main(int argc, char* argv[])
 {
 	if (TEST) {
 		StringUtilsTest::runTests();
+		BattleshipGameManagerTest::runTests();
 	} else {
 		char* workDirectory;
 		char* path;

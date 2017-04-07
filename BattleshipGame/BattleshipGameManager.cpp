@@ -1,11 +1,55 @@
 
 #include "BattleshipGameManager.h"
 
-void initGame(){
-	//TODO: IMPLEMENT
+bool BattleshipGameManager::initGame(const std::string boardFile){
+	//Read board file to matrix
+	readBoardFileToMatrix(boardFile, gameBoard);
+
+	//Validate board
+	if (!validateBoard(gameBoard)) return false;
+
+	//Send each player his board
+	sendBoard(true);//player A
+	sendBoard(false);//player B
+
+	return true;
 };
 
-void playGame(){
+void BattleshipGameManager::sendBoard(bool isPlayerA){
+	char** board;
+	board = new char*[ROW];
+	for (int i = 0; i < gameBoard.R; i++)
+	{
+		board[i] = new char[COL];
+		std::strcpy(board[i], gameBoard.matrix[i].c_str());
+	}
+	modifyBoard(board, isPlayerA);
+	IBattleshipGameAlgo& player = isPlayerA ? playerA : playerB;
+	player.setBoard(board, gameBoard.R, gameBoard.C);
+
+	for (int i = 0; i < gameBoard.R; i++)
+	{
+		delete[] board[i];
+	}
+	delete[] board;
+}
+
+void BattleshipGameManager::modifyBoard(char** board, bool isPlayerA){
+	char* pos;
+	for (int i = 0; i < gameBoard.R; i++){
+		for (int j = 0; j < gameBoard.R; j++){
+			if (board[i][j] != ' '){
+				pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
+				if (((std::distance(typeArr, pos) < VALID_SHIP_NUM) && !isPlayerA) || 
+					((std::distance(typeArr, pos) >= VALID_SHIP_NUM) && isPlayerA)){
+					board[i][j] = ' ';
+				}
+			}
+		}
+	}
+}
+
+void BattleshipGameManager::playGame(){
 	//TODO: IMPLEMENT
 };
 
@@ -15,23 +59,39 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile, B
 	gameBoard.R = ROW;
 	gameBoard.C = COL;
 	gameBoard.matrix = new std::string[gameBoard.R];
-	for (int i = 0; i < gameBoard.R; ++i)
+	char* temp;
+	for (int i = 0; i < gameBoard.R; i++)
 	{
 		std::getline(fin, gameBoard.matrix[i]);
+		//resize each matrix row to size=gameBoard.C, add ' ' if needed 
+		gameBoard.matrix[i].resize(gameBoard.C, ' ');
 	}
 	fin.close();
+
+	//replace all unknown characters with ' '
+	char* pos;
+	for (int i = 0; i < gameBoard.R; i++){
+		for (int j = 0; j < gameBoard.C; j++){
+			pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
+			if (pos == std::end(typeArr)) { //element not found
+				gameBoard.matrix[i][j] = ' ';
+			}
+		}
+	}
+
 }
 
-void BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
+bool BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
 	int Acount = 0;
 	int Bcount = 0;
 	bool isValidRight;
 	bool isValidBottom;
 
 	//Search for valid ships
-	for (int i = 0; i < gameBoard.R; ++i){
-		for (int j = 0; j < gameBoard.C; ++j){
-			char* pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);	
+	char* pos;
+	for (int i = 0; i < gameBoard.R; i++){
+		for (int j = 0; j < gameBoard.C; j++){
+			pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);	
 			if (pos != std::end(typeArr)) { //element found
 				isValidRight = true;
 				isValidBottom = true;
@@ -64,47 +124,42 @@ void BattleshipGameManager::validateBoard(const BattleBoard& gameBoard){
 	else if (Acount > VALID_SHIP_NUM){
 		errMsgArr[int(ErrorMsg::TOO_MANY_A)].first = true;
 	}
-
 	if (Bcount < VALID_SHIP_NUM){
 		errMsgArr[int(ErrorMsg::TOO_FEW_B)].first = true;
 	}
 	else if (Bcount > VALID_SHIP_NUM){
 		errMsgArr[int(ErrorMsg::TOO_MANY_B)].first = true;
 	}
+
 	//Check for adjacent
 	bool brk = false;
-	char* bottomPos;
-	char* rightPos;
-	for (int i = 0; i < gameBoard.R; ++i){
-		for (int j = 0; j < gameBoard.C; ++j){
+	for (int i = 0; i < gameBoard.R; i++){
+		for (int j = 0; j < gameBoard.C; j++){
 			//Check different to the bottom
-			if ((j != gameBoard.R - 1) && (gameBoard.matrix[i][j + 1] != gameBoard.matrix[i][j])){
-				bottomPos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j + 1]);
-				if (bottomPos != std::end(typeArr)) { // fount adjacent
-					errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
-					brk = true;
-					break;
-				}
+			if ((j != gameBoard.R - 1) && (gameBoard.matrix[i][j + 1] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i][j + 1] != ' ')){
+				errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
+				brk = true;
+				break;
 			}
 			//Check different to the right
-			if ((i != gameBoard.C - 1) && (gameBoard.matrix[i + 1][j] != gameBoard.matrix[i][j])){
-				rightPos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i + 1][j]);
-				if (rightPos != std::end(typeArr)) { // fount adjacent
-					errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
-					brk = true;
-					break;
-				}
+			if ((i != gameBoard.C - 1) && (gameBoard.matrix[i + 1][j] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i + 1][j] != ' ')){
+				errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
+				brk = true;
+				break;
 			}
 		}
 		if (brk) break;
 	}
 
 	//Check for error messages - print if needed
+	bool valid = true;
 	for (int i = 0; i < int(ErrorMsg::ERR_MGS_MAX); i++){
 		if (errMsgArr[i].first == true){
 			std::cout << errMsgArr[i].second << std::endl;
+			valid = false;
 		}
 	}
+	return valid;
 }
 
 bool BattleshipGameManager::isValidShipRight(int x, int y, const BattleBoard& gameBoard){
@@ -183,40 +238,40 @@ int BattleshipGameManager::getSize(char type){
 
 void BattleshipGameManager::updateErrMsgArrWrongSize(char type){
 	switch (type){
-	case 'D':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_D_A)].first = true;
-				 break;
-	}
-	case 'M':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_M_A)].first = true;
-				 break;
-	}
-	case 'P':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_P_A)].first = true;
-				 break;
-	}
-	case 'B':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_B_A)].first = true;
-				 break;
-	}
-	case 'd':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_D_B)].first = true;
-				 break;
-	}
-	case 'm':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_M_B)].first = true;
-				 break;
-	}
-	case 'p':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_P_B)].first = true;
-				 break;
-	}
-	case 'b':{
-				 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_B_B)].first = true;
-				 break;
-	}
-	default:{
-				break;
-	}
+		case 'D':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_D_A)].first = true;
+					 break;
+		}
+		case 'M':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_M_A)].first = true;
+					 break;
+		}
+		case 'P':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_P_A)].first = true;
+					 break;
+		}
+		case 'B':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_B_A)].first = true;
+					 break;
+		}
+		case 'd':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_D_B)].first = true;
+					 break;
+		}
+		case 'm':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_M_B)].first = true;
+					 break;
+		}
+		case 'p':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_P_B)].first = true;
+					 break;
+		}
+		case 'b':{
+					 errMsgArr[int(ErrorMsg::WRONG_SIZE_SHAPE_B_B)].first = true;
+					 break;
+		}
+		default:{
+					break;
+		}
 	}
 }
