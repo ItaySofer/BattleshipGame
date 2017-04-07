@@ -35,3 +35,13 @@ bool StringUtils::isNumber(const std::string& s)
 	}
 	return true;
 }
+
+bool StringUtils::endsWith(std::string value, std::string ending)
+{
+	if (ending.size() > value.size())
+	{
+		return false;
+	}
+
+	return std::equal(ending.rbegin(), ending.rend(), value.rbegin()); 
+}
