@@ -20,10 +20,10 @@ int main(int argc, char* argv[])
 		InputProcessor inputProcessor = InputProcessor(path);
 		if (!inputProcessor.tryExtractFileNames())
 		{
-			return;
+			return -1;
 		}
 		if (!inputProcessor.validateInput()) {
-			return;
+			return -1;
 		}
 
 		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(inputProcessor.getPlayerAAttackFilePath());
@@ -35,6 +35,5 @@ int main(int argc, char* argv[])
 		delete playerA;
 		delete playerB;
 	}
-	
 }
 
