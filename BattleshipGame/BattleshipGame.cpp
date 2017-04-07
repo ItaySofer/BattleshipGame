@@ -15,28 +15,25 @@ int main(int argc, char* argv[])
 		StringUtilsTest::runTests();
 		BattleshipGameManagerTest::runTests();
 	} else {
-		char* workDirectory;
-		char* path;
-		path = argc == 1 ? workDirectory : argv[1];
+		std::string path = argc == 1 ? "" : argv[1];
 
 		InputProcessor inputProcessor = InputProcessor(path);
-		if (!inputProcessor.isInputValid()) {
-			return;
+		if (!inputProcessor.tryExtractFileNames())
+		{
+			return -1;
+		}
+		if (!inputProcessor.validateInput()) {
+			return -1;
 		}
 
-		std::string playerAAttackFilePath = inputProcessor.getPlayerAAttackFilePath();
-		std::string playerBAttackFilePath = inputProcessor.getPlayerBAttackFilePath();
-		std::string boardFilePath = inputProcessor.getBoardFilePath();
-
-		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(playerAAttackFilePath);
-		IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(playerBAttackFilePath);
+		IBattleshipGameAlgo* playerA = new BattleshipGameAlgo(inputProcessor.getPlayerAAttackFilePath());
+		IBattleshipGameAlgo* playerB = new BattleshipGameAlgo(inputProcessor.getPlayerBAttackFilePath());
 		BattleshipGameManager battleshipManneger = BattleshipGameManager(*playerA, *playerB);
-		battleshipManneger.initGame(boardFilePath);
+		battleshipManneger.initGame(inputProcessor.getBoardFilePath());
 		battleshipManneger.playGame();
 
 		delete playerA;
 		delete playerB;
 	}
-	
 }
 
