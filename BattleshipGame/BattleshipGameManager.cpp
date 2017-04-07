@@ -17,10 +17,10 @@ bool BattleshipGameManager::initGame(const std::string boardFile){
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){
 	char** board;
-	board = new char*[ROW];
+	board = new char*[NUM_ROWS];
 	for (int i = 0; i < gameBoard.R; i++)
 	{
-		board[i] = new char[COL];
+		board[i] = new char[NUM_COLS];
 		std::strcpy(board[i], gameBoard.matrix[i].c_str());
 	}
 	modifyBoard(board, isPlayerA);
@@ -56,8 +56,8 @@ void BattleshipGameManager::playGame(){
 void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
 
 	std::ifstream fin(boardFile);
-	gameBoard.R = ROW;
-	gameBoard.C = COL;
+	gameBoard.R = NUM_ROWS;
+	gameBoard.C = NUM_COLS;
 	gameBoard.matrix = new std::string[gameBoard.R];
 	char* temp;
 	for (int i = 0; i < gameBoard.R; i++)

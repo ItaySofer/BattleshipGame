@@ -3,11 +3,9 @@
 #include "BattleshipGameAlgo.h"
 #include "InputProcessor.h"
 #include "StringUtilsTest.h"
-//testCommit
-#define TEST true
 
-int RowNum = 10;
-int ColNum = 10;
+
+#define TEST true
 
 int main(int argc, char* argv[])
 {

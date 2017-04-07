@@ -1,6 +1,5 @@
 #include "BattleshipGameAlgo.h"
-#include "StringUtils.h"
-#include <string>
+
 
 BattleshipGameAlgo::BattleshipGameAlgo(std:: string attackFilePath) {
 	attackFile = std::ifstream(attackFilePath);
@@ -47,7 +46,7 @@ bool BattleshipGameAlgo::isValidAttackMove(std::vector<std::string> pos)
 		return false;
 	}
 
-	if (std::stoi(pos[0]) == 0 || std::stoi(pos[0]) > RowNum || std::stoi(pos[1]) == 0 || std::stoi(pos[1]) > ColNum) {
+	if (std::stoi(pos[0]) == 0 || std::stoi(pos[0]) > NUM_ROWS || std::stoi(pos[1]) == 0 || std::stoi(pos[1]) > NUM_COLS) {
 		return false;
 	}
 

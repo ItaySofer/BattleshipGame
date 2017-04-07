@@ -3,15 +3,10 @@
 
 #include "IBattleshipGameAlgo.h"
 #include "StringUtils.h"
+#include "Macros.h"
 #include <iostream>
 #include <string>
 #include <fstream>
-
-#define ROW 10
-#define COL 10
-#define NUM_OF_ERR_MESSAGE 13
-#define NUM_OF_SHIP_TYPES 4
-#define VALID_SHIP_NUM 5
 
 class BattleshipGameManager {
 	IBattleshipGameAlgo& playerA;

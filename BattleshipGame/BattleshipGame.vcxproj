@@ -132,6 +132,7 @@
     <ClInclude Include="BattleshipGameManagerTest.h" />
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="Macros.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>

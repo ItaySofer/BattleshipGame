@@ -4,9 +4,9 @@
 #include "IBattleshipGameAlgo.h"
 #include <fstream>
 #include <vector>
-
-extern int RowNum;
-extern int ColNum;
+#include "StringUtils.h"
+#include <string>
+#include "Macros.h"
 
 class BattleshipGameAlgo: public IBattleshipGameAlgo {
 	std::ifstream attackFile;
