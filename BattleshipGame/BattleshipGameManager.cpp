@@ -1,11 +1,11 @@
 
 #include "BattleshipGameManager.h"
 
-void initGame(){
+void BattleshipGameManager::initGame(std::string boardFilePath){
 	//TODO: IMPLEMENT
 };
 
-void playGame(){
+void BattleshipGameManager::playGame(){
 	//TODO: IMPLEMENT
 };
 
