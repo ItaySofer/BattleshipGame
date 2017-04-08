@@ -50,6 +50,9 @@
     <ClCompile Include="BattleshipGameAlgoTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InputProcessorTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameAlgo.h">
@@ -82,9 +85,21 @@
     <ClInclude Include="BattleshipGameAlgoTest.h">
       <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InputProcessorTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="test.attack-a">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="a.attack-a">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="b.attack-b">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="board.sboard">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>
