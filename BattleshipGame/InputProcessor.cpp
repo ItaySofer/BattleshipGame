@@ -11,9 +11,10 @@
 	 command << "dir /b /a-d " << folderPath << " > " << fileNamesFilePath;
 	 const std::string comandS = command.str();
 	 const char* comandC = comandS.c_str();
-	 if (!system(comandC))
+	 if (system(comandC))
 	 {
-		 std::cout << "Wrong path: " << folderPath << std::endl;
+		 std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
+		 std::cout << "Wrong path: " << wrongPath << std::endl;
 		 return false;
 	 }
 
@@ -24,19 +25,19 @@
 		 StringUtils::replaceAll(line, "\r", "");
 
 		 std::stringstream filePath;
-		 if (StringUtils::endsWith(line, InputProcessor::attackASuffix) && !playerAAttackFilePath.empty())
+		 if (StringUtils::endsWith(line, InputProcessor::attackASuffix) && playerAAttackFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 playerAAttackFilePath = filePath.str();
 		 }
 
-		 if (StringUtils::endsWith(line, InputProcessor::attackBSuffix) && !playerBAttackFilePath.empty())
+		 if (StringUtils::endsWith(line, InputProcessor::attackBSuffix) && playerBAttackFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 playerBAttackFilePath = filePath.str();
 		 }
 
-		 if (StringUtils::endsWith(line, InputProcessor::boardSuffix) && !boardFilePath.empty())
+		 if (StringUtils::endsWith(line, InputProcessor::boardSuffix) && boardFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 boardFilePath = filePath.str();
@@ -46,21 +47,24 @@
 	 return true;
  }
 
-bool InputProcessor::validateInput()
-{
+ bool InputProcessor::validateInput()
+ {
+
+	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
+
 	if (boardFilePath.empty())
 	{
-		std::cout << "Missing board file (*.sboard) looking in path: " << folderPath << std::endl;
+		std::cout << "Missing board file (*.sboard) looking in path: " << wrongPath << std::endl;
 	}
 
 	if (playerAAttackFilePath.empty())
 	{
-		std::cout << "Missing attack file for player A (*.attack-a) looking in path: " << folderPath << std::endl;
+		std::cout << "Missing attack file for player A (*.attack-a) looking in path: " << wrongPath << std::endl;
 	}
 
 	if (playerBAttackFilePath.empty())
 	{
-		std::cout << "Missing attack file for player B (*.attack-b) looking in path: " << folderPath << std::endl;
+		std::cout << "Missing attack file for player B (*.attack-b) looking in path: " << wrongPath << std::endl;
 	}
 
 	return !playerAAttackFilePath.empty() && !playerBAttackFilePath.empty() && !boardFilePath.empty();
@@ -87,10 +91,10 @@ std::string InputProcessor::concatenateAbsolutePath(const std::string& dirPath, 
 	{
 		return fileName;
 	}
-	if (dirPath.back() == '/') //dir path includes '/'
+	if (dirPath.back() == '\\') //dir path includes '\'
 	{
 		return dirPath + fileName;
 	}
 
-	return dirPath + "/" + fileName;
+	return dirPath + "\\" + fileName;
 }

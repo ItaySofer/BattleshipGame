@@ -145,8 +145,6 @@
   <ItemGroup>
     <None Include="a.attack-a" />
     <None Include="b.attack-b" />
-    <None Include="board.sboard" />
-    <None Include="test.attack-a" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard" />

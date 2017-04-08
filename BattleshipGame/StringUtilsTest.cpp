@@ -13,7 +13,7 @@ void StringUtilsTest::replaceAllOneSpaceAppearanceTest()
 
 void StringUtilsTest::replaceAllOneCrAppearanceTest()
 {
-	std::string s = "Some\rString";
+	std::string s = "Some\rString\r";
 	StringUtils::replaceAll(s, "\r", "");
 	std::string expected = "SomeString";
 

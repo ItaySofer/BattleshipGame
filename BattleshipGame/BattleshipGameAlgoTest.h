@@ -10,10 +10,12 @@ public:
 	static void runTests()
 	{
 		attackTest();
+		attackTestFromOtherFolder();
 	}
 
 private:
 	static void attackTest();
+	static void attackTestFromOtherFolder();
 };
 
 

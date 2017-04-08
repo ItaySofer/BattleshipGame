@@ -126,11 +126,5 @@
     <None Include="b.attack-b">
       <Filter>resources</Filter>
     </None>
-    <None Include="board.sboard">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="test.attack-a">
-      <Filter>resources</Filter>
-    </None>
   </ItemGroup>
 </Project>
