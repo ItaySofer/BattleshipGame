@@ -13,6 +13,21 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{454941ab-e8c3-498f-857e-4126a2c067ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Test Classes">
+      <UniqueIdentifier>{586ff9af-c1d7-4de5-904a-d7cc0b8ccf8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Test Classes\Source Files">
+      <UniqueIdentifier>{0b671290-e933-4719-aa98-2e5922e6a36d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Test Classes\Header Files">
+      <UniqueIdentifier>{6568008c-ec0d-4f90-8ee7-3cee7562341c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{5f398315-9912-49af-a766-cf91ac2c93f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleshipGame.cpp">
@@ -27,14 +42,17 @@
     <ClCompile Include="StringUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StringUtilsTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BattleshipGameManagerTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InputProcessor.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StringUtilsTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipGameManagerTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipGameAlgoTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,12 +68,6 @@
     <ClInclude Include="StringUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringUtilsTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BattleshipGameManagerTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="InputProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -64,6 +76,15 @@
     </ClInclude>
     <ClInclude Include="BattleBoard.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringUtilsTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameManagerTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

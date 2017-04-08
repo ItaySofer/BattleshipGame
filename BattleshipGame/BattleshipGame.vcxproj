@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClCompile Include="BattleshipGame.cpp" />
     <ClCompile Include="BattleshipGameAlgo.cpp" />
+    <ClCompile Include="BattleshipGameAlgoTest.cpp" />
     <ClCompile Include="BattleshipGameManager.cpp" />
     <ClCompile Include="BattleshipGameManagerTest.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
@@ -129,6 +130,7 @@
   <ItemGroup>
     <ClInclude Include="BattleBoard.h" />
     <ClInclude Include="BattleshipGameAlgo.h" />
+    <ClInclude Include="BattleshipGameAlgoTest.h" />
     <ClInclude Include="BattleshipGameManager.h" />
     <ClInclude Include="BattleshipGameManagerTest.h" />
     <ClInclude Include="IBattleshipGameAlgo.h" />

@@ -21,7 +21,6 @@ public:
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
 
 private:
-	std::string getCompleteAttackFilePath(std::string path, std::string fileSuffix);
 	bool isValidAttackMove(std::vector<std::string> pos);
 };
 
