@@ -97,6 +97,9 @@
     <ClInclude Include="MockBattleshipGameAlgo.h">
       <Filter>Tests\Mock Classes\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InputProcessorTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard">
@@ -117,14 +120,6 @@
     <None Include="bad_board_3.sboard">
       <Filter>resources</Filter>
     </None>
-    <ClInclude Include="InputProcessorTest.h">
-      <Filter>Tests\Test Classes\Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="test.attack-a">
-      <Filter>resources</Filter>
-    </None>
     <None Include="a.attack-a">
       <Filter>resources</Filter>
     </None>
@@ -132,6 +127,9 @@
       <Filter>resources</Filter>
     </None>
     <None Include="board.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="test.attack-a">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>
