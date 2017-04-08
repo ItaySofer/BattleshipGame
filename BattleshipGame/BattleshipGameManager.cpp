@@ -9,9 +9,8 @@ bool BattleshipGameManager::initGame(const std::string boardFilePath){
 	if (!validateBoard()) return false;
 
 	//Send each player his board
-	//TODO: remove comments from 2 lines below:
-	//sendBoard(true);//player A
-	//sendBoard(false);//player B
+	sendBoard(true);//player A
+	sendBoard(false);//player B
 
 	return true;
 };
@@ -22,12 +21,13 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		board[i] = new char[NUM_COLS];
-		strcpy_s(board[i], NUM_COLS, gameBoard.matrix[i].c_str());
+		std::memcpy(board[i], gameBoard.matrix[i].c_str(), NUM_COLS);
 	}
 	modifyBoard(board, isPlayerA);
 	IBattleshipGameAlgo& player = isPlayerA ? playerA : playerB;
 	player.setBoard(const_cast<const char**>(board), gameBoard.R, gameBoard.C);
 
+	//Delete board
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		delete[] board[i];
@@ -41,8 +41,8 @@ void BattleshipGameManager::modifyBoard(char** board, bool isPlayerA){
 		for (int j = 0; j < gameBoard.R; j++){
 			if (board[i][j] != ' '){
 				pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
-				if (((std::distance(typeArr, pos) < VALID_SHIP_NUM) && !isPlayerA) || 
-					((std::distance(typeArr, pos) >= VALID_SHIP_NUM) && isPlayerA)){
+				if (((std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) && !isPlayerA) ||
+					((std::distance(typeArr, pos) >= NUM_OF_SHIP_TYPES) && isPlayerA)){
 					board[i][j] = ' ';
 				}
 			}
@@ -110,13 +110,14 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
 	char* pos;
 	for (int i = 0; i < gameBoard.R; i++){
 		for (int j = 0; j < gameBoard.C; j++){
-			pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
-			if (pos == std::end(typeArr)) { //element not found
-				gameBoard.matrix[i][j] = ' ';
+			if (gameBoard.matrix[i][j] != ' ') {
+				pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
+				if (pos == std::end(typeArr)) { //element not found
+					gameBoard.matrix[i][j] = ' ';
+				}
 			}
 		}
 	}
-
 }
 
 bool BattleshipGameManager::validateBoard(){
@@ -142,16 +143,17 @@ bool BattleshipGameManager::validateBoard(){
 					}
 				}
 				//check if need to check ship to the bottom
-				if ((i == 0) || (gameBoard.matrix[i - 1][j] != gameBoard.matrix[i][j])){
-					//Check to the bottom
-					isValidBottom = isValidShipBottom(i, j);
-					if (isValidBottom && !isValidRight){
-						(std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) ? Acount++ : Bcount++;
+				if (!isValidRight) {
+					if ((i == 0) || (gameBoard.matrix[i - 1][j] != gameBoard.matrix[i][j])) {
+						//Check to the bottom
+						isValidBottom = isValidShipBottom(i, j);
+						if (isValidBottom) {
+							(std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) ? Acount++ : Bcount++;
+						}
 					}
 				}
 				if (!isValidRight && !isValidBottom){
 					updateErrMsgArrWrongSize(gameBoard.matrix[i][j]);
-					//std::cout << "DEBUG: invalid ship starts at position i=" << i << " j=" << j << std::endl;
 				}
 			}
 		}		
@@ -194,12 +196,10 @@ bool BattleshipGameManager::validateBoard(){
 		if (brk) break;
 	}
 
-	//Check for error messages - print if needed
+	//Check for error messages - print error message if found
 	bool valid = true;
 	for (int i = 0; i < int(ErrorMsg::ERR_MGS_MAX); i++){
 		if (errMsgArr[i].first == true){
-			//change error back to false after printing. TODO: concider better way of managing the error array
-			errMsgArr[i].first = false;
 			//Print the relevant error message
 			std::cout << errMsgArr[i].second << std::endl;
 			valid = false;

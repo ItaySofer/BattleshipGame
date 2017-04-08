@@ -19,7 +19,9 @@ public:
 	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
 					 //Output propper messages ("Player _ won. Points: ...")
 
-//private:
+	friend class BattleshipGameManagerTest;
+
+private:
 	//ENUMs
 	enum class shipSize {
 		bSize = 1,
