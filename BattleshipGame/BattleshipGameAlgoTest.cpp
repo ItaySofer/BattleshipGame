@@ -2,7 +2,7 @@
 
 void BattleshipGameAlgoTest::attackTest()
 {
-	BattleshipGameAlgo player("a.attack-a");
+	BattleshipGameAlgo player("test.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,

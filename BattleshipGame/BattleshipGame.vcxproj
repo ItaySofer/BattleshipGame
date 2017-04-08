@@ -139,6 +139,9 @@
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="test.attack-a" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
