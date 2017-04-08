@@ -136,8 +136,17 @@
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="MockBattleshipGameAlgo.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bad_board_0.sboard" />
+    <None Include="bad_board_1.sboard" />
+    <None Include="bad_board_2.sboard" />
+    <None Include="bad_board_3.sboard" />
+    <None Include="good_board_0.sboard" />
+    <None Include="good_board_1.sboard" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,8 @@ public:
 private:
 
 	static void checkTestBoards();
-	void output(const BattleBoard& battleBoard);
+	static void checkBoard(BattleshipGameManager& battleshipManneger, std::string path);
+	static void output(BattleBoard& battleBoard);
 };
 
 #endif

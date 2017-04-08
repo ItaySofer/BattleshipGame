@@ -9,8 +9,9 @@ bool BattleshipGameManager::initGame(const std::string boardFilePath){
 	if (!validateBoard()) return false;
 
 	//Send each player his board
-	sendBoard(true);//player A
-	sendBoard(false);//player B
+	//TODO: remove comments from 2 lines below:
+	//sendBoard(true);//player A
+	//sendBoard(false);//player B
 
 	return true;
 };
@@ -96,7 +97,7 @@ bool BattleshipGameManager::validateBoard(){
 				isValidRight = true;
 				isValidBottom = true;
 				//check if need to check ship to the right
-				if ((i == 0) || (gameBoard.matrix[i - 1][j] != gameBoard.matrix[i][j])){
+				if ((j == 0) || (gameBoard.matrix[i][j - 1] != gameBoard.matrix[i][j])){
 					//Check to the right
 					isValidRight = isValidShipRight(i, j);
 					if (isValidRight){
@@ -104,15 +105,16 @@ bool BattleshipGameManager::validateBoard(){
 					}
 				}
 				//check if need to check ship to the bottom
-				if ((j == 0) || (gameBoard.matrix[i][j - 1] != gameBoard.matrix[i][j])){
+				if ((i == 0) || (gameBoard.matrix[i - 1][j] != gameBoard.matrix[i][j])){
 					//Check to the bottom
 					isValidBottom = isValidShipBottom(i, j);
-					if (isValidBottom){
+					if (isValidBottom && !isValidRight){
 						(std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) ? Acount++ : Bcount++;
 					}
 				}
 				if (!isValidRight && !isValidBottom){
 					updateErrMsgArrWrongSize(gameBoard.matrix[i][j]);
+					//std::cout << "DEBUG: invalid ship starts at position i=" << i << " j=" << j << std::endl;
 				}
 			}
 		}		
@@ -135,17 +137,21 @@ bool BattleshipGameManager::validateBoard(){
 	bool brk = false;
 	for (int i = 0; i < gameBoard.R; i++){
 		for (int j = 0; j < gameBoard.C; j++){
-			//Check different to the bottom
-			if ((j != gameBoard.R - 1) && (gameBoard.matrix[i][j + 1] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i][j + 1] != ' ')){
-				errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
-				brk = true;
-				break;
-			}
-			//Check different to the right
-			if ((i != gameBoard.C - 1) && (gameBoard.matrix[i + 1][j] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i + 1][j] != ' ')){
-				errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
-				brk = true;
-				break;
+			if (gameBoard.matrix[i][j] != ' ') {
+				//Check different to the bottom
+				if ((i != gameBoard.R - 1) &&
+					(gameBoard.matrix[i + 1][j] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i + 1][j] != ' ')) {
+					errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
+					brk = true;
+					break;
+				}
+				//Check different to the right
+				if ((j != gameBoard.C - 1) &&
+					(gameBoard.matrix[i][j + 1] != gameBoard.matrix[i][j]) && (gameBoard.matrix[i][j + 1] != ' ')) {
+					errMsgArr[int(ErrorMsg::AJACENT_ON_BOARD)].first = true;
+					brk = true;
+					break;
+				}
 			}
 		}
 		if (brk) break;
@@ -155,25 +161,28 @@ bool BattleshipGameManager::validateBoard(){
 	bool valid = true;
 	for (int i = 0; i < int(ErrorMsg::ERR_MGS_MAX); i++){
 		if (errMsgArr[i].first == true){
+			//change error back to false after printing. TODO: concider better way of managing the error array
+			errMsgArr[i].first = false;
+			//Print the relevant error message
 			std::cout << errMsgArr[i].second << std::endl;
 			valid = false;
 		}
 	}
-	return valid;
+	return (valid);
 }
 
 bool BattleshipGameManager::isValidShipRight(int x, int y){
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 
-	while ((x < gameBoard.C-1) && (gameBoard.matrix[x][y] == type)){
+	while ((y < gameBoard.C) && (gameBoard.matrix[x][y] == type)){
 		size++;
 		//if same type above/bottom - return false
-		if ((y != 0) && (gameBoard.matrix[x][y - 1] == type) ||
-			(y != gameBoard.R-1) && (gameBoard.matrix[x][y + 1] == type)){
+		if (((x != 0) && (gameBoard.matrix[x - 1][y] == type)) ||
+			((x != gameBoard.R-1) && (gameBoard.matrix[x + 1][y] == type))){
 			return false;
 		}
-		x++;
+		y++;
 	}
 	return (size == getSize(type));
 }
@@ -182,14 +191,14 @@ bool BattleshipGameManager::isValidShipBottom(int x, int y){
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 
-	while ((y < gameBoard.R - 1) && (gameBoard.matrix[x][y] == type)){
+	while ((x < gameBoard.R) && (gameBoard.matrix[x][y] == type)){
 		size++;
 		//if same type left/right - return false
-		if ((x != 0) && (gameBoard.matrix[x-1][y] == type) ||
-			(x != gameBoard.C - 1) && (gameBoard.matrix[x+1][y] == type)){
+		if (((y != 0) && (gameBoard.matrix[x][y - 1] == type)) ||
+			((y != gameBoard.C - 1) && (gameBoard.matrix[x][y + 1] == type))){
 			return false;
 		}
-		y++;
+		x++;
 	}
 	return (size == getSize(type));
 }

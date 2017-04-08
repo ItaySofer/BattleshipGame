@@ -1,21 +1,31 @@
 #include "BattleshipGameManagerTest.h"
-#include "BattleshipGameAlgo.h"
+#include "MockBattleshipGameAlgo.h"
 
 void BattleshipGameManagerTest::checkTestBoards()
 {
-	BattleshipGameAlgo playerA();
-	BattleshipGameAlgo playerB();
-	BattleshipGameManager gameManager(playerA, playerB);
-	gameManager.initGame();
-	//bad_board_0.sboard
-	//bad_board_1.sboard
-	//bad_board_2.sboard
-	//good_board_0.sboard
-	//good_board_1.sboard
+	MockBattleshipGameAlgo playerA;
+	MockBattleshipGameAlgo playerB;
+	BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
+
+	checkBoard(battleshipManneger, "good_board_0.sboard");
+	checkBoard(battleshipManneger, "good_board_1.sboard");
+	checkBoard(battleshipManneger, "bad_board_0.sboard");
+	checkBoard(battleshipManneger, "bad_board_1.sboard");
+	checkBoard(battleshipManneger, "bad_board_2.sboard");
+
+	std::getchar();
 }
-void BattleshipGameManagerTest::output(const BattleBoard& battleBoard)
+
+void BattleshipGameManagerTest::checkBoard(BattleshipGameManager& battleshipManneger, std::string path) {
+	std::cout << "********************************************************" << std::endl;
+	std::cout << path << " initGame result:" << std::endl;
+	battleshipManneger.initGame(path);
+	output(battleshipManneger.gameBoard);
+	std::cout << "********************************************************" << std::endl;
+	std::cout << std::endl;
+}
+void BattleshipGameManagerTest::output(BattleBoard& battleBoard)
 {
-	std::cout << "Printing battleBoard from instance into standard output" << std::endl;
 	for (int i = 0; i < battleBoard.R; ++i)
 	{
 		for (int j = 0; j < battleBoard.C; ++j)

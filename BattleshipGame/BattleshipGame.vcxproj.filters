@@ -28,6 +28,15 @@
     <Filter Include="resources">
       <UniqueIdentifier>{5f398315-9912-49af-a766-cf91ac2c93f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Tests\Mock Classes">
+      <UniqueIdentifier>{2b2e4d60-e112-4516-b3f6-10d7d6fe3756}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Mock Classes\Header Files">
+      <UniqueIdentifier>{9921ca50-7ec4-489e-9493-5d5e4d15c2dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests\Mock Classes\Source Files">
+      <UniqueIdentifier>{296afd08-c0c4-4606-a264-fc5105d0e497}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BattleshipGame.cpp">
@@ -86,5 +95,28 @@
     <ClInclude Include="BattleshipGameAlgoTest.h">
       <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MockBattleshipGameAlgo.h">
+      <Filter>Tests\Mock Classes\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bad_board_0.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="bad_board_1.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="bad_board_2.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="good_board_0.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="good_board_1.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="bad_board_3.sboard">
+      <Filter>resources</Filter>
+    </None>
   </ItemGroup>
 </Project>

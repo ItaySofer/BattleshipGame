@@ -57,19 +57,19 @@ public:
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	//Variables
-	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship d for player A"),
-		std::make_pair(false, "Wrong size or shape for ship m for player A"),
-		std::make_pair(false, "Wrong size or shape for ship p for player A"),
-		std::make_pair(false, "Wrong size or shape for ship b for player A"),
-		std::make_pair(false, "Wrong size or shape for ship d for player B"),
-		std::make_pair(false, "Wrong size or shape for ship m for player B"),
-		std::make_pair(false, "Wrong size or shape for ship p for player B"),
-		std::make_pair(false, "Wrong size or shape for ship b for player B"),
-		std::make_pair(false, "Too many ships for player A"),
-		std::make_pair(false, "Too few ships for player A"),
-		std::make_pair(false, "Too many ships for player B"),
-		std::make_pair(false, "Too few ships for player B"),
-		std::make_pair(false, "Adjacent Ships on Board")
+	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),
+																   std::make_pair(false, "Wrong size or shape for ship M for player A"),
+																   std::make_pair(false, "Wrong size or shape for ship P for player A"),
+																   std::make_pair(false, "Wrong size or shape for ship B for player A"),
+																   std::make_pair(false, "Wrong size or shape for ship d for player B"),
+																   std::make_pair(false, "Wrong size or shape for ship m for player B"),
+																   std::make_pair(false, "Wrong size or shape for ship p for player B"),
+																   std::make_pair(false, "Wrong size or shape for ship b for player B"),
+																   std::make_pair(false, "Too many ships for player A"),
+																   std::make_pair(false, "Too few ships for player A"),
+																   std::make_pair(false, "Too many ships for player B"),
+																   std::make_pair(false, "Too few ships for player B"),
+																   std::make_pair(false, "Adjacent Ships on Board")
 	};
 	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
 
