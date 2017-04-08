@@ -12,7 +12,7 @@
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {};
+	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {}
 	~BattleshipGameManager() = default;
 
 	bool initGame(const std::string boardFilePath); //initiates board, calls players' "setBoard" methods
@@ -56,6 +56,12 @@ private:
 	int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
+	int getSinkScoreByChar(char c);
+	bool isActivePlayer(int playerIndex);
+	bool isLonely(BattleBoard& gameBoard, int row, int col);
+	int handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col);
+	int numActivePlayers();
+
 	//Variables
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship d for player A"),
 		std::make_pair(false, "Wrong size or shape for ship m for player A"),
@@ -73,9 +79,13 @@ private:
 	};
 	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
 
+	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
+
 	IBattleshipGameAlgo& playerA;
 	IBattleshipGameAlgo& playerB;
 	BattleBoard gameBoard;
+	int numShips[NUM_PLAYERS] = { VALID_SHIP_NUM , VALID_SHIP_NUM };
+	int scores[NUM_PLAYERS] = {0, 0};
 };
 
 #endif

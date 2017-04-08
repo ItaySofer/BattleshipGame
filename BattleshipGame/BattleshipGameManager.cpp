@@ -49,8 +49,45 @@ void BattleshipGameManager::modifyBoard(char** board, bool isPlayerA){
 	}
 }
 
-void BattleshipGameManager::playGame(){
-	//TODO: IMPLEMENT
+void BattleshipGameManager::playGame() {
+	int currPlayer = STARTING_PLAYER;
+	int doneAttackingPlayers = 0;
+	while (numActivePlayers() > 1 && doneAttackingPlayers < NUM_PLAYERS) {
+		std::pair<int, int> currAttack = (currPlayer % 2 == 0) ? playerA.attack() : playerB.attack();
+		if (currAttack.first < 0) {
+			// currPlayer is done attacking
+			doneAttackingPlayers += 1;
+			currPlayer += 1;
+			continue;
+		}
+		int roundResult = handleMove(currPlayer, gameBoard, currAttack.first, currAttack.second);
+		if (roundResult > 1) {
+			// currPlayer sink
+			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+		}
+		else if (roundResult == 1) {
+			// currPlayer hit
+			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+		}
+		else if (roundResult == 0) {
+			// currPlayer miss
+			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			currPlayer += 1;
+		}
+	}
+	// game ended, announce winner if exists and scores
+	if (isActivePlayer(0) && !isActivePlayer(1)) {
+		std::cout << "Player A won\n";
+	}
+	else if (isActivePlayer(1) && !isActivePlayer(0)) {
+		std::cout << "Player B won\n";
+	}
+	std::cout << "Points:\n";
+	std::cout << "Player A: " << scores[0] << "\n";
+	std::cout << "Player B: " << scores[1] << "\n";
 };
 
 void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
@@ -274,4 +311,88 @@ void BattleshipGameManager::updateErrMsgArrWrongSize(char type){
 					break;
 		}
 	}
+}
+
+
+
+int BattleshipGameManager::getSinkScoreByChar(char c) {
+	for (int i = 0; i < NUM_OF_SHIP_TYPES; i++) {
+		if (typeArr[i] == c || typeArr[i + NUM_OF_SHIP_TYPES] == c) {
+			return sinkScoreArr[i];
+		}
+	}
+	return 0;
+}
+
+bool BattleshipGameManager::isActivePlayer(int playerIndex) {
+	return numShips[playerIndex] > 0;
+}
+
+bool BattleshipGameManager::isLonely(BattleBoard& gameBoard, int row, int col) {
+	int rowIndexDown = row + 1, rowIndexUp = row - 1, colIndexLeft = col - 1, colIndexRight = col + 1;
+	while (rowIndexDown < NUM_ROWS && gameBoard.matrix[rowIndexDown][col] != ' ') {
+		if (gameBoard.matrix[rowIndexDown][col] != '*') {
+			return false;
+		}
+		rowIndexDown += 1;
+	}
+	while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][col] != ' ') {
+		if (gameBoard.matrix[rowIndexUp][col] != '*') {
+			return false;
+		}
+		rowIndexUp -= 1;
+	}
+	while (colIndexLeft >= 0 && gameBoard.matrix[row][colIndexLeft] != ' ') {
+		if (gameBoard.matrix[row][colIndexLeft] != '*') {
+			return false;
+		}
+		colIndexLeft -= 1;
+	}
+	while (colIndexRight < NUM_COLS && gameBoard.matrix[row][colIndexRight] != ' ') {
+		if (gameBoard.matrix[row][colIndexRight] != '*') {
+			return false;
+		}
+		colIndexRight += 1;
+	}
+	return true;
+}
+
+int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col) {
+	char c = gameBoard.matrix[row][col];
+	bool lowerFlag = islower(c), lonelyFlag = isLonely(gameBoard, row, col);
+	int sinkScore = getSinkScoreByChar(c);
+	if (sinkScore == 0) return 0;
+	// if we reached here, that means a ship was hit
+	gameBoard.matrix[row][col] = '*';		// mark coordinate as a hit
+	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
+		if (lonelyFlag) {
+			// report sink
+			numShips[(currPlayer + 1) % 2] -= 1;
+			scores[currPlayer % 2] += sinkScore;
+			return sinkScore;
+		}
+		else {
+			// report hit
+			return 1;
+		}
+	}
+	else {
+		// report miss
+		if (lonelyFlag && ((currPlayer % 2 == 0 && !lowerFlag) || (currPlayer % 2 == 1 && lowerFlag))) {
+			// Own goal
+			numShips[currPlayer % 2] -= 1;
+			scores[(currPlayer + 1) % 2] += sinkScore;
+		}
+		return 0;
+	}
+}
+
+int BattleshipGameManager::numActivePlayers() {
+	int count = 0;
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		if (isActivePlayer(i)) {
+			count += 1;
+		}
+	}
+	return count;
 }
