@@ -2,6 +2,7 @@
 #define BattleshipGameAlgoTestH
 
 #include "BattleshipGameAlgo.h"
+#include "Macros.h"
 
 class BattleshipGameAlgoTest
 {

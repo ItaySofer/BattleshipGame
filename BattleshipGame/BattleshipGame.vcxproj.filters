@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Tests">
       <UniqueIdentifier>{454941ab-e8c3-498f-857e-4126a2c067ad}</UniqueIdentifier>
     </Filter>
@@ -61,6 +57,9 @@
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BattleshipGameAlgoTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputProcessorTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,6 +115,23 @@
       <Filter>resources</Filter>
     </None>
     <None Include="bad_board_3.sboard">
+      <Filter>resources</Filter>
+    </None>
+    <ClInclude Include="InputProcessorTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="test.attack-a">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="a.attack-a">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="b.attack-b">
+      <Filter>resources</Filter>
+    </None>
+    <None Include="board.sboard">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>

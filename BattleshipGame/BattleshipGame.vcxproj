@@ -124,6 +124,7 @@
     <ClCompile Include="BattleshipGameManager.cpp" />
     <ClCompile Include="BattleshipGameManagerTest.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
+    <ClCompile Include="InputProcessorTest.cpp" />
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="StringUtilsTest.cpp" />
   </ItemGroup>
@@ -135,10 +136,17 @@
     <ClInclude Include="BattleshipGameManagerTest.h" />
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="InputProcessorTest.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MockBattleshipGameAlgo.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="a.attack-a" />
+    <None Include="b.attack-b" />
+    <None Include="board.sboard" />
+    <None Include="test.attack-a" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard" />

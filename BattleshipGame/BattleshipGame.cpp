@@ -3,6 +3,8 @@
 #include "BattleshipGameAlgo.h"
 #include "InputProcessor.h"
 #include "StringUtilsTest.h"
+#include "BattleshipGameAlgoTest.h"
+#include "InputProcessorTest.h"
 
 
 #define TEST true
@@ -11,8 +13,10 @@ int main(int argc, char* argv[])
 {
 	if (TEST) {
 		StringUtilsTest::runTests();
+		BattleshipGameAlgoTest::runTests();
+		InputProcessorTest::runTests();
 		BattleshipGameManagerTest::runTests();
-		//brake;
+		//brake to see test results;
 	} else {
 		std::string path = argc == 1 ? "" : argv[1];
 
