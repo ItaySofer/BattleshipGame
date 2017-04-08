@@ -14,10 +14,10 @@ void StringUtilsTest::replaceAllOneSpaceAppearanceTest()
 {
 	std::string s = "Some String";
 	StringUtils::replaceAll(s, " ", "");
-	std::string expected = "Somestring";
+	std::string expected = "SomeString";
 
 	if (s.compare(expected) != 0) {
-		std::cout << "replaceAllOneAppearanceTest Failed: Expected is " + expected + "but was " + s << std::endl;
+		std::cout << "replaceAllOneSpaceAppearanceTest Failed: Expected is " + expected + " but was " + s << std::endl;
 	}
 }
 
@@ -25,10 +25,10 @@ void StringUtilsTest::replaceAllOneCrAppearanceTest()
 {
 	std::string s = "Some\rString";
 	StringUtils::replaceAll(s, "\r", "");
-	std::string expected = "Somestring";
+	std::string expected = "SomeString";
 
 	if (s.compare(expected) != 0) {
-		std::cout << "replaceAllOneAppearanceTest Failed: Expected is " + expected + "but was " + s << std::endl;
+		std::cout << "replaceAllOneCrAppearanceTest Failed: Expected is " + expected + " but was " + s << std::endl;
 	}
 }
 
@@ -39,7 +39,7 @@ void StringUtilsTest::replaceAllMultipleSpaceAppearancesTest()
 	std::string expected = "AnotherSomeString";
 
 	if (s.compare(expected) != 0) {
-		std::cout << "replaceAllMultipleAppearancesTest Failed: Expected is " + expected + "but was " + s << std::endl;
+		std::cout << "replaceAllMultipleAppearancesTest Failed: Expected is " + expected + " but was " + s << std::endl;
 	}
 }
 
@@ -55,7 +55,7 @@ void StringUtilsTest::splitTest()
 	if (actual != expected) {
 		std::cout << "splitTest Failed: Expected is ";
 		std::cout << expected;
-		std::cout << "but was ";
+		std::cout << " but was ";
 		std::cout << actual;
 		std::cout << std::endl;
 	}
@@ -70,6 +70,40 @@ void StringUtilsTest::isNumberNumberTest() {
 void StringUtilsTest::isNumberNotNumberTest() {
 	if (StringUtils::isNumber("itay")) {
 		std::cout << "isNumberNotNumberTest Failed: Expected is false but was true" << std::endl;
+	}
+}
+
+void StringUtilsTest::endsWithPositiveTest()
+{
+	std::string s = "Another Some String";
+
+	bool expected = true;
+
+	bool actual = StringUtils::endsWith(s, "String");
+
+	if (actual != expected) {
+		std::cout << "endsWithPositiveTest Failed: Expected is ";
+		std::cout << expected;
+		std::cout << " but was ";
+		std::cout << actual;
+		std::cout << std::endl;
+	}
+}
+
+void StringUtilsTest::endsWithNegativeTest()
+{
+	std::string s = "Another Some String";
+
+	bool expected = false;
+
+	bool actual = StringUtils::endsWith(s, "BlaBla");
+
+	if (actual != expected) {
+		std::cout << "endsWithPositiveTest Failed: Expected is ";
+		std::cout << expected;
+		std::cout << " but was ";
+		std::cout << actual;
+		std::cout << std::endl;
 	}
 }
 

@@ -17,6 +17,8 @@ public:
 		splitTest();
 		isNumberNumberTest();
 		isNumberNotNumberTest();
+		endsWithPositiveTest();
+		endsWithNegativeTest();
 	}
 
 private:
@@ -26,6 +28,8 @@ private:
 	static void splitTest();
 	static void isNumberNumberTest();
 	static void isNumberNotNumberTest();
+	static void endsWithPositiveTest();
+	static void endsWithNegativeTest();
 };
 
 #endif

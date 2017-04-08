@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
 	if (TEST) {
 		StringUtilsTest::runTests();
 		BattleshipGameManagerTest::runTests();
+		//brake;
 	} else {
 		std::string path = argc == 1 ? "" : argv[1];
 
