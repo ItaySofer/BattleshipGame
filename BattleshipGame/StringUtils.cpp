@@ -19,8 +19,15 @@ void StringUtils::split(std::string& s, const std::string delimiter, std::vector
 	std::string token;
 	while ((pos = s.find(delimiter)) != std::string::npos) {
 		token = s.substr(0, pos);
-		result.push_back(token);
+		if (!token.empty())
+		{
+			result.push_back(token);
+		}
 		s.erase(0, pos + delimiter.length());
+	}
+	if (!s.empty())
+	{
+		result.push_back(s);
 	}
 }
 

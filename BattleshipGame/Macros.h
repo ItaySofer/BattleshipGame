@@ -10,4 +10,23 @@
 #define NUM_OF_SHIP_TYPES 4
 #define VALID_SHIP_NUM 5
 
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
+{
+	os << '{';
+	for (auto& el : vec)
+	{
+		os << el << ", ";
+	}
+	os << '}';
+	return os;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& os, const std::pair<T, T>& p)
+{
+	os << '(' << p.first << ", " << p.second << ')';
+	return os;
+}
+
 #endif

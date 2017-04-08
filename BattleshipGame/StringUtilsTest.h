@@ -2,6 +2,7 @@
 #define StringUtilsTestH
 
 #include "StringUtils.h"
+#include "Macros.h"
 #include <string>
 #include <iostream>
 #include <vector>
@@ -14,7 +15,8 @@ public:
 		replaceAllOneSpaceAppearanceTest();
 		replaceAllOneCrAppearanceTest();
 		replaceAllMultipleSpaceAppearancesTest();
-		splitTest();
+		splitNormalTest();
+		splitComplexTest();
 		isNumberNumberTest();
 		isNumberNotNumberTest();
 		endsWithPositiveTest();
@@ -25,7 +27,8 @@ private:
 	static void replaceAllOneSpaceAppearanceTest();
 	static void replaceAllOneCrAppearanceTest();
 	static void replaceAllMultipleSpaceAppearancesTest();
-	static void splitTest();
+	static void splitNormalTest();
+	static void splitComplexTest();
 	static void isNumberNumberTest();
 	static void isNumberNotNumberTest();
 	static void endsWithPositiveTest();

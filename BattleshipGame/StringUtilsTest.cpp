@@ -1,15 +1,5 @@
 #include "StringUtilsTest.h"
 
-template<typename T>
-std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
-{
-	for (auto& el : vec)
-	{
-		os << el << ' ';
-	}
-	return os;
-}
-
 void StringUtilsTest::replaceAllOneSpaceAppearanceTest()
 {
 	std::string s = "Some String";
@@ -43,9 +33,9 @@ void StringUtilsTest::replaceAllMultipleSpaceAppearancesTest()
 	}
 }
 
-void StringUtilsTest::splitTest()
+void StringUtilsTest::splitNormalTest()
 {
-	std::string s = "Another Some String ";
+	std::string s = "Another Some String";
 
 	std::vector<std::string> expected = { "Another", "Some", "String" };
 
@@ -53,7 +43,25 @@ void StringUtilsTest::splitTest()
 	StringUtils::split(s, " ", actual);
 
 	if (actual != expected) {
-		std::cout << "splitTest Failed: Expected is ";
+		std::cout << "splitNormalTest Failed: Expected is ";
+		std::cout << expected;
+		std::cout << " but was ";
+		std::cout << actual;
+		std::cout << std::endl;
+	}
+}
+
+void StringUtilsTest::splitComplexTest()
+{
+	std::string s = "Another Some   String   ";
+
+	std::vector<std::string> expected = { "Another", "Some", "String" };
+
+	std::vector<std::string> actual;
+	StringUtils::split(s, " ", actual);
+
+	if (actual != expected) {
+		std::cout << "splitComplexTest Failed: Expected is ";
 		std::cout << expected;
 		std::cout << " but was ";
 		std::cout << actual;
