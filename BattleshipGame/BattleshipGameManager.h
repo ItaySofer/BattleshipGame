@@ -6,7 +6,7 @@
 #include "StringUtils.h"
 #include "Macros.h"
 #include <iostream>
-#include <string>
+#include <cstring>
 #include <fstream>
 
 class BattleshipGameManager {

@@ -21,11 +21,11 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		board[i] = new char[NUM_COLS];
-		std::strcpy(board[i], gameBoard.matrix[i].c_str());
+		strcpy_s(board[i], NUM_COLS, gameBoard.matrix[i].c_str());
 	}
 	modifyBoard(board, isPlayerA);
 	IBattleshipGameAlgo& player = isPlayerA ? playerA : playerB;
-	player.setBoard(board, gameBoard.R, gameBoard.C);
+	player.setBoard(const_cast<const char**>(board), gameBoard.R, gameBoard.C);
 
 	for (int i = 0; i < gameBoard.R; i++)
 	{
