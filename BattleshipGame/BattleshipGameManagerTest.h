@@ -14,6 +14,7 @@ public:
 private:
 
 	static void checkTestBoards();
+	void output(const BattleBoard& battleBoard);
 };
 
 #endif
