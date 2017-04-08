@@ -13,15 +13,14 @@
 	 const char* comandC = comandS.c_str();
 	 if (!system(comandC))
 	 {
-		 std::cout << "Wrong path: " << folderPath;
+		 std::cout << "Wrong path: " << folderPath << std::endl;
 		 return false;
 	 }
 
 	 std::ifstream fileNamesFile = std::ifstream(fileNamesFilePath);
 	 std::string line;
-	 while (fileNamesFile.good())
+	 while (std::getline(fileNamesFile, line))
 	 {
-		 std::getline(fileNamesFile, line);
 		 StringUtils::replaceAll(line, "\r", "");
 
 		 std::stringstream filePath;
@@ -51,17 +50,17 @@ bool InputProcessor::validateInput()
 {
 	if (boardFilePath.empty())
 	{
-		std::cout << "Missing board file (*.sboard) looking in path: " << folderPath;
+		std::cout << "Missing board file (*.sboard) looking in path: " << folderPath << std::endl;
 	}
 
 	if (playerAAttackFilePath.empty())
 	{
-		std::cout << "Missing attack file for player A (*.attack-a) looking in path: " << folderPath;
+		std::cout << "Missing attack file for player A (*.attack-a) looking in path: " << folderPath << std::endl;
 	}
 
 	if (playerBAttackFilePath.empty())
 	{
-		std::cout << "Missing attack file for player B (*.attack-b) looking in path: " << folderPath;
+		std::cout << "Missing attack file for player B (*.attack-b) looking in path: " << folderPath << std::endl;
 	}
 
 	return !playerAAttackFilePath.empty() && !playerBAttackFilePath.empty() && !boardFilePath.empty();

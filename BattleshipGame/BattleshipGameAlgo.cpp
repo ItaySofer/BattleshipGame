@@ -16,9 +16,8 @@ void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols) 
 
 std::pair<int, int> BattleshipGameAlgo::attack() {
 	std::string line;
-	while (attackFile.good()) //TODO: check if eof
+	while (std::getline(attackFile, line))
 	{
-		std::getline(attackFile, line);
 		StringUtils::replaceAll(line, "\r", "");
 		StringUtils::replaceAll(line, " ", "");
 
