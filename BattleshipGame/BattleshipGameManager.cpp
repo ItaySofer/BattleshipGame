@@ -76,7 +76,7 @@ void BattleshipGameManager::playGame() {
 			// currPlayer miss
 			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
 			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
-			currPlayer += 1;
+			currPlayer += doneAttackingPlayers > 0 ? 0 : 1;
 		}
 	}
 	// game ended, announce winner if exists and scores
