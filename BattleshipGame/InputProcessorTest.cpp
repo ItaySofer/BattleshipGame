@@ -34,30 +34,33 @@ void InputProcessorTest::extractFileNamesCurrentDirectoryTest()
 
 void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 {
-	InputProcessor inputProcessor("C:\\Users\\Itay\\Desktop\\examples");
+	InputProcessor inputProcessor("C:/Users/Itay/Desktop/examples");
 	inputProcessor.tryExtractFileNames();
-	if (inputProcessor.getPlayerAAttackFilePath() != "C:\\Users\\Itay\\Desktop\\examples\\a.attack-a")
+	std::string expectedA = "C:/Users/Itay/Desktop/examples/a.attack-a";
+	if (inputProcessor.getPlayerAAttackFilePath() != expectedA)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected attack-a file is ";
-		std::cout << "a.attack-a";
+		std::cout << expectedA;
 		std::cout << " but was ";
 		std::cout << inputProcessor.getPlayerAAttackFilePath();
 		std::cout << std::endl;
 	}
 
-	if (inputProcessor.getPlayerBAttackFilePath() != "C:\\Users\\Itay\\Desktop\\examples\\b.attack-b")
+	std::string expectedB = "C:/Users/Itay/Desktop/examples/b.attack-b";
+	if (inputProcessor.getPlayerBAttackFilePath() != expectedB)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected attack-b file is ";
-		std::cout << "b.attack-b";
+		std::cout << expectedB;
 		std::cout << " but was ";
 		std::cout << inputProcessor.getPlayerBAttackFilePath();
 		std::cout << std::endl;
 	}
 
-	if (inputProcessor.getBoardFilePath() != "C:\\Users\\Itay\\Desktop\\examples\\bad_board_0.sboard")
+	std::string expectedBoard = "C:/Users/Itay/Desktop/examples/bad_board_0.sboard";
+	if (inputProcessor.getBoardFilePath() != expectedBoard)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected sboard file is ";
-		std::cout << "board.sboard";
+		std::cout << expectedBoard;
 		std::cout << " but was ";
 		std::cout << inputProcessor.getBoardFilePath();
 		std::cout << std::endl;

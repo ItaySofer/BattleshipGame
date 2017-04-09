@@ -34,7 +34,7 @@ void BattleshipGameAlgoTest::attackTest()
 
 void BattleshipGameAlgoTest::attackTestFromOtherFolder()
 {
-	BattleshipGameAlgo player("C:\\Users\\Itay\\Desktop\\examples\\a.attack-a");
+	BattleshipGameAlgo player("C:/Users/Itay/Desktop/examples/a.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,

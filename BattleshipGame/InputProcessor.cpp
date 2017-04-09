@@ -8,7 +8,7 @@
  {
 	 std::string fileNamesFilePath = "fileNames.txt";
 	 std::stringstream command;
-	 command << "2>NUL dir /b /a-d " << folderPath << " > " << fileNamesFilePath;
+	 command << "2>NUL dir /b /a-d \"" << folderPath << "\" > " << fileNamesFilePath;
 	 const std::string comandS = command.str();
 	 const char* comandC = comandS.c_str();
 	 if (system(comandC))
@@ -95,10 +95,10 @@ std::string InputProcessor::concatenateAbsolutePath(const std::string& dirPath, 
 	{
 		return fileName;
 	}
-	if (dirPath.back() == '\\') //dir path includes '\'
+	if (dirPath.back() == '\\' || dirPath.back() == '/') //dir path includes '\'
 	{
 		return dirPath + fileName;
 	}
 
-	return dirPath + "\\" + fileName;
+	return dirPath + "/" + fileName;
 }
