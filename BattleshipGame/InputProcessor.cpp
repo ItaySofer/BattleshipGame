@@ -8,7 +8,7 @@
  {
 	 std::string fileNamesFilePath = "fileNames.txt";
 	 std::stringstream command;
-	 command << "dir /b /a-d " << folderPath << " > " << fileNamesFilePath;
+	 command << "2>NUL dir /b /a-d " << folderPath << " > " << fileNamesFilePath;
 	 const std::string comandS = command.str();
 	 const char* comandC = comandS.c_str();
 	 if (system(comandC))
@@ -42,6 +42,10 @@
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 boardFilePath = filePath.str();
 		 }
+	 }
+
+	 if (fileNamesFile.is_open()) {
+		 fileNamesFile.close();
 	 }
 
 	 return true;

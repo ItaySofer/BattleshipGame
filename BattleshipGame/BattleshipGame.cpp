@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 		StringUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoTest::runTests();
-		BattleshipGameManagerTest::runTests();
+		//BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
 		std::string path = argc == 1 ? "" : argv[1];
