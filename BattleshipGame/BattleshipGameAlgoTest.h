@@ -11,11 +11,13 @@ public:
 	{
 		attackTest();
 		attackTestFromOtherFolder();
+		attackTestFromExamples();
 	}
 
 private:
 	static void attackTest();
 	static void attackTestFromOtherFolder();
+	static void attackTestFromExamples();
 };
 
 

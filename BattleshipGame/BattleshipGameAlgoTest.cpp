@@ -63,3 +63,25 @@ void BattleshipGameAlgoTest::attackTestFromOtherFolder()
 		std::cout << std::endl;
 	}
 }
+
+void BattleshipGameAlgoTest::attackTestFromExamples()
+{
+	BattleshipGameAlgo player("C:/Users/Itay/Desktop/TestFiles/moves/dirty_ilegal_movesB.attack-b");
+	std::pair<int, int> emptyAttack(-1, -1);
+
+	std::vector<std::pair<int, int>> actual;
+
+	std::pair<int, int> attack = player.attack();
+	while (attack != emptyAttack)
+	{
+		if (attack.first >= NUM_ROWS || attack.first < 0 || attack.second >= NUM_COLS || attack.second < 0)
+		{
+			std::cout << "attackTestFromExamples Failed: invalid attack returned - ";
+			std::cout << attack << std::endl;		
+		}
+		actual.push_back(attack);
+		attack = player.attack();
+	}
+
+	std::cout << std::endl;
+}
