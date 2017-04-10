@@ -18,7 +18,7 @@ public:
 	InputProcessor(std::string p) : folderPath(p) {};
 
 	bool tryExtractFileNames();
-	bool validateInput(); //Validates files exist and board is OK. Outputs propper messages.
+	bool validateInput(); //Validates files exist.
 
 	std::string getPlayerAAttackFilePath();
 	std::string getPlayerBAttackFilePath();
@@ -26,9 +26,9 @@ public:
 
 
 private:
-	static const std::string attackASuffix;
-	static const std::string attackBSuffix;
-	static const std::string boardSuffix;
+	const std::string attackASuffix = ".attack-a";
+	const std::string attackBSuffix = ".attack-b";
+	const std::string boardSuffix = ".sboard";
 	static std::string concatenateAbsolutePath(const std::string& dirPath, const std::string& fileName);
 
 };

@@ -1,8 +1,6 @@
 #include "InputProcessor.h"
 
- const std::string InputProcessor::attackASuffix = ".attack-a";
- const std::string InputProcessor::attackBSuffix = ".attack-b";
- const std::string InputProcessor::boardSuffix = ".sboard";
+
 
  bool InputProcessor::tryExtractFileNames()
  {
@@ -25,19 +23,19 @@
 		 StringUtils::replaceAll(line, "\r", "");
 
 		 std::stringstream filePath;
-		 if (StringUtils::endsWith(line, InputProcessor::attackASuffix) && playerAAttackFilePath.empty())
+		 if (StringUtils::endsWith(line, attackASuffix) && playerAAttackFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 playerAAttackFilePath = filePath.str();
 		 }
 
-		 if (StringUtils::endsWith(line, InputProcessor::attackBSuffix) && playerBAttackFilePath.empty())
+		 if (StringUtils::endsWith(line, attackBSuffix) && playerBAttackFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 playerBAttackFilePath = filePath.str();
 		 }
 
-		 if (StringUtils::endsWith(line, InputProcessor::boardSuffix) && boardFilePath.empty())
+		 if (StringUtils::endsWith(line, boardSuffix) && boardFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 boardFilePath = filePath.str();
