@@ -6,7 +6,7 @@
 #include "BattleshipGameAlgoTest.h"
 #include "InputProcessorTest.h"
 
-#define TEST true
+#define TEST false
 
 int main(int argc, char* argv[])
 {
