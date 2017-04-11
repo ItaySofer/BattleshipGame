@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 	} else {
 		std::string path = argc == 1 ? "" : argv[1];
 
-		InputProcessor inputProcessor = InputProcessor(path);
+		InputProcessor inputProcessor(path);
 		if (!inputProcessor.tryExtractFileNames())
 		{
 			return -1;
@@ -30,8 +30,12 @@ int main(int argc, char* argv[])
 
 		BattleshipGameAlgo playerA(inputProcessor.getPlayerAAttackFilePath());
 		BattleshipGameAlgo playerB(inputProcessor.getPlayerBAttackFilePath());
-		BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
-		battleshipManneger.initGame(inputProcessor.getBoardFilePath());
+		BattleshipGameManager battleshipManneger(playerA, playerB);
+
+		if (!battleshipManneger.initGame(inputProcessor.getBoardFilePath()))
+		{
+			return -1;
+		}
 		battleshipManneger.playGame();
 	}
 }
