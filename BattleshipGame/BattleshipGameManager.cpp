@@ -62,15 +62,17 @@ void BattleshipGameManager::playGame() {
 			continue;
 		}
 		int roundResult = handleMove(currPlayer, gameBoard, currAttack.first, currAttack.second);
-		if (roundResult > 1) {
+		if (std::abs(roundResult) > 1) {
 			// currPlayer sink
 			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
 			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
-		else if (roundResult == 1) {
+		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
 			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
 			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
 			// currPlayer miss
@@ -368,10 +370,13 @@ bool BattleshipGameManager::isLonely(BattleBoard& gameBoard, int row, int col) {
 
 int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col) {
 	char c = gameBoard.matrix[row][col];
-	bool lowerFlag = islower(c), lonelyFlag = isLonely(gameBoard, row, col);
 	int sinkScore = getSinkScoreByChar(c);
-	if (sinkScore == 0) return 0;
+	if (sinkScore == 0) {
+		return 0;
+	}
+
 	// if we reached here, that means a ship was hit
+	bool lowerFlag = islower(c), lonelyFlag = isLonely(gameBoard, row, col);
 	gameBoard.matrix[row][col] = '*';		// mark coordinate as a hit
 	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
 		if (lonelyFlag) {
@@ -386,13 +391,19 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 		}
 	}
 	else {
-		// report miss
-		if (lonelyFlag && ((currPlayer % 2 == 0 && !lowerFlag) || (currPlayer % 2 == 1 && lowerFlag))) {
+		if ((currPlayer % 2 == 0 && !lowerFlag) || (currPlayer % 2 == 1 && lowerFlag)) {
 			// Own goal
-			numShips[currPlayer % 2] -= 1;
-			scores[(currPlayer + 1) % 2] += sinkScore;
+			if (lonelyFlag) {
+				// self sink
+				numShips[currPlayer % 2] -= 1;
+				scores[(currPlayer + 1) % 2] += sinkScore;
+				return -1*sinkScore;
+			}
+			else {
+				// self hit
+				return -1;
+			}
 		}
-		return 0;
 	}
 }
 
