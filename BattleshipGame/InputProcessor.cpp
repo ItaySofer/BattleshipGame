@@ -16,7 +16,7 @@
 		 return false;
 	 }
 
-	 std::ifstream fileNamesFile = std::ifstream(fileNamesFilePath);
+	 std::ifstream fileNamesFile(fileNamesFilePath);
 	 std::string line;
 	 while (std::getline(fileNamesFile, line))
 	 {

@@ -16,6 +16,7 @@ class InputProcessor
 	
 public:
 	InputProcessor(std::string p) : folderPath(p) {};
+	~InputProcessor() = default;
 
 	bool tryExtractFileNames();
 	bool validateInput(); //Validates files exist.
