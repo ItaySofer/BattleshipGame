@@ -405,6 +405,9 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 				return -1;
 			}
 		}
+		else {
+			return 0;
+		}
 	}
 }
 
