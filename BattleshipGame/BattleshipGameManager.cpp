@@ -376,7 +376,8 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 	}
 
 	// if we reached here, that means a ship was hit
-	bool lowerFlag = islower(c), lonelyFlag = isLonely(gameBoard, row, col);
+	bool lowerFlag = islower(c) == 0 ? false : true;
+	bool lonelyFlag = isLonely(gameBoard, row, col);
 	gameBoard.matrix[row][col] = '*';		// mark coordinate as a hit
 	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
 		if (lonelyFlag) {
