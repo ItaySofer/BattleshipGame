@@ -11,9 +11,16 @@
 	 const char* comandC = comandS.c_str();
 	 if (system(comandC))
 	 {
-		 std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
-		 std::cout << "Wrong path: " << wrongPath << std::endl;
-		 return false;
+		 std::stringstream testCommand;
+		 testCommand << "2>NUL cd \"" << folderPath << "\"";
+		 const std::string testCommandS = testCommand.str();
+		 const char* testCommandC = testCommandS.c_str();
+		 if (system(testCommandC))
+		 {
+			 std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
+			 std::cout << "Wrong path: " << wrongPath << std::endl;
+			 return false;
+		 }
 	 }
 
 	 std::ifstream fileNamesFile(fileNamesFilePath);
