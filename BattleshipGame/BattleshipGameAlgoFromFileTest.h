@@ -1,10 +1,10 @@
 #ifndef BattleshipGameAlgoTestH
 #define BattleshipGameAlgoTestH
 
-#include "BattleshipGameAlgo.h"
+#include "BattleshipGameAlgoFromFile.h"
 #include "Macros.h"
 
-class BattleshipGameAlgoTest
+class BattleshipGameAlgoFromFileTest
 {
 public:
 	static void runTests()

@@ -1,8 +1,8 @@
-#include "BattleshipGameAlgoTest.h"
+#include "BattleshipGameAlgoFromFileTest.h"
 
-void BattleshipGameAlgoTest::attackTest()
+void BattleshipGameAlgoFromFileTest::attackTest()
 {
-	BattleshipGameAlgo player("a.attack-a");
+	BattleshipGameAlgoFromFile player("a.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
@@ -32,9 +32,9 @@ void BattleshipGameAlgoTest::attackTest()
 	}
 }
 
-void BattleshipGameAlgoTest::attackTestFromOtherFolder()
+void BattleshipGameAlgoFromFileTest::attackTestFromOtherFolder()
 {
-	BattleshipGameAlgo player("C:/Users/Itay/Desktop/examples/a.attack-a");
+	BattleshipGameAlgoFromFile player("C:/Users/Itay/Desktop/examples/a.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
@@ -64,9 +64,9 @@ void BattleshipGameAlgoTest::attackTestFromOtherFolder()
 	}
 }
 
-void BattleshipGameAlgoTest::attackTestFromExamples()
+void BattleshipGameAlgoFromFileTest::attackTestFromExamples()
 {
-	BattleshipGameAlgo player("C:/Users/Itay/Desktop/TestFiles/moves/dirty_ilegal_movesB.attack-b");
+	BattleshipGameAlgoFromFile player("C:/Users/Itay/Desktop/TestFiles/moves/dirty_ilegal_movesB.attack-b");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> actual;

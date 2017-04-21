@@ -1,20 +1,20 @@
-#include "BattleshipGameAlgo.h"
+#include "BattleshipGameAlgoFromFile.h"
 
 
-BattleshipGameAlgo::BattleshipGameAlgo(std:: string attackFilePath) {
+BattleshipGameAlgoFromFile::BattleshipGameAlgoFromFile(std:: string attackFilePath) {
 	attackFile = std::ifstream(attackFilePath);
 }
 
-BattleshipGameAlgo:: ~BattleshipGameAlgo() {
+BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
 	if (attackFile.is_open()) {
 		attackFile.close();
 	}
 }
 
 
-void BattleshipGameAlgo::setBoard(const char** board, int numRows, int numCols) {}
+void BattleshipGameAlgoFromFile::setBoard(const char** board, int numRows, int numCols) {}
 
-std::pair<int, int> BattleshipGameAlgo::attack() {
+std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
 	std::string line;
 	while (std::getline(attackFile, line))
 	{
@@ -32,10 +32,10 @@ std::pair<int, int> BattleshipGameAlgo::attack() {
 	return std::pair<int, int>(-1, -1);
 }
 
-void BattleshipGameAlgo::notifyOnAttackResult(int player, int row, int col, AttackResult result) {}
+void BattleshipGameAlgoFromFile::notifyOnAttackResult(int player, int row, int col, AttackResult result) {}
 
 
-bool BattleshipGameAlgo::isValidAttackMove(std::vector<std::string> pos)
+bool BattleshipGameAlgoFromFile::isValidAttackMove(std::vector<std::string> pos)
 {
 	if (pos.size() != 2) {
 		return false;

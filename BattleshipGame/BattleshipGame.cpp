@@ -1,9 +1,9 @@
 #include "BattleshipGameManager.h"
 #include "BattleshipGameManagerTest.h"
-#include "BattleshipGameAlgo.h"
+#include "BattleshipGameAlgoFromFile.h"
 #include "InputProcessor.h"
 #include "StringUtilsTest.h"
-#include "BattleshipGameAlgoTest.h"
+#include "BattleshipGameAlgoFromFileTest.h"
 #include "InputProcessorTest.h"
 
 #define TEST false
@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	if (TEST) {
 		StringUtilsTest::runTests();
 		InputProcessorTest::runTests();
-		BattleshipGameAlgoTest::runTests();
+		BattleshipGameAlgoFromFileTest::runTests();
 		//BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 
-		BattleshipGameAlgo playerA(inputProcessor.getPlayerAAttackFilePath());
-		BattleshipGameAlgo playerB(inputProcessor.getPlayerBAttackFilePath());
+		BattleshipGameAlgoFromFile playerA(inputProcessor.getPlayerAAttackFilePath());
+		BattleshipGameAlgoFromFile playerB(inputProcessor.getPlayerBAttackFilePath());
 		BattleshipGameManager battleshipManneger(playerA, playerB);
 
 		if (!battleshipManneger.initGame(inputProcessor.getBoardFilePath()))

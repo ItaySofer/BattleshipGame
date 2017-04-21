@@ -38,9 +38,6 @@
     <ClCompile Include="BattleshipGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BattleshipGameAlgo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BattleshipGameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,17 +53,17 @@
     <ClCompile Include="BattleshipGameManagerTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BattleshipGameAlgoTest.cpp">
+    <ClCompile Include="InputProcessorTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputProcessorTest.cpp">
+    <ClCompile Include="BattleshipGameAlgoFromFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipGameAlgoFromFileTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BattleshipGameAlgo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BattleshipGameManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -91,13 +88,16 @@
     <ClInclude Include="BattleshipGameManagerTest.h">
       <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BattleshipGameAlgoTest.h">
-      <Filter>Tests\Test Classes\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MockBattleshipGameAlgo.h">
       <Filter>Tests\Mock Classes\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InputProcessorTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoFromFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoFromFileTest.h">
       <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
