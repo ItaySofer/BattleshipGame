@@ -30,22 +30,31 @@
 		 StringUtils::replaceAll(line, "\r", "");
 
 		 std::stringstream filePath;
-		 if (StringUtils::endsWith(line, attackASuffix) && playerAAttackFilePath.empty())
-		 {
-			 filePath << concatenateAbsolutePath(folderPath, line);
-			 playerAAttackFilePath = filePath.str();
-		 }
-
-		 if (StringUtils::endsWith(line, attackBSuffix) && playerBAttackFilePath.empty())
-		 {
-			 filePath << concatenateAbsolutePath(folderPath, line);
-			 playerBAttackFilePath = filePath.str();
-		 }
 
 		 if (StringUtils::endsWith(line, boardSuffix) && boardFilePath.empty())
 		 {
 			 filePath << concatenateAbsolutePath(folderPath, line);
 			 boardFilePath = filePath.str();
+		 }
+
+		 if (StringUtils::endsWith(line, dllSuffix)) {
+			 filePath << concatenateAbsolutePath(folderPath, line);
+			 if (dllFiles[0].empty()) {
+				 dllFiles[0] = filePath.str();
+			 }
+			 else if (dllFiles[1].empty()) {
+				 dllFiles[1] = filePath.str();
+			 }
+		 }
+
+		 if (StringUtils::endsWith(line, attackSuffix)) {
+			 filePath << concatenateAbsolutePath(folderPath, line);
+			 if (attackFiles[0].empty()) {
+				 attackFiles[0] = filePath.str();
+			 }
+			 else if (attackFiles[1].empty()) {
+				 attackFiles[1] = filePath.str();
+			 }
 		 }
 	 }
 
@@ -66,27 +75,22 @@
 		std::cout << "Missing board file (*.sboard) looking in path: " << wrongPath << std::endl;
 	}
 
-	if (playerAAttackFilePath.empty())
+	if (dllFiles[0].empty() || dllFiles[1].empty())
 	{
-		std::cout << "Missing attack file for player A (*.attack-a) looking in path: " << wrongPath << std::endl;
+		std::cout << "Missing an algorithm (dll) file looking in path: " << wrongPath << std::endl;
 	}
 
-	if (playerBAttackFilePath.empty())
-	{
-		std::cout << "Missing attack file for player B (*.attack-b) looking in path: " << wrongPath << std::endl;
-	}
-
-	return !playerAAttackFilePath.empty() && !playerBAttackFilePath.empty() && !boardFilePath.empty();
+	return !dllFiles[0].empty() && !dllFiles[1].empty() && !boardFilePath.empty();
 }
 
 std::string InputProcessor::getPlayerAAttackFilePath()
 {
-	return playerAAttackFilePath;
+	return attackFiles[0];
 }
 
 std::string InputProcessor::getPlayerBAttackFilePath()
 {
-	return playerBAttackFilePath;
+	return attackFiles[1].empty() ? attackFiles[0] : attackFiles[1];
 }
 
 std::string InputProcessor::getBoardFilePath()

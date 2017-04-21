@@ -5,13 +5,14 @@
 #include <fstream>
 #include <iostream>
 #include "StringUtils.h"
+#include "Macros.h"
 
 class InputProcessor
 {
 	std::string folderPath;
-	std::string playerAAttackFilePath = "";
-	std::string playerBAttackFilePath = "";
 	std::string boardFilePath = "";
+	std::string attackFiles[NUM_PLAYERS] = { "", "" };
+	std::string dllFiles[NUM_PLAYERS] = { "", "" };
 
 	
 public:
@@ -27,9 +28,10 @@ public:
 
 
 private:
-	const std::string attackASuffix = ".attack-a";
-	const std::string attackBSuffix = ".attack-b";
 	const std::string boardSuffix = ".sboard";
+	const std::string attackSuffix = ".attack";
+	const std::string dllSuffix = ".dll";
+
 	static std::string concatenateAbsolutePath(const std::string& dirPath, const std::string& fileName);
 
 };
