@@ -16,7 +16,8 @@ public:
 	BattleshipGameAlgoFromFile(std::string attackFilePath); //initiates player (folderPath to attack file? already initiates attack file itself?)
 	~BattleshipGameAlgoFromFile() override;
 
-	void setBoard(const char** board, int numRows, int numCols) override; // called once to notify player on his board
+	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board
+	bool init(const std::string& path) override;
 	std::pair<int, int> attack() override; // ask player for his move
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
 

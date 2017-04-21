@@ -25,7 +25,8 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 	}
 	modifyBoard(board, isPlayerA);
 	IBattleshipGameAlgo& player = isPlayerA ? playerA : playerB;
-	player.setBoard(const_cast<const char**>(board), gameBoard.R, gameBoard.C);
+	int playerNum = isPlayerA ? 0 : 1;
+	player.setBoard(playerNum, const_cast<const char**>(board), gameBoard.R, gameBoard.C);
 
 	//Delete board
 	for (int i = 0; i < gameBoard.R; i++)

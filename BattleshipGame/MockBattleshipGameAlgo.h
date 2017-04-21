@@ -16,7 +16,11 @@ public:
 	MockBattleshipGameAlgo() {}; //initiates player (folderPath to attack file? already initiates attack file itself?)
 	~MockBattleshipGameAlgo() override {};
 
-	void setBoard(const char** board, int numRows, int numCols) override {}; // called once to notify player on his board
+	void setBoard(int player, const char** board, int numRows, int numCols) override {}; // called once to notify player on his board
+	bool init(const std::string& path)
+	{
+		return true;
+	}
 	std::pair<int, int> attack() override { return std::make_pair(1, 1); }; // ask player for his move
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override {}; // notify on last move result
 };

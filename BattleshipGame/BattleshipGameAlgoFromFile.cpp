@@ -12,7 +12,12 @@ BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
 }
 
 
-void BattleshipGameAlgoFromFile::setBoard(const char** board, int numRows, int numCols) {}
+void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int numRows, int numCols) {}
+
+bool BattleshipGameAlgoFromFile::init(const std::string& path)
+{
+	return true;
+}
 
 std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
 	std::string line;
