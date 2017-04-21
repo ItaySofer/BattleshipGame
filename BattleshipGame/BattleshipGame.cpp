@@ -28,8 +28,20 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 
-		BattleshipGameAlgoFromFile playerA(inputProcessor.getPlayerAAttackFilePath());
-		BattleshipGameAlgoFromFile playerB(inputProcessor.getPlayerBAttackFilePath());
+		BattleshipGameAlgoFromFile playerA;
+		if (!playerA.init(inputProcessor.getPlayerAAttackFilePath()))
+		{
+			std::string fullPath = ""; //TODO: get file path from input processor
+			std::cout << "Algorithm initialization failed for dll: " << fullPath << std::endl;
+			return -1;
+		}
+		BattleshipGameAlgoFromFile playerB;
+		if (!playerB.init(inputProcessor.getPlayerBAttackFilePath()))
+		{
+			std::string fullPath = ""; //TODO: get file path from input processor
+			std::cout << "Algorithm initialization failed for dll: " << fullPath << std::endl;
+			return -1;
+		}
 		BattleshipGameManager battleshipManneger(playerA, playerB);
 
 		if (!battleshipManneger.initGame(inputProcessor.getBoardFilePath()))

@@ -1,5 +1,5 @@
-#ifndef BattleshipGameAlgoH
-#define BattleshipGameAlgoH
+#ifndef BattleshipGameAlgoFromFileH
+#define BattleshipGameAlgoFromFileH
 
 #include "IBattleshipGameAlgo.h"
 #include <fstream>
@@ -13,7 +13,6 @@ class BattleshipGameAlgoFromFile: public IBattleshipGameAlgo {
 	std::ifstream attackFile;
 
 public:
-	BattleshipGameAlgoFromFile(std::string attackFilePath); //initiates player (folderPath to attack file? already initiates attack file itself?)
 	~BattleshipGameAlgoFromFile() override;
 
 	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board

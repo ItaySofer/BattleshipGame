@@ -1,10 +1,5 @@
 #include "BattleshipGameAlgoFromFile.h"
 
-
-BattleshipGameAlgoFromFile::BattleshipGameAlgoFromFile(std:: string attackFilePath) {
-	attackFile = std::ifstream(attackFilePath);
-}
-
 BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
 	if (attackFile.is_open()) {
 		attackFile.close();
@@ -16,7 +11,14 @@ void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int nu
 
 bool BattleshipGameAlgoFromFile::init(const std::string& path)
 {
-	return true;
+	if (path.empty())
+	{
+		return false;
+	} else
+	{
+		attackFile = std::ifstream(path);
+		return true;
+	}
 }
 
 std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
