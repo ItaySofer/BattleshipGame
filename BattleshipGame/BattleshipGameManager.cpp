@@ -1,19 +1,58 @@
 
 #include "BattleshipGameManager.h"
+#include "BattleshipGameAlgoFromFile.h"
 
-bool BattleshipGameManager::initGame(const std::string boardFilePath){
-	//Read board file to matrix
-	readBoardFileToMatrix(boardFilePath);
+bool BattleshipGameManager::initGame(){
+	
+	if (!initBoard()) {
+		return false;
+	}
 
-	//Validate board
-	if (!validateBoard()) return false;
-
-	//Send each player his board
-	sendBoard(true);//player A
-	sendBoard(false);//player B
+	if (!initPlayers())
+	{
+		return false;
+	}
 
 	return true;
 };
+
+bool BattleshipGameManager::initBoard()
+{
+	//Read board file to matrix
+	readBoardFileToMatrix(inputProcessor.getBoardFilePath());
+
+	//Validate board
+	if (!validateBoard())
+	{
+		return false;
+	}
+
+	return true;
+}
+
+bool BattleshipGameManager::initPlayers()
+{
+	//Send each player his board
+	playerA = new BattleshipGameAlgoFromFile();
+	sendBoard(true);//player A
+	if (!playerA->init(inputProcessor.getPlayerAAttackFilePath()))
+	{
+		std::string fullPath = ""; //TODO: get file path from input processor
+		std::cout << "Algorithm initialization failed for dll: " << fullPath << std::endl;
+		return false;
+	}
+
+	playerB = new BattleshipGameAlgoFromFile();
+	sendBoard(false);//player B
+	if (!playerB->init(inputProcessor.getPlayerBAttackFilePath()))
+	{
+		std::string fullPath = ""; //TODO: get file path from input processor
+		std::cout << "Algorithm initialization failed for dll: " << fullPath << std::endl;
+		return false;
+	}
+
+	return true;
+}
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){
 	char** board;
@@ -24,9 +63,9 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 		std::memcpy(board[i], gameBoard.matrix[i].c_str(), NUM_COLS);
 	}
 	modifyBoard(board, isPlayerA);
-	IBattleshipGameAlgo& player = isPlayerA ? playerA : playerB;
+	IBattleshipGameAlgo* player = isPlayerA ? playerA : playerB;
 	int playerNum = isPlayerA ? 0 : 1;
-	player.setBoard(playerNum, const_cast<const char**>(board), gameBoard.R, gameBoard.C);
+	player->setBoard(playerNum, const_cast<const char**>(board), gameBoard.R, gameBoard.C);
 
 	//Delete board
 	for (int i = 0; i < gameBoard.R; i++)
@@ -55,7 +94,7 @@ void BattleshipGameManager::playGame() {
 	int currPlayer = STARTING_PLAYER;
 	int doneAttackingPlayers = 0;
 	while (numActivePlayers() > 1 && doneAttackingPlayers < NUM_PLAYERS) {
-		std::pair<int, int> currAttack = (currPlayer % 2 == 0) ? playerA.attack() : playerB.attack();
+		std::pair<int, int> currAttack = (currPlayer % 2 == 0) ? playerA->attack() : playerB->attack();
 		if (currAttack.first < 0) {
 			// currPlayer is done attacking
 			doneAttackingPlayers += 1;
@@ -65,20 +104,20 @@ void BattleshipGameManager::playGame() {
 		int roundResult = handleMove(currPlayer, gameBoard, currAttack.first, currAttack.second);
 		if (std::abs(roundResult) > 1) {
 			// currPlayer sink
-			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
-			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
-			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
-			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
 			// currPlayer miss
-			playerA.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
-			playerB.notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
 			currPlayer += doneAttackingPlayers > 0 ? 0 : 1;
 		}
 	}

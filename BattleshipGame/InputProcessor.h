@@ -5,17 +5,20 @@
 #include <fstream>
 #include <iostream>
 #include "StringUtils.h"
+#include "Macros.h"
 
 class InputProcessor
 {
-	std::string folderPath;
-	std::string playerAAttackFilePath = "";
-	std::string playerBAttackFilePath = "";
+	std::string folderPath = "";
 	std::string boardFilePath = "";
+	std::string attackFiles[NUM_PLAYERS] = { "", "" };
+	std::string dllFiles[NUM_PLAYERS] = { "", "" };
+	int delayMs = DEFAULT_DELAY_MS;
+	bool quiet = false;
 
 	
 public:
-	InputProcessor(std::string p) : folderPath(p) {};
+	InputProcessor(int argc, char* argv[]);
 	~InputProcessor() = default;
 
 	bool tryExtractFileNames();
@@ -23,13 +26,19 @@ public:
 
 	std::string getPlayerAAttackFilePath();
 	std::string getPlayerBAttackFilePath();
-	std::string getBoardFilePath();
+	std::string getPlayerADllFilePath();
+	std::string getPlayerBDllFilePath();
+	virtual std::string getBoardFilePath();
+	int getDelayMs();
+	bool getQuiet();
 
+	friend class InputProcessorTest;
 
 private:
-	const std::string attackASuffix = ".attack-a";
-	const std::string attackBSuffix = ".attack-b";
 	const std::string boardSuffix = ".sboard";
+	const std::string attackSuffix = ".attack";
+	const std::string dllSuffix = ".dll";
+
 	static std::string concatenateAbsolutePath(const std::string& dirPath, const std::string& fileName);
 
 };

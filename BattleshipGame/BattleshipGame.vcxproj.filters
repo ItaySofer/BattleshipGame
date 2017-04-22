@@ -118,6 +118,9 @@
     <ClInclude Include="BattleshipGameAlgoSmart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MockInputProcessor.h">
+      <Filter>Tests\Mock Classes\Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard">
@@ -136,12 +139,6 @@
       <Filter>resources</Filter>
     </None>
     <None Include="bad_board_3.sboard">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="a.attack-a">
-      <Filter>resources</Filter>
-    </None>
-    <None Include="b.attack-b">
       <Filter>resources</Filter>
     </None>
   </ItemGroup>

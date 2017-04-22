@@ -145,12 +145,9 @@
     <ClInclude Include="InputProcessorTest.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MockBattleshipGameAlgo.h" />
+    <ClInclude Include="MockInputProcessor.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="a.attack-a" />
-    <None Include="b.attack-b" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard" />

@@ -1,6 +1,5 @@
 #include "BattleshipGameManager.h"
 #include "BattleshipGameManagerTest.h"
-#include "BattleshipGameAlgoFromFile.h"
 #include "InputProcessor.h"
 #include "StringUtilsTest.h"
 #include "BattleshipGameAlgoFromFileTest.h"
@@ -14,12 +13,11 @@ int main(int argc, char* argv[])
 		StringUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoFromFileTest::runTests();
-		//BattleshipGameManagerTest::runTests();
+		BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
-		std::string path = argc == 1 ? "" : argv[1];
-
-		InputProcessor inputProcessor(path);
+	
+		InputProcessor inputProcessor(argc, argv);
 		if (!inputProcessor.tryExtractFileNames())
 		{
 			return -1;
@@ -28,11 +26,9 @@ int main(int argc, char* argv[])
 			return -1;
 		}
 
-		BattleshipGameAlgoFromFile playerA(inputProcessor.getPlayerAAttackFilePath());
-		BattleshipGameAlgoFromFile playerB(inputProcessor.getPlayerBAttackFilePath());
-		BattleshipGameManager battleshipManneger(playerA, playerB);
+		BattleshipGameManager battleshipManneger(inputProcessor);
 
-		if (!battleshipManneger.initGame(inputProcessor.getBoardFilePath()))
+		if (!battleshipManneger.initGame())
 		{
 			return -1;
 		}

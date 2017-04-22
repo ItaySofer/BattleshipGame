@@ -2,7 +2,8 @@
 
 void BattleshipGameAlgoFromFileTest::attackTest()
 {
-	BattleshipGameAlgoFromFile player("a.attack-a");
+	BattleshipGameAlgoFromFile player;
+	player.init("a.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
@@ -34,7 +35,8 @@ void BattleshipGameAlgoFromFileTest::attackTest()
 
 void BattleshipGameAlgoFromFileTest::attackTestFromOtherFolder()
 {
-	BattleshipGameAlgoFromFile player("C:/Users/Itay/Desktop/examples/a.attack-a");
+	BattleshipGameAlgoFromFile player;
+	player.init("C:/Users/Itay/Desktop/examples/a.attack-a");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
@@ -66,7 +68,8 @@ void BattleshipGameAlgoFromFileTest::attackTestFromOtherFolder()
 
 void BattleshipGameAlgoFromFileTest::attackTestFromExamples()
 {
-	BattleshipGameAlgoFromFile player("C:/Users/Itay/Desktop/TestFiles/moves/dirty_ilegal_movesB.attack-b");
+	BattleshipGameAlgoFromFile player;
+	player.init("C:/Users/Itay/Desktop/TestFiles/moves/dirty_ilegal_movesB.attack-b");
 	std::pair<int, int> emptyAttack(-1, -1);
 
 	std::vector<std::pair<int, int>> actual;
