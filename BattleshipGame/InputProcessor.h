@@ -24,7 +24,7 @@ public:
 
 	std::string getPlayerAAttackFilePath();
 	std::string getPlayerBAttackFilePath();
-	std::string getBoardFilePath();
+	virtual std::string getBoardFilePath();
 
 
 private:

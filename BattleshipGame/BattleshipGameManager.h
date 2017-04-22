@@ -8,14 +8,18 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+#include "InputProcessor.h"
 
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(IBattleshipGameAlgo& plrA, IBattleshipGameAlgo& plrB) : playerA(plrA), playerB(plrB) {}
-	~BattleshipGameManager() = default;
+	BattleshipGameManager(InputProcessor& inputProc) : inputProcessor(inputProc) {}
+	~BattleshipGameManager() {
+		delete playerA;
+		delete playerB;
+	};
 
-	bool initGame(const std::string boardFilePath); //initiates board, calls players' "setBoard" methods
+	bool initGame(); //initiates board, calls players' "setBoard" methods
 	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
 					 //Output propper messages ("Player _ won. Points: ...")
 
@@ -48,6 +52,8 @@ private:
 	};
 
 	//Functions
+	bool initBoard();
+	bool initPlayers();
 	void readBoardFileToMatrix(const std::string boardFile);//initiate game board from file.
 	bool validateBoard();//check if board is valid according to game specifications
 	void sendBoard(bool isPlayerA);
@@ -83,9 +89,10 @@ private:
 
 	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
 
-	IBattleshipGameAlgo& playerA;
-	IBattleshipGameAlgo& playerB;
+	InputProcessor& inputProcessor;
 	BattleBoard gameBoard;
+	IBattleshipGameAlgo* playerA;
+	IBattleshipGameAlgo* playerB;
 	int numShips[NUM_PLAYERS] = { VALID_SHIP_NUM , VALID_SHIP_NUM };
 	int scores[NUM_PLAYERS] = {0, 0};
 };

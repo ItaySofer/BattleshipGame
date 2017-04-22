@@ -139,6 +139,7 @@
     <ClInclude Include="InputProcessorTest.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MockBattleshipGameAlgo.h" />
+    <ClInclude Include="MockInputProcessor.h" />
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>

@@ -1,5 +1,6 @@
 #include "BattleshipGameManagerTest.h"
 #include "MockBattleshipGameAlgo.h"
+#include "MockInputProcessor.h"
 
 void BattleshipGameManagerTest::checkTestBoards()
 {
@@ -14,13 +15,12 @@ void BattleshipGameManagerTest::checkTestBoards()
 }
 
 void BattleshipGameManagerTest::checkBoard(std::string path) {
-	MockBattleshipGameAlgo playerA;
-	MockBattleshipGameAlgo playerB;
-	BattleshipGameManager battleshipManneger = BattleshipGameManager(playerA, playerB);
+	MockInputProcessor inputProcessor(path);
+	BattleshipGameManager battleshipManneger = BattleshipGameManager(inputProcessor);
 
 	std::cout << "********************************************************" << std::endl;
 	std::cout << path << " Runnung battleshipManneger.initGame(gameBoardPath):" << std::endl;
-	battleshipManneger.initGame(path);
+	battleshipManneger.initGame();
 	output(battleshipManneger.gameBoard);
 	std::cout << "********************************************************" << std::endl;
 	std::cout << std::endl;
