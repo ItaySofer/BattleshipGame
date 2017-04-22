@@ -62,6 +62,15 @@
     <ClCompile Include="BattleshipGameAlgoFromFileTest.cpp">
       <Filter>Tests\Test Classes\Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BattleshipGameAlgoNaive.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipGameAlgoBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleshipGameAlgoSmart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameManager.h">
@@ -99,6 +108,15 @@
     </ClInclude>
     <ClInclude Include="BattleshipGameAlgoFromFileTest.h">
       <Filter>Tests\Test Classes\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoNaive.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipGameAlgoSmart.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
