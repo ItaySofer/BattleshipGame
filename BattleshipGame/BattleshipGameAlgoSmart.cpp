@@ -4,7 +4,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 	std::pair<int, int> res = std::make_pair(-1, -1);
 	//In case that there are no previous "hit" positions, choose random position to attack from attackPosVec
 	if (attackHitPosVec.empty()) {
-		int size = attackPosVec.size();
+		size_t size = attackPosVec.size();
 		if (size > 0) {
 			int pos = rand() % size;
 			res = attackPosVec[pos];
@@ -51,6 +51,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 							break;
 						}
 						default: {
+							//should not get here - just for compilation
+							return (std::make_pair(-1, -1));
 							break;
 						}
 					}
@@ -93,7 +95,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 			}
 
 			case Direction::left: {
-				currPos = attackLeft(true);
+				return attackLeft(true);
 				break;
 			}
 
@@ -103,6 +105,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 			}
 
 			default:{
+				//should not get here - just for compilation
+				return (std::make_pair(-1, -1));
 				break;
 			}
 		}
@@ -253,16 +257,16 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 		switch (result) {
 			case AttackResult::Miss: {
 				if (direction == Direction::vertical && lastAttackedDirection == Direction::up) {
-					direction == Direction::down;
+					direction = Direction::down;
 				}
 				else if (direction == Direction::vertical && lastAttackedDirection == Direction::down) {
-					direction == Direction::up;
+					direction = Direction::up;
 				}
 				else if (direction == Direction::horizontal && lastAttackedDirection == Direction::left) {
-					direction == Direction::right;
+					direction = Direction::right;
 				}
 				else if (direction == Direction::horizontal && lastAttackedDirection == Direction::right) {
-					direction == Direction::left;
+					direction = Direction::left;
 				}
 				else if	((direction == Direction::up)|| (direction == Direction::down)|| 
 						(direction == Direction::left) || (direction == Direction::right)) {
@@ -274,11 +278,11 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 				//Update direction
 				if ((direction == Direction::none && lastAttackedDirection == Direction::up) ||
 					(direction == Direction::none && lastAttackedDirection == Direction::down)) {
-					direction == Direction::vertical;
+					direction = Direction::vertical;
 				}	
 				else if ((direction == Direction::none && lastAttackedDirection == Direction::left) ||
 					(direction == Direction::none && lastAttackedDirection == Direction::right)) {
-					direction == Direction::horizontal;
+					direction = Direction::horizontal;
 				}
 				//Update attackHitPosVec
 				if ((lastAttackedDirection == Direction::left) || (lastAttackedDirection == Direction::up)) {
