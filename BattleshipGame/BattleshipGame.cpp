@@ -1,6 +1,5 @@
 #include "BattleshipGameManager.h"
 #include "BattleshipGameManagerTest.h"
-#include "BattleshipGameAlgoFromFile.h"
 #include "InputProcessor.h"
 #include "StringUtilsTest.h"
 #include "BattleshipGameAlgoFromFileTest.h"
