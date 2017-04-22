@@ -14,12 +14,11 @@ int main(int argc, char* argv[])
 		StringUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoFromFileTest::runTests();
-		//BattleshipGameManagerTest::runTests();
+		BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
-		std::string path = argc == 1 ? "" : argv[1];
-
-		InputProcessor inputProcessor(path);
+	
+		InputProcessor inputProcessor(argc, argv);
 		if (!inputProcessor.tryExtractFileNames())
 		{
 			return -1;

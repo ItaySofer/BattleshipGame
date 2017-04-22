@@ -15,7 +15,11 @@ void BattleshipGameManagerTest::checkTestBoards()
 }
 
 void BattleshipGameManagerTest::checkBoard(std::string path) {
-	MockInputProcessor inputProcessor(path);
+	int argc = 2;
+	char** argv = new char*[2];
+	argv[0] = "test";
+	argv[1] = const_cast<char*>(path.c_str());
+	MockInputProcessor inputProcessor(argc, argv);
 	BattleshipGameManager battleshipManneger = BattleshipGameManager(inputProcessor);
 
 	std::cout << "********************************************************" << std::endl;

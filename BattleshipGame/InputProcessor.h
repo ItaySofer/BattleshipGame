@@ -9,14 +9,16 @@
 
 class InputProcessor
 {
-	std::string folderPath;
+	std::string folderPath = "";
 	std::string boardFilePath = "";
 	std::string attackFiles[NUM_PLAYERS] = { "", "" };
 	std::string dllFiles[NUM_PLAYERS] = { "", "" };
+	int delayMs = DEFAULT_DELAY_MS;
+	bool quiet = false;
 
 	
 public:
-	InputProcessor(std::string p) : folderPath(p) {};
+	InputProcessor(int argc, char* argv[]);
 	~InputProcessor() = default;
 
 	bool tryExtractFileNames();
@@ -24,8 +26,13 @@ public:
 
 	std::string getPlayerAAttackFilePath();
 	std::string getPlayerBAttackFilePath();
+	std::string getPlayerADllFilePath();
+	std::string getPlayerBDllFilePath();
 	virtual std::string getBoardFilePath();
+	int getDelayMs();
+	bool getQuiet();
 
+	friend class InputProcessorTest;
 
 private:
 	const std::string boardSuffix = ".sboard";

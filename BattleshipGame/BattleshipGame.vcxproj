@@ -144,10 +144,6 @@
     <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="a.attack-a" />
-    <None Include="b.attack-b" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="bad_board_0.sboard" />
     <None Include="bad_board_1.sboard" />
     <None Include="bad_board_2.sboard" />

@@ -7,7 +7,7 @@ class MockInputProcessor : public InputProcessor {
 
 public:
 
-	MockInputProcessor(std::string p) : InputProcessor(""), staticBoardFilePath(p) {};
+	MockInputProcessor(int argc, char* argv[]) : InputProcessor(argc, argv), staticBoardFilePath(argv[1]) {};
 
 	std::string getBoardFilePath() override {
 		return staticBoardFilePath;
