@@ -23,6 +23,8 @@ public:
 
 	bool tryExtractFileNames();
 	bool validateInput(); //Validates files exist.
+	bool validateBoardFileExists();
+	bool validateDllFilesExist();
 
 	std::string getPlayerAAttackFilePath();
 	std::string getPlayerBAttackFilePath();

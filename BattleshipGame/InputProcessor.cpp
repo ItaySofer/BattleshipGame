@@ -115,9 +115,16 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 	 return true;
  }
 
- bool InputProcessor::validateInput()
- {
+bool InputProcessor::validateInput()
+{
+	bool boardFileExists = validateBoardFileExists();
+	bool dllFilesExist = validateDllFilesExist();
+	return boardFileExists && dllFilesExist;
+}
 
+
+bool InputProcessor::validateBoardFileExists()
+{
 	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
 
 	if (boardFilePath.empty())
@@ -125,12 +132,19 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 		std::cout << "Missing board file (*.sboard) looking in path: " << wrongPath << std::endl;
 	}
 
+	return !boardFilePath.empty();
+}
+
+bool InputProcessor::validateDllFilesExist()
+{
+	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
+
 	if (dllFiles[0].empty() || dllFiles[1].empty())
 	{
 		std::cout << "Missing an algorithm (dll) file looking in path: " << wrongPath << std::endl;
 	}
 
-	return !dllFiles[0].empty() && !dllFiles[1].empty() && !boardFilePath.empty();
+	return !dllFiles[0].empty() && !dllFiles[1].empty();
 }
 
 std::string InputProcessor::getPlayerAAttackFilePath()

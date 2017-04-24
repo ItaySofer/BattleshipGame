@@ -22,9 +22,6 @@ int main(int argc, char* argv[])
 		{
 			return -1;
 		}
-		if (!inputProcessor.validateInput()) {
-			return -1;
-		}
 
 		BattleshipGameManager battleshipManneger(inputProcessor);
 
