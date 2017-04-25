@@ -1,12 +1,6 @@
 #include "BattleshipGameAlgoFromFile.h"
 #include "FileUtils.h"
 
-BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
-	if (attackFile.is_open()) {
-		attackFile.close();
-	}
-}
-
 
 void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int numRows, int numCols)
 {
@@ -27,11 +21,7 @@ bool BattleshipGameAlgoFromFile::init(const std::string& path)
 		return false;
 	}
 
-	attackFile = std::ifstream(attackFilePath);
-	return true;
-}
-
-std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
+	std::ifstream attackFile(attackFilePath);
 	std::string line;
 	while (std::getline(attackFile, line))
 	{
@@ -42,8 +32,23 @@ std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
 		StringUtils::split(line, ",", pos);
 
 		if (isValidAttackMove(pos)) {
-			return std::pair<int, int>(std::stoi(pos[0]) - 1, std::stoi(pos[1]) - 1);
+			attackQueue.push(std::pair<int, int>(std::stoi(pos[0]) - 1, std::stoi(pos[1]) - 1));
 		}
+	}
+
+	if (attackFile.is_open()) {
+		attackFile.close();
+	}
+
+	return true;
+}
+
+std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
+	if (attackQueue.size() > 0)
+	{
+		std::pair<int, int>& nextAttack(attackQueue.front());
+		attackQueue.pop();
+		return nextAttack;
 	}
 	
 	return std::pair<int, int>(-1, -1);

@@ -12,12 +12,14 @@ public:
 		attackTest();
 		attackTestFromOtherFolder();
 		attackTestFromExamples();
+		sameAttackFile();
 	}
 
 private:
 	static void attackTest();
 	static void attackTestFromOtherFolder();
 	static void attackTestFromExamples();
+	static void sameAttackFile();
 };
 
 

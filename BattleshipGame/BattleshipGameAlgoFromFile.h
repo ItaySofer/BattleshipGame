@@ -8,13 +8,14 @@
 #include "StringUtils.h"
 #include <string>
 #include "Macros.h"
+#include <queue>
 
 class BattleshipGameAlgoFromFile: public IBattleshipGameAlgo {
 	int playerNum;
-	std::ifstream attackFile;
+	std::queue<std::pair<int, int>> attackQueue;
 
 public:
-	~BattleshipGameAlgoFromFile() override;
+	~BattleshipGameAlgoFromFile() = default;
 
 	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board
 	bool init(const std::string& path) override;
