@@ -10,6 +10,7 @@
 #include "Macros.h"
 
 class BattleshipGameAlgoFromFile: public IBattleshipGameAlgo {
+	int playerNum;
 	std::ifstream attackFile;
 
 public:
@@ -22,6 +23,7 @@ public:
 
 private:
 	bool isValidAttackMove(std::vector<std::string> pos);
+	const std::string attackSuffix = ".attack";
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include "InputProcessor.h"
+#include "FileUtils.h"
 
 
 InputProcessor::InputProcessor(int argc, char* argv[])
@@ -52,78 +53,33 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 	}
 }
 
- bool InputProcessor::tryExtractFileNames()
+ bool InputProcessor::validateFolderPath()
  {
-	char buffer[4096];
-	std::string line;
-	std::stringstream command;
-	command << "2>NUL dir /b /a-d \"" << folderPath << "\"";
-	const std::string comandS = command.str();
-	const char* comandC = comandS.c_str();
-	FILE* fp = _popen(comandC, "r");
-	if (fp->_Placeholder == NULL)
+	if (!FileUtils::isFolderPathValid(folderPath))
 	{
-		std::stringstream testCommand;
-		testCommand << "2>NUL cd \"" << folderPath << "\"";
-		const std::string testCommandS = testCommand.str();
-		const char* testCommandC = testCommandS.c_str();
-		if (system(testCommandC))
-		{
-			std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
-			std::cout << "Wrong path: " << wrongPath << std::endl;
-			return false;
-		}
+		std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
+		std::cout << "Wrong path: " << wrongPath << std::endl;
+		return false;
 	}
-
-	while (fgets(buffer, 4095, fp))
+	else
 	{
-	 line = std::string(buffer);
-	 StringUtils::replaceAll(line, "\r", "");
-	 StringUtils::replaceAll(line, "\n", "");
-
-	 std::stringstream filePath;
-
-	 if (StringUtils::endsWith(line, boardSuffix) && boardFilePath.empty())
-	 {
-		 filePath << concatenateAbsolutePath(folderPath, line);
-		 boardFilePath = filePath.str();
-	 }
-
-	 if (StringUtils::endsWith(line, dllSuffix)) {
-		 filePath << concatenateAbsolutePath(folderPath, line);
-		 if (dllFiles[0].empty()) {
-			 dllFiles[0] = filePath.str();
-		 }
-		 else if (dllFiles[1].empty()) {
-			 dllFiles[1] = filePath.str();
-		 }
-	 }
-
-	 if (StringUtils::endsWith(line, attackSuffix)) {
-		 filePath << concatenateAbsolutePath(folderPath, line);
-		 if (attackFiles[0].empty()) {
-			 attackFiles[0] = filePath.str();
-		 }
-		 else if (attackFiles[1].empty()) {
-			 attackFiles[1] = filePath.str();
-		 }
-	 }
+		return true;
 	}
-	_pclose(fp);
-
-	 return true;
  }
 
 bool InputProcessor::validateInput()
 {
-	bool boardFileExists = validateBoardFileExists();
-	bool dllFilesExist = validateDllFilesExist();
+	bool boardFileExists = tryExtractBoardFileName();
+	bool dllFilesExist = tryExtractDllFileNames();
 	return boardFileExists && dllFilesExist;
 }
 
 
-bool InputProcessor::validateBoardFileExists()
+bool InputProcessor::tryExtractBoardFileName()
 {
+	std::vector<std::string> boardFiles = FileUtils::getFilesPathsBySuffix(folderPath, boardSuffix);
+	boardFilePath = boardFiles.size() > 0 ? boardFiles[0] : "";
+
 	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
 
 	if (boardFilePath.empty())
@@ -134,36 +90,30 @@ bool InputProcessor::validateBoardFileExists()
 	return !boardFilePath.empty();
 }
 
-bool InputProcessor::validateDllFilesExist()
+bool InputProcessor::tryExtractDllFileNames()
 {
+	std::vector<std::string> dllFiles = FileUtils::getFilesPathsBySuffix(folderPath, dllSuffix);
+	dllFilesPaths[0] = dllFiles.size() > 0 ? dllFiles[0] : "";
+	dllFilesPaths[1] = dllFiles.size() > 1 ? dllFiles[1] : "";
+
 	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
 
-	if (dllFiles[0].empty() || dllFiles[1].empty())
+	if (dllFilesPaths[0].empty() || dllFilesPaths[1].empty())
 	{
 		std::cout << "Missing an algorithm (dll) file looking in path: " << wrongPath << std::endl;
 	}
 
-	return !dllFiles[0].empty() && !dllFiles[1].empty();
-}
-
-std::string InputProcessor::getPlayerAAttackFilePath()
-{
-	return attackFiles[0];
-}
-
-std::string InputProcessor::getPlayerBAttackFilePath()
-{
-	return attackFiles[1].empty() ? attackFiles[0] : attackFiles[1];
+	return !dllFilesPaths[0].empty() && !dllFilesPaths[1].empty();
 }
 
 std::string InputProcessor::getPlayerADllFilePath()
 {
-	return dllFiles[0];
+	return dllFilesPaths[0];
 }
 
 std::string InputProcessor::getPlayerBDllFilePath()
 {
-	return dllFiles[1];
+	return dllFilesPaths[1];
 }
 
 std::string InputProcessor::getBoardFilePath()
@@ -181,16 +131,7 @@ bool InputProcessor::getQuiet()
 	return quiet;
 }
 
-std::string InputProcessor::concatenateAbsolutePath(const std::string& dirPath, const std::string& fileName)
+std::string InputProcessor::getFolderPath()
 {
-	if (dirPath.empty()) //no dir path is given
-	{
-		return fileName;
-	}
-	if (dirPath.back() == '\\' || dirPath.back() == '/') //dir path includes '\'
-	{
-		return dirPath + fileName;
-	}
-
-	return dirPath + "/" + fileName;
+	return folderPath;
 }

@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 	} else {
 	
 		InputProcessor inputProcessor(argc, argv);
-		if (!inputProcessor.tryExtractFileNames())
+		if (!inputProcessor.validateFolderPath())
 		{
 			return -1;
 		}

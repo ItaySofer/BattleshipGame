@@ -6,24 +6,7 @@ void InputProcessorTest::extractFileNamesCurrentDirectoryTest()
 	char** argv = new char*[1];
 	argv[0] = "test";
 	InputProcessor inputProcessor(argc, argv);
-	inputProcessor.tryExtractFileNames();
-	if (inputProcessor.getPlayerAAttackFilePath() != "a.attack")
-	{
-		std::cout << "extractFileNamesCurrentDirectoryTest Failed: Expected attack-a file is ";
-		std::cout << "a.attack";
-		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerAAttackFilePath();
-		std::cout << std::endl;
-	}
-
-	if (inputProcessor.getPlayerBAttackFilePath() != "b.attack")
-	{
-		std::cout << "extractFileNamesCurrentDirectoryTest Failed: Expected attack-b file is ";
-		std::cout << "b.attack";
-		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerBAttackFilePath();
-		std::cout << std::endl;
-	}
+	inputProcessor.tryExtractBoardFileName();
 
 	if (inputProcessor.getBoardFilePath() != "bad_board_0.sboard")
 	{
@@ -43,34 +26,16 @@ void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 	argv[0] = "test";
 	argv[1] = "C:/Users/Itay/Desktop/examples";
 	InputProcessor inputProcessor(argc, argv);
-	inputProcessor.tryExtractFileNames();
-	std::string expectedA = "C:/Users/Itay/Desktop/examples/a.attack";
-	if (inputProcessor.getPlayerAAttackFilePath() != expectedA)
-	{
-		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerA attack file is ";
-		std::cout << expectedA;
-		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerAAttackFilePath();
-		std::cout << std::endl;
-	}
-
-	std::string expectedB = "C:/Users/Itay/Desktop/examples/b.attack";
-	if (inputProcessor.getPlayerBAttackFilePath() != expectedB)
-	{
-		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerB attack file is ";
-		std::cout << expectedB;
-		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerBAttackFilePath();
-		std::cout << std::endl;
-	}
+	inputProcessor.tryExtractBoardFileName();
+	inputProcessor.tryExtractDllFileNames();
 
 	std::string expectedDllA = "C:/Users/Itay/Desktop/examples/a.dll";
 	if (inputProcessor.getPlayerADllFilePath() != expectedDllA)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerA dll file is ";
-		std::cout << expectedA;
+		std::cout << expectedDllA;
 		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerAAttackFilePath();
+		std::cout << inputProcessor.getPlayerADllFilePath();
 		std::cout << std::endl;
 	}
 
@@ -80,7 +45,7 @@ void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerB dll file is ";
 		std::cout << expectedDllB;
 		std::cout << " but was ";
-		std::cout << inputProcessor.getPlayerAAttackFilePath();
+		std::cout << inputProcessor.getPlayerBDllFilePath();
 		std::cout << std::endl;
 	}
 
@@ -103,7 +68,6 @@ void InputProcessorTest::isInputValidOtherDirectoryTest()
 	argv[0] = "test";
 	argv[1] = "C:\\Users\\Itay\\Desktop\\examples";
 	InputProcessor inputProcessor(argc, argv);
-	inputProcessor.tryExtractFileNames();
 
 	if (!inputProcessor.validateInput())
 	{
@@ -120,7 +84,6 @@ void InputProcessorTest::isInputValidRelativeDirectoryTest()
 	argv[0] = "test";
 	argv[1] = "relativePath";
 	InputProcessor inputProcessor(argc, argv);
-	inputProcessor.tryExtractFileNames();
 
 	if (!inputProcessor.validateInput())
 	{
@@ -141,7 +104,7 @@ void InputProcessorTest::WrongPathTest()
 	std::cout << std::endl << "[CHECK]" << std::endl;
 	std::cout << "WrongPathTest: Check next line contains wrong path error: " << std::endl;
 
-	inputProcessor.tryExtractFileNames();
+	inputProcessor.validateFolderPath();
 
 	std::cout << "[CHECK]" << std::endl << std::endl;
 	std::cout << std::endl;
@@ -158,7 +121,6 @@ void InputProcessorTest::invalidInputTest()
 	std::cout << std::endl<< "[CHECK]" << std::endl;
 	std::cout << "invalidInputTest: Check next lines contains all files missing errors: " << std::endl;
 
-	inputProcessor.tryExtractFileNames();
 	inputProcessor.validateInput();
 
 	std::cout << "[CHECK]" << std::endl;

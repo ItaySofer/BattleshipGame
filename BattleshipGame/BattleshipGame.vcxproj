@@ -126,6 +126,7 @@
     <ClCompile Include="BattleshipGameAlgoSmart.cpp" />
     <ClCompile Include="BattleshipGameManager.cpp" />
     <ClCompile Include="BattleshipGameManagerTest.cpp" />
+    <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
     <ClCompile Include="InputProcessorTest.cpp" />
     <ClCompile Include="StringUtils.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="BattleshipGameAlgoSmart.h" />
     <ClInclude Include="BattleshipGameManager.h" />
     <ClInclude Include="BattleshipGameManagerTest.h" />
+    <ClInclude Include="FileUtils.h" />
     <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputProcessor.h" />
     <ClInclude Include="InputProcessorTest.h" />

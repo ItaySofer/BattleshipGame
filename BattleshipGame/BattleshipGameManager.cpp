@@ -4,14 +4,14 @@
 
 bool BattleshipGameManager::initGame(){
 	
-	bool boardFileExists = inputProcessor.validateBoardFileExists();
+	bool boardFileExists = inputProcessor.tryExtractBoardFileName();
 
 	bool boardValid = false;
 	if (boardFileExists) {
 		boardValid = initBoard();
 	}
 
-	bool dllFilesExist = inputProcessor.validateDllFilesExist();
+	bool dllFilesExist = inputProcessor.tryExtractDllFileNames();
 
 	if (!boardFileExists || !boardValid || !dllFilesExist)
 	{
@@ -45,7 +45,7 @@ bool BattleshipGameManager::initPlayers()
 	//Send each player his board
 	playerA = new BattleshipGameAlgoFromFile();
 	sendBoard(true);//player A
-	if (!playerA->init(inputProcessor.getPlayerAAttackFilePath()))
+	if (!playerA->init(inputProcessor.getFolderPath()))
 	{
 		std::cout << "Algorithm initialization failed for dll: " << inputProcessor.getPlayerADllFilePath() << std::endl;
 		return false;
@@ -53,7 +53,7 @@ bool BattleshipGameManager::initPlayers()
 
 	playerB = new BattleshipGameAlgoFromFile();
 	sendBoard(false);//player B
-	if (!playerB->init(inputProcessor.getPlayerBAttackFilePath()))
+	if (!playerB->init(inputProcessor.getFolderPath()))
 	{
 		std::cout << "Algorithm initialization failed for dll: " << inputProcessor.getPlayerBDllFilePath() << std::endl;
 		return false;

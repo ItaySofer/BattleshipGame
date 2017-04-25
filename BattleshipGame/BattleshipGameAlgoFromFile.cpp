@@ -1,4 +1,5 @@
 #include "BattleshipGameAlgoFromFile.h"
+#include "FileUtils.h"
 
 BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
 	if (attackFile.is_open()) {
@@ -7,18 +8,27 @@ BattleshipGameAlgoFromFile:: ~BattleshipGameAlgoFromFile() {
 }
 
 
-void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int numRows, int numCols) {}
+void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int numRows, int numCols)
+{
+	playerNum = player;
+}
 
 bool BattleshipGameAlgoFromFile::init(const std::string& path)
 {
-	if (path.empty())
+	std::string attackFilePath;
+	std::vector<std::string> attackFiles = FileUtils::getFilesPathsBySuffix(path, attackSuffix);
+	if (attackFiles.size() > playerNum) {
+		attackFilePath = attackFiles[playerNum];
+	} else if (attackFilePath.size() > playerNum - 1)
 	{
-		return false;
+		attackFilePath = attackFiles[playerNum - 1];
 	} else
 	{
-		attackFile = std::ifstream(path);
-		return true;
+		return false;
 	}
+
+	attackFile = std::ifstream(attackFilePath);
+	return true;
 }
 
 std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
