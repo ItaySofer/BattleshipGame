@@ -122,7 +122,6 @@ void InputProcessorTest::invalidInputTest()
 	argv[1] = "C:\\Users\\Itay\\Desktop\\emptyFolder";
 	InputProcessor inputProcessor(argc, argv);
 
-
 	std::cout << std::endl<< "[CHECK]" << std::endl;
 	std::cout << "invalidInputTest: Check next lines contains all files missing errors: " << std::endl;
 

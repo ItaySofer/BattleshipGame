@@ -6,16 +6,16 @@
 #include "InputProcessorTest.h"
 #include "FileUtilsTest.h"
 
-#define TEST true
+#define TEST false
 
 int main(int argc, char* argv[])
 {
 	if (TEST) {
-//		StringUtilsTest::runTests();
+		StringUtilsTest::runTests();
 		FileUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoFromFileTest::runTests();
-//		BattleshipGameManagerTest::runTests();
+		BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
 	
