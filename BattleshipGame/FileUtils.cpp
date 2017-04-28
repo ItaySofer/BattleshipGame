@@ -31,7 +31,7 @@ std::vector<std::string> FileUtils::getFilesPathsBySuffix(const std::string& fol
 
 		if (StringUtils::endsWith(line, fileSuffix))
 		{
-			filePath << concatenateAbsolutePath(folderPath, line);
+			filePath << concatenatedirPathWithFileName(folderPath, line);
 			res.push_back(filePath.str());
 		}
 	}
@@ -40,7 +40,7 @@ std::vector<std::string> FileUtils::getFilesPathsBySuffix(const std::string& fol
 	return res;
 }
 
-std::string FileUtils::concatenateAbsolutePath(const std::string& folderPath, const std::string& fileName)
+std::string FileUtils::concatenatedirPathWithFileName(const std::string& folderPath, const std::string& fileName)
 {
 	if (folderPath.empty()) //no dir path is given
 	{
@@ -52,4 +52,16 @@ std::string FileUtils::concatenateAbsolutePath(const std::string& folderPath, co
 	}
 
 	return folderPath + "/" + fileName;
+}
+
+std::string FileUtils::convertToAbsolutePath(const std::string& path)
+{
+	char fullPath[_MAX_PATH];
+	if (_fullpath(fullPath, path.c_str(), _MAX_PATH) != NULL)
+	{
+		return fullPath;
+	} else
+	{
+		return path;
+	}
 }

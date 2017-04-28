@@ -4,16 +4,18 @@
 #include "StringUtilsTest.h"
 #include "BattleshipGameAlgoFromFileTest.h"
 #include "InputProcessorTest.h"
+#include "FileUtilsTest.h"
 
-#define TEST false
+#define TEST true
 
 int main(int argc, char* argv[])
 {
 	if (TEST) {
-		StringUtilsTest::runTests();
+//		StringUtilsTest::runTests();
+		FileUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoFromFileTest::runTests();
-		BattleshipGameManagerTest::runTests();
+//		BattleshipGameManagerTest::runTests();
 		//brake to see test results;
 	} else {
 	

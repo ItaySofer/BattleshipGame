@@ -6,12 +6,15 @@ void InputProcessorTest::extractFileNamesCurrentDirectoryTest()
 	char** argv = new char*[1];
 	argv[0] = "test";
 	InputProcessor inputProcessor(argc, argv);
+	inputProcessor.validateFolderPath();
 	inputProcessor.tryExtractBoardFileName();
 
-	if (inputProcessor.getBoardFilePath() != "bad_board_0.sboard")
+	std::string expected = "C:\\Users\\Itay\\documents\\visual studio 2015\\Projects\\BattleshipGame\\BattleshipGame/bad_board_0.sboard";
+
+	if (inputProcessor.getBoardFilePath() != expected)
 	{
 		std::cout << "extractFileNamesCurrentDirectoryTest Failed: Expected sboard file is ";
-		std::cout << "board.sboard";
+		std::cout << expected;
 		std::cout << " but was ";
 		std::cout << inputProcessor.getBoardFilePath();
 		std::cout << std::endl;
@@ -26,10 +29,11 @@ void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 	argv[0] = "test";
 	argv[1] = "C:/Users/Itay/Desktop/examples";
 	InputProcessor inputProcessor(argc, argv);
+	inputProcessor.validateFolderPath();
 	inputProcessor.tryExtractBoardFileName();
 	inputProcessor.tryExtractDllFileNames();
 
-	std::string expectedDllA = "C:/Users/Itay/Desktop/examples/a.dll";
+	std::string expectedDllA = "C:\\Users\\Itay\\Desktop\\examples/a.dll";
 	if (inputProcessor.getPlayerADllFilePath() != expectedDllA)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerA dll file is ";
@@ -39,7 +43,7 @@ void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 		std::cout << std::endl;
 	}
 
-	std::string expectedDllB = "C:/Users/Itay/Desktop/examples/b.dll";
+	std::string expectedDllB = "C:\\Users\\Itay\\Desktop\\examples/b.dll";
 	if (inputProcessor.getPlayerBDllFilePath() != expectedDllB)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected playerB dll file is ";
@@ -49,7 +53,7 @@ void InputProcessorTest::extractFileNamesOtherDirectoryTest()
 		std::cout << std::endl;
 	}
 
-	std::string expectedBoard = "C:/Users/Itay/Desktop/examples/bad_board_0.sboard";
+	std::string expectedBoard = "C:\\Users\\Itay\\Desktop\\examples/bad_board_0.sboard";
 	if (inputProcessor.getBoardFilePath() != expectedBoard)
 	{
 		std::cout << "extractFileNamesOtherDirectoryTest Failed: Expected sboard file is ";
@@ -117,6 +121,7 @@ void InputProcessorTest::invalidInputTest()
 	argv[0] = "test";
 	argv[1] = "C:\\Users\\Itay\\Desktop\\emptyFolder";
 	InputProcessor inputProcessor(argc, argv);
+
 
 	std::cout << std::endl<< "[CHECK]" << std::endl;
 	std::cout << "invalidInputTest: Check next lines contains all files missing errors: " << std::endl;
