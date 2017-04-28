@@ -32,7 +32,7 @@ bool BattleshipGameAlgoFromFile::init(const std::string& path)
 		StringUtils::split(line, ",", pos);
 
 		if (isValidAttackMove(pos)) {
-			attackQueue.push(std::pair<int, int>(std::stoi(pos[0]) - 1, std::stoi(pos[1]) - 1));
+			attackQueue.push(std::pair<int, int>(std::stoi(pos[0]), std::stoi(pos[1])));
 		}
 	}
 
