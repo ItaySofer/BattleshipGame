@@ -56,3 +56,8 @@ void BattleshipGameAlgoBase::setBoard(int player, const char** board, int numRow
 bool BattleshipGameAlgoBase::init(const std::string& path) { return true;}
 
 void BattleshipGameAlgoBase::notifyOnAttackResult(int player, int row, int col, AttackResult result) {}
+
+void BattleshipGameAlgoBase::adjustPosStartFrom1(std::pair<int, int>& pos) {
+	pos.first++;//adjust to one-based range
+	pos.second++;//adjust to one-based range
+}
