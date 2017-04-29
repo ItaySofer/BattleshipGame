@@ -6,8 +6,8 @@
 class BattleshipGameAlgoSmart : public BattleshipGameAlgoBase {
 
 public:
-	BattleshipGameAlgoSmart();
-	~BattleshipGameAlgoSmart() override;
+	//BattleshipGameAlgoSmart();
+	//~BattleshipGameAlgoSmart() override;
 
 	std::pair<int, int> attack() override; // ask player for his move
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
