@@ -65,7 +65,6 @@ private:
 	bool isValidShipBottom(int x, int y);//check if a valid ship starts at (x,y) position to the bottom
 	int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
-	int getShipColor(char c);
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex);

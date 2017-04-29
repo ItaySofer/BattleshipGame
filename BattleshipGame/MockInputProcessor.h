@@ -9,7 +9,7 @@ public:
 
 	MockInputProcessor(int argc, char* argv[]) : InputProcessor(argc, argv), staticBoardFilePath(argv[1]) {};
 
-	std::string getBoardFilePath() override {
+	std::string getBoardFilePath() const override {
 		return staticBoardFilePath;
 	}
 };
