@@ -4,7 +4,6 @@
 
 InputProcessor::InputProcessor(int argc, char* argv[])
 {
-
 	std::string arg1 = argc > 1 ? argv[1] : "";
 	std::string arg2 = argc > 2 ? argv[2] : "";
 	std::string arg3 = argc > 3 ? argv[3] : "";
@@ -13,43 +12,32 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 	if (arg1.find("-delay") == std::string::npos && arg1.find("-quiet") == std::string::npos)
 	{
 		folderPath = arg1;
-	} else
+	} 
+
+	std::vector<std::string> args = { arg1, arg2, arg3 };
+	for (auto arg : args)
 	{
-		find = arg1.find("-delay");
+		find = arg.find("-delay");
 		if (find != std::string::npos)
 		{
-			delayMs = std::stoi(arg1.substr(find + 6));
+			updateDelayParamIfNeeded(arg, find);
 		}
 
-		find = arg1.find("-quiet");
+		find = arg.find("-quiet");
 		if (find != std::string::npos)
 		{
 			quiet = true;
 		}
 	}
+}
 
-	find = arg2.find("-delay");
-	if (find != std::string::npos)
+void InputProcessor::updateDelayParamIfNeeded(const std::string& arg, size_t find)
+{
+	std::string str = arg.substr(find + 6);
+	StringUtils::replaceAll(str, " ", "");
+	if (StringUtils::isNumber(str))
 	{
-		delayMs = std::stoi(arg2.substr(find + 6));
-	}
-
-	find = arg2.find("-quiet");
-	if (find != std::string::npos)
-	{
-		quiet = true;
-	}
-
-	find = arg3.find("-delay");
-	if (find != std::string::npos)
-	{
-		delayMs = std::stoi(arg3.substr(find + 6));
-	}
-
-	find = arg3.find("-quiet");
-	if (find != std::string::npos)
-	{
-		quiet = true;
+		delayMs = std::stoi(str);
 	}
 }
 
