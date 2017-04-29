@@ -329,6 +329,7 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 				break;
 			}
 			case AttackResult::Sink: {
+				attackHitPosVec.push_back(attackedPos);
 				removeShipsSurroundingPos();
 				resetAttack();
 				break;
