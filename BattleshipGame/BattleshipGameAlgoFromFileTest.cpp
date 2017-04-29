@@ -7,11 +7,11 @@ void BattleshipGameAlgoFromFileTest::attackTest()
 	player.init("");
 	std::pair<int, int> emptyAttack(-1, -1);
 
-	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
-		std::pair<int, int>(1, 2) , 
+	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(1, 2) ,
 		std::pair<int, int>(2, 3) ,
 		std::pair<int, int>(3, 4) ,
-		std::pair<int, int>(1, 3) };
+		std::pair<int, int>(4, 5) ,
+		std::pair<int, int>(2, 4) };
 	std::vector<std::pair<int, int>> actual;
 
 	std::pair<int, int> attack = player.attack();
@@ -41,11 +41,11 @@ void BattleshipGameAlgoFromFileTest::attackTestFromOtherFolder()
 	player.init("C:/Users/Itay/Desktop/examples");
 	std::pair<int, int> emptyAttack(-1, -1);
 
-	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
-		std::pair<int, int>(1, 2) ,
+	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(1, 2) ,
 		std::pair<int, int>(2, 3) ,
 		std::pair<int, int>(3, 4) ,
-		std::pair<int, int>(1, 3) };
+		std::pair<int, int>(4, 5) ,
+		std::pair<int, int>(2, 4) };
 	std::vector<std::pair<int, int>> actual;
 
 	std::pair<int, int> attack = player.attack();
@@ -80,7 +80,7 @@ void BattleshipGameAlgoFromFileTest::attackTestFromExamples()
 	std::pair<int, int> attack = player.attack();
 	while (attack != emptyAttack)
 	{
-		if (attack.first >= NUM_ROWS || attack.first < 0 || attack.second >= NUM_COLS || attack.second < 0)
+		if (attack.first > NUM_ROWS || attack.first <= 0 || attack.second > NUM_COLS || attack.second <= 0)
 		{
 			std::cout << "attackTestFromExamples Failed: invalid attack returned - ";
 			std::cout << attack << std::endl;		
@@ -99,11 +99,11 @@ void BattleshipGameAlgoFromFileTest::sameAttackFile()
 	player.init("C:/Users/Itay/Desktop/examples");
 	std::pair<int, int> emptyAttack(-1, -1);
 
-	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(0, 1) ,
-		std::pair<int, int>(1, 2) ,
+	std::vector<std::pair<int, int>> expected = { std::pair<int, int>(1, 2) ,
 		std::pair<int, int>(2, 3) ,
 		std::pair<int, int>(3, 4) ,
-		std::pair<int, int>(1, 3) };
+		std::pair<int, int>(4, 5) ,
+		std::pair<int, int>(2, 4) };
 	std::vector<std::pair<int, int>> actual;
 
 	std::pair<int, int> attack = player.attack();

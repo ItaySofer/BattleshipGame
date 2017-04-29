@@ -8,6 +8,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 		if (size > 0) {
 			int pos = rand() % size;
 			res = attackPosVec[pos];
+			adjustPosStartFrom1(res);
 			attackPosVec.erase(attackPosVec.begin() + pos);
 		}
 		return res;
@@ -122,6 +123,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::up;
 			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
 			return currPos;
 		}
 	}
@@ -143,6 +145,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::down;
 			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
 			return currPos;
 		}
 	}
@@ -187,6 +190,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::left;
 			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
 			return currPos;
 		}
 	}
@@ -207,6 +211,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::right;
 			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
 			return currPos;
 		}
 	}
@@ -252,6 +257,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::resetAttack() {
 }
 
 void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col, AttackResult result) {
+	row--;//adjust back to zero-based range
+	col--;//adjust back to zero-based range
 	std::pair<int, int> attackedPos = std::make_pair(row, col);
 	if (player == myPlayerNumber) {
 		switch (result) {

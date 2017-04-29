@@ -4,6 +4,7 @@
 #include "StringUtilsTest.h"
 #include "BattleshipGameAlgoFromFileTest.h"
 #include "InputProcessorTest.h"
+#include "FileUtilsTest.h"
 
 #define TEST false
 
@@ -11,6 +12,7 @@ int main(int argc, char* argv[])
 {
 	if (TEST) {
 		StringUtilsTest::runTests();
+		FileUtilsTest::runTests();
 		InputProcessorTest::runTests();
 		BattleshipGameAlgoFromFileTest::runTests();
 		BattleshipGameManagerTest::runTests();

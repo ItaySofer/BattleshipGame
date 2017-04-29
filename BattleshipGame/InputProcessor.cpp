@@ -63,12 +63,14 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 	}
 	else
 	{
+		folderPath = FileUtils::convertToAbsolutePath(folderPath);
 		return true;
 	}
  }
 
 bool InputProcessor::validateInput()
 {
+	validateFolderPath();
 	bool boardFileExists = tryExtractBoardFileName();
 	bool dllFilesExist = tryExtractDllFileNames();
 	return boardFileExists && dllFilesExist;

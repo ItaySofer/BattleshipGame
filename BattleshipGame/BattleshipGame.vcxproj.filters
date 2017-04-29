@@ -74,6 +74,9 @@
     <ClCompile Include="FileUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileUtilsTest.cpp">
+      <Filter>Tests\Test Classes\Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameManager.h">
@@ -126,6 +129,9 @@
     </ClInclude>
     <ClInclude Include="FileUtils.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileUtilsTest.h">
+      <Filter>Tests\Test Classes\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
