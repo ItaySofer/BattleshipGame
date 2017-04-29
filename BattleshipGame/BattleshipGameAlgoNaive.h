@@ -12,9 +12,6 @@
 class BattleshipGameAlgoNaive : public BattleshipGameAlgoBase {
 
 public:
-	//BattleshipGameAlgoNaive();
-	//~BattleshipGameAlgoNaive() override;
-
 	std::pair<int, int> attack() override; // ask player for his move
 };
 
