@@ -15,7 +15,6 @@ class BattleshipGameAlgoFromFile: public IBattleshipGameAlgo {
 	std::queue<std::pair<int, int>> attackQueue;
 
 public:
-	~BattleshipGameAlgoFromFile() = default;
 
 	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board
 	bool init(const std::string& path) override;

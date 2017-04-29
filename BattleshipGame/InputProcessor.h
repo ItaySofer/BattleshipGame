@@ -18,7 +18,6 @@ class InputProcessor
 	
 public:
 	InputProcessor(int argc, char* argv[]);
-	~InputProcessor() = default;
 
 	bool validateFolderPath();
 	bool validateInput(); //Validates files exist.
