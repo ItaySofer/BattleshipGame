@@ -70,10 +70,10 @@ private:
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	int getSinkScoreByChar(char c);
-	bool isActivePlayer(int playerIndex);
+	bool isActivePlayer(int playerIndex) const;
 	static bool isLonely(const BattleBoard& gameBoard, int row, int col);
 	int handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col);
-	int numActivePlayers();
+	int numActivePlayers() const;
 	void graphicPrintBoard(const BattleBoard& gameBoard)const;
 	static void gotoxy(int x, int y);
 	static void setTextColor(int color);

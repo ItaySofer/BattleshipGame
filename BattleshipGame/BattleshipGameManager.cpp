@@ -439,7 +439,7 @@ int BattleshipGameManager::getSinkScoreByChar(char c) {
 	return 0;
 }
 
-bool BattleshipGameManager::isActivePlayer(int playerIndex) {
+bool BattleshipGameManager::isActivePlayer(int playerIndex) const{
 	return numShips[playerIndex] > 0;
 }
 
@@ -529,7 +529,7 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 	}
 }
 
-int BattleshipGameManager::numActivePlayers() {
+int BattleshipGameManager::numActivePlayers() const{
 	int count = 0;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (isActivePlayer(i)) {
