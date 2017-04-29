@@ -23,7 +23,7 @@ public:
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
 
 private:
-	bool isValidAttackMove(std::vector<std::string> pos);
+	bool isValidAttackMove(const std::vector<std::string> pos) const;
 	const std::string attackSuffix = ".attack";
 };
 

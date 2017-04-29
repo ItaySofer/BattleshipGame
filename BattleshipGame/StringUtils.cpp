@@ -14,7 +14,7 @@ void StringUtils::replaceAll(std::string& s, const std::string& search, const st
 	}
 }
 
-void StringUtils::split(std::string& s, const std::string delimiter, std::vector<std::string>& result) {
+void StringUtils::split(std::string s, const std::string& delimiter, std::vector<std::string>& result) {
 	size_t pos = 0;
 	std::string token;
 	while ((pos = s.find(delimiter)) != std::string::npos) {
@@ -43,7 +43,7 @@ bool StringUtils::isNumber(const std::string& s)
 	return true;
 }
 
-bool StringUtils::endsWith(std::string value, std::string ending)
+bool StringUtils::endsWith(const std::string& value, const std::string& ending)
 {
 	if (ending.size() > value.size())
 	{
