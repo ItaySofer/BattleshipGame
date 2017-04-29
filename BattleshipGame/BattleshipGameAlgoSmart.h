@@ -10,17 +10,6 @@ public:
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
 
 private:
-	std::pair<int, int> attackUp(bool done);
-	std::pair<int, int> attackDown(bool done);
-	std::pair<int, int> attackUpDown(bool done);
-	std::pair<int, int> attackDownUp(bool done);
-	std::pair<int, int> attackLeft(bool done);
-	std::pair<int, int> attackRight(bool done);
-	std::pair<int, int> attackLeftRight(bool done);
-	std::pair<int, int> attackRightLeft(bool done);
-	void resetAttack();
-	void removeShipsSurroundingPos();
-	void removePosFromAttackPosVec(const std::pair<int, int>& attackedPos);
 
 	enum class Direction {
 		vertical = 0,
@@ -31,6 +20,20 @@ private:
 		right,
 		none
 	};
+
+	std::pair<int, int> attackUp(bool done);
+	std::pair<int, int> attackDown(bool done);
+	std::pair<int, int> attackUpDown(bool done);
+	std::pair<int, int> attackDownUp(bool done);
+	std::pair<int, int> attackLeft(bool done);
+	std::pair<int, int> attackRight(bool done);
+	std::pair<int, int> attackLeftRight(bool done);
+	std::pair<int, int> attackRightLeft(bool done);
+	std::pair<int, int> attackBothDirections(std::pair<int, int>(BattleshipGameAlgoSmart::*firstAttackDirection)(bool), std::pair<int, int>(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir);
+	void resetAttack();
+	void removeShipsSurroundingPos();
+	void removePosFromAttackPosVec(const std::pair<int, int>& attackedPos);
+	std::pair<int, int> handlDoneDirection(bool done);
 
 	std::vector<std::pair<int, int>> attackHitPosVec;
 

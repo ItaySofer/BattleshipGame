@@ -113,6 +113,17 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 	}
 }
 
+std::pair<int, int> BattleshipGameAlgoSmart::handlDoneDirection(bool done)
+{
+	if (done) {
+		resetAttack();
+		return attack();
+	}
+	else {
+		return (std::make_pair(-1, -1));
+	}
+}
+
 std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
 	//Check if can attack up
 	std::pair<int, int> currPos = *(attackHitPosVec.begin());
@@ -127,13 +138,7 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
 		}
 	}
 	//In case we got here - can't attack up
-	if (done) {
-		resetAttack();
-		return attack();
-	}
-	else {
-		return (std::make_pair(-1, -1));
-	}
+	return handlDoneDirection(done);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
@@ -150,36 +155,16 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
 		}
 	}
 	//In case we got here - can't attack down
-	if (done) {
-		resetAttack();
-		return attack();
-	}
-	else {
-		return (std::make_pair(-1, -1));
-	}
+	return handlDoneDirection(done);
+
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackUpDown(bool done) {
-	//Check if can attack up
-	std::pair<int, int> currPos = attackUp(false);
-	if (currPos != std::make_pair(-1, -1)) {
-		return currPos;
-	}
-
-	//In case we got here - can't attack up - try attack down
-	return attackDown(done);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackUp, &BattleshipGameAlgoSmart::attackDown, done, Direction::down);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackDownUp(bool done) {
-	//Check if can attack down
-	std::pair<int, int> currPos = attackDown(false);
-	if (currPos != std::make_pair(-1, -1)) {
-		return currPos;
-	}
-
-	//In case we got here - can't attack down - try attack up
-	direction = Direction::up;
-	return attackUp(done);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackDown, &BattleshipGameAlgoSmart::attackUp, done, Direction::up);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
@@ -195,13 +180,9 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
 			return currPos;
 		}
 	}
-	if (done) {
-		resetAttack();
-		return attack();
-	}
-	else {
-		return (std::make_pair(-1, -1));
-	}
+	
+	//In case we got here - can't attack left
+	return handlDoneDirection(done);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
@@ -218,38 +199,31 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
 		}
 	}
 	//In case we got here - can't attack right
-	if (done) {
-		resetAttack();
-		return attack();
-	}
-	else {
-		return (std::make_pair(-1, -1));
-	}
+	return handlDoneDirection(done);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackLeftRight(bool done) {
-	//Check if can attack left
-	std::pair<int, int> currPos = attackLeft(false);
-	if (currPos != std::make_pair(-1, -1)) {
-		return currPos;
-	}
-
-	//In case we got here - can't attack left - try attack right
-	direction = Direction::right;
-	return attackRight(done);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackLeft, &BattleshipGameAlgoSmart::attackRight, done, Direction::right);
 }
 
 std::pair<int, int> BattleshipGameAlgoSmart::attackRightLeft(bool done) {
-	//Check if can attack right
-	std::pair<int, int> currPos = attackRight(false);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackRight, &BattleshipGameAlgoSmart::attackLeft, done, Direction::left);
+}
+
+std::pair<int, int> BattleshipGameAlgoSmart::attackBothDirections(std::pair<int, int>(BattleshipGameAlgoSmart::*firstAttackDirection)(bool),
+	std::pair<int, int>(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir)
+{
+	//Check if can attack first direction
+	std::pair<int, int> currPos = (this->*firstAttackDirection)(false);
 	if (currPos != std::make_pair(-1, -1)) {
 		return currPos;
 	}
 
-	//In case we got here - can't attack right - try attack left
-	direction = Direction::left;
-	return attackLeft(done);
+	//In case we got here - can't attack first direction - try second direction
+	direction = dir;
+	return (this->*secondAttackDirection)(done);
 }
+
 
 void BattleshipGameAlgoSmart::resetAttack() {
 	attackHitPosVec.clear();
