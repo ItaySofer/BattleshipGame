@@ -18,19 +18,18 @@ class InputProcessor
 	
 public:
 	InputProcessor(int argc, char* argv[]);
-	~InputProcessor() = default;
 
 	bool validateFolderPath();
 	bool validateInput(); //Validates files exist.
 	bool tryExtractBoardFileName();
 	bool tryExtractDllFileNames();
 
-	std::string getPlayerADllFilePath();
-	std::string getPlayerBDllFilePath();
-	virtual std::string getBoardFilePath();
-	int getDelayMs();
-	bool getQuiet();
-	std::string getFolderPath();
+	std::string getPlayerADllFilePath() const;
+	std::string getPlayerBDllFilePath() const;
+	virtual std::string getBoardFilePath() const;
+	int getDelayMs() const;
+	bool getQuiet() const;
+	std::string getFolderPath() const;
 
 	friend class InputProcessorTest;
 

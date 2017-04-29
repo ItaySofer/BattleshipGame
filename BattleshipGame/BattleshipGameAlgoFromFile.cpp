@@ -56,8 +56,7 @@ std::pair<int, int> BattleshipGameAlgoFromFile::attack() {
 
 void BattleshipGameAlgoFromFile::notifyOnAttackResult(int player, int row, int col, AttackResult result) {}
 
-
-bool BattleshipGameAlgoFromFile::isValidAttackMove(std::vector<std::string> pos)
+bool BattleshipGameAlgoFromFile::isValidAttackMove(const std::vector<std::string> pos) const
 {
 	if (pos.size() != 2) {
 		return false;

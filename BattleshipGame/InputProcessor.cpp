@@ -76,7 +76,6 @@ bool InputProcessor::validateInput()
 	return boardFileExists && dllFilesExist;
 }
 
-
 bool InputProcessor::tryExtractBoardFileName()
 {
 	std::vector<std::string> boardFiles = FileUtils::getFilesPathsBySuffix(folderPath, boardSuffix);
@@ -108,32 +107,32 @@ bool InputProcessor::tryExtractDllFileNames()
 	return !dllFilesPaths[0].empty() && !dllFilesPaths[1].empty();
 }
 
-std::string InputProcessor::getPlayerADllFilePath()
+std::string InputProcessor::getPlayerADllFilePath() const
 {
 	return dllFilesPaths[0];
 }
 
-std::string InputProcessor::getPlayerBDllFilePath()
+std::string InputProcessor::getPlayerBDllFilePath() const
 {
 	return dllFilesPaths[1];
 }
 
-std::string InputProcessor::getBoardFilePath()
+std::string InputProcessor::getBoardFilePath() const
 {
 	return boardFilePath;
 }
 
-int InputProcessor::getDelayMs()
+int InputProcessor::getDelayMs() const
 {
 	return delayMs;
 }
 
-bool InputProcessor::getQuiet()
+bool InputProcessor::getQuiet() const
 {
 	return quiet;
 }
 
-std::string InputProcessor::getFolderPath()
+std::string InputProcessor::getFolderPath() const
 {
 	return folderPath;
 }

@@ -15,7 +15,6 @@ class BattleshipGameAlgoFromFile: public IBattleshipGameAlgo {
 	std::queue<std::pair<int, int>> attackQueue;
 
 public:
-	~BattleshipGameAlgoFromFile() = default;
 
 	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board
 	bool init(const std::string& path) override;
@@ -23,7 +22,7 @@ public:
 	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
 
 private:
-	bool isValidAttackMove(std::vector<std::string> pos);
+	bool isValidAttackMove(const std::vector<std::string> pos) const;
 	const std::string attackSuffix = ".attack";
 };
 
