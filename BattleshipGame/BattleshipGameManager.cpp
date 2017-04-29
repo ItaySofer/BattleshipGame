@@ -127,38 +127,38 @@ void BattleshipGameManager::playGame() {
 					break;
 				}
 				goSetPrintSleep(rowIndexDown, currAttack.second, SINK_COLOR, '@', -1);
-				rowIndexDown += 1;
+				rowIndexDown++;
 			}
 			while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][currAttack.second] != ' ') {
 				if (gameBoard.matrix[rowIndexUp][currAttack.second] != '*') {
 					break;
 				}
 				goSetPrintSleep(rowIndexUp, currAttack.second, SINK_COLOR, '@', -1);
-				rowIndexUp -= 1;
+				rowIndexUp--;
 			}
 			while (colIndexLeft >= 0 && gameBoard.matrix[currAttack.first][colIndexLeft] != ' ') {
 				if (gameBoard.matrix[currAttack.first][colIndexLeft] != '*') {
 					break;
 				}
 				goSetPrintSleep(currAttack.first, colIndexLeft, SINK_COLOR, '@', -1);
-				colIndexLeft -= 1;
+				colIndexLeft--;
 			}
 			while (colIndexRight < NUM_COLS && gameBoard.matrix[currAttack.first][colIndexRight] != ' ') {
 				if (gameBoard.matrix[currAttack.first][colIndexRight] != '*') {
 					break;
 				}
 				goSetPrintSleep(currAttack.first, colIndexRight, SINK_COLOR, '@', -1);
-				colIndexRight += 1;
+				colIndexRight++;
 			}
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerA->notifyOnAttackResult(currPlayer, 1+currAttack.first, 1 + currAttack.second, AttackResult::Sink);
+			playerB->notifyOnAttackResult(currPlayer, 1 + currAttack.first, 1 + currAttack.second, AttackResult::Sink);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
 			goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerA->notifyOnAttackResult(currPlayer, 1 + currAttack.first, 1 + currAttack.second, AttackResult::Hit);
+			playerB->notifyOnAttackResult(currPlayer, 1 + currAttack.first, 1 + currAttack.second, AttackResult::Hit);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
@@ -175,8 +175,8 @@ void BattleshipGameManager::playGame() {
 					goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
 				}
 			}
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerA->notifyOnAttackResult(currPlayer, 1 + currAttack.first, 1 + currAttack.second, AttackResult::Miss);
+			playerB->notifyOnAttackResult(currPlayer, 1 + currAttack.first, 1 + currAttack.second, AttackResult::Miss);
 			currPlayer += doneAttackingPlayers > 0 ? 0 : 1;
 		}
 	}
@@ -446,25 +446,25 @@ bool BattleshipGameManager::isLonely(BattleBoard& gameBoard, int row, int col) {
 		if (gameBoard.matrix[rowIndexDown][col] != '*') {
 			return false;
 		}
-		rowIndexDown += 1;
+		rowIndexDown++;
 	}
 	while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][col] != ' ') {
 		if (gameBoard.matrix[rowIndexUp][col] != '*') {
 			return false;
 		}
-		rowIndexUp -= 1;
+		rowIndexUp--;
 	}
 	while (colIndexLeft >= 0 && gameBoard.matrix[row][colIndexLeft] != ' ') {
 		if (gameBoard.matrix[row][colIndexLeft] != '*') {
 			return false;
 		}
-		colIndexLeft -= 1;
+		colIndexLeft--;
 	}
 	while (colIndexRight < NUM_COLS && gameBoard.matrix[row][colIndexRight] != ' ') {
 		if (gameBoard.matrix[row][colIndexRight] != '*') {
 			return false;
 		}
-		colIndexRight += 1;
+		colIndexRight++;
 	}
 	return true;
 }
@@ -591,7 +591,7 @@ void BattleshipGameManager::graphicPrintBoard(BattleBoard& gameBoard) {
 void BattleshipGameManager::gotoxy(int x, int y)
 {
 	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD c = { x, y };
+	COORD c = { (short)x, (short)y };
 	SetConsoleCursorPosition(h, c);
 }
 
@@ -609,6 +609,7 @@ void BattleshipGameManager::ShowConsoleCursor(bool showFlag) {
 }
 
 void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char output, int player) {
+	// below constants are used only for this function, thus MACROS definitions are redundant
 	if (player >= 0) {
 		gotoxy(48, 3);
 		setTextColor(MISS_COLOR);
@@ -616,7 +617,7 @@ void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char ou
 	}
 	else {
 		gotoxy(48, 3);
-		std::cout << "                       ";
+		std::cout << "                         ";
 	}
 	gotoxy(5 + 4*col, row+2);
 	setTextColor(color);
