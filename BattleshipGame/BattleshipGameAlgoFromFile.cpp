@@ -22,6 +22,9 @@ bool BattleshipGameAlgoFromFile::init(const std::string& path)
 	}
 
 	std::ifstream attackFile(attackFilePath);
+	if (!attackFile.is_open()) {
+		return false;
+	}
 	std::string line;
 	while (std::getline(attackFile, line))
 	{

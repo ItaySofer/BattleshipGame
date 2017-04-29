@@ -24,6 +24,7 @@ public:
 		argumentParsingTest6();
 		argumentParsingTest7();
 		argumentParsingTest8();
+		argumentParsingWrongDelayArgumentTest();
 	}
 
 private:
@@ -41,6 +42,7 @@ private:
 	static void argumentParsingTest6();
 	static void argumentParsingTest7();
 	static void argumentParsingTest8();
+	static void argumentParsingWrongDelayArgumentTest();
 };
 
 #endif

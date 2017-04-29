@@ -15,6 +15,9 @@ class InputProcessor
 	int delayMs = DEFAULT_DELAY_MS;
 	bool quiet = false;
 
+	const std::string boardSuffix = ".sboard";
+	const std::string dllSuffix = ".dll";
+
 	
 public:
 	InputProcessor(int argc, char* argv[]);
@@ -34,8 +37,8 @@ public:
 	friend class InputProcessorTest;
 
 private:
-	const std::string boardSuffix = ".sboard";
-	const std::string dllSuffix = ".dll";
+	void updateDelayParamIfNeeded(const std::string& arg, size_t find);
+
 
 };
 

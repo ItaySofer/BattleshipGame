@@ -433,3 +433,40 @@ void InputProcessorTest::argumentParsingTest8()
 	}
 	std::cout << std::endl;
 }
+
+void InputProcessorTest::argumentParsingWrongDelayArgumentTest()
+{
+	int argc = 2;
+	char** argv = new char*[2];
+	argv[0] = "test";
+	argv[1] = "-delay=500";
+	InputProcessor inputProcessor(argc, argv);
+
+	if (inputProcessor.folderPath != "")
+	{
+		std::cout << "argumentParsingWrongDelayArgumentTest Failed: Expected folderPath is ";
+		std::cout << "\"\"";
+		std::cout << " but was ";
+		std::cout << inputProcessor.folderPath;
+		std::cout << std::endl;
+	}
+
+	if (inputProcessor.getDelayMs() != DEFAULT_DELAY_MS)
+	{
+		std::cout << "argumentParsingWrongDelayArgumentTest Failed: Expected delayMs is ";
+		std::cout << DEFAULT_DELAY_MS;
+		std::cout << " but was ";
+		std::cout << inputProcessor.getDelayMs();
+		std::cout << std::endl;
+	}
+
+	if (inputProcessor.getQuiet() != false)
+	{
+		std::cout << "argumentParsingWrongDelayArgumentTest Failed: Expected quiet is ";
+		std::cout << "false";
+		std::cout << " but was ";
+		std::cout << inputProcessor.getQuiet();
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+}
