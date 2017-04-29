@@ -18,7 +18,9 @@ private:
 	std::pair<int, int> attackRight(bool done);
 	std::pair<int, int> attackLeftRight(bool done);
 	std::pair<int, int> attackRightLeft(bool done);
-	std::pair<int, int> resetAttack();
+	void resetAttack();
+	void removeShipsSurroundingPos();
+	void removePosFromAttackPosVec(const std::pair<int, int>& attackedPos);
 
 	enum class Direction {
 		vertical = 0,

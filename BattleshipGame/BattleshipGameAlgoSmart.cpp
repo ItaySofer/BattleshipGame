@@ -59,7 +59,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 					}
 				}
 				//In case we got here - can't attack up&down&left&right
-				return resetAttack();
+				resetAttack();
+				return attack();
 				break;
 			}
 
@@ -129,7 +130,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
 	}
 	//In case we got here - can't attack up
 	if (done) {
-		return resetAttack();
+		resetAttack();
+		return attack();
 	}
 	else {
 		return (std::make_pair(-1, -1));
@@ -151,7 +153,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
 	}
 	//In case we got here - can't attack down
 	if (done) {
-		return resetAttack();
+		resetAttack();
+		return attack();
 	}
 	else {
 		return (std::make_pair(-1, -1));
@@ -195,7 +198,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
 		}
 	}
 	if (done) {
-		return resetAttack();
+		resetAttack();
+		return attack();
 	}
 	else {
 		return (std::make_pair(-1, -1));
@@ -217,7 +221,8 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
 	}
 	//In case we got here - can't attack right
 	if (done) {
-		return resetAttack();
+		resetAttack();
+		return attack();
 	}
 	else {
 		return (std::make_pair(-1, -1));
@@ -248,12 +253,35 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackRightLeft(bool done) {
 	return attackLeft(done);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::resetAttack() {
+void BattleshipGameAlgoSmart::resetAttack() {
 	attackHitPosVec.clear();
 	direction = Direction::none;
 	lastAttackedDirection = Direction::none;
 	checkDirections = { Direction::up, Direction::down, Direction::left, Direction::right };
-	return attack();
+}
+
+void BattleshipGameAlgoSmart::removeShipsSurroundingPos()
+{
+	for (auto pos : attackHitPosVec)
+	{
+		std::vector<std::pair<int, int>> surroundings = {	std::make_pair(pos.first - 1, pos.second),
+															std::make_pair(pos.first + 1, pos.second),
+															std::make_pair(pos.first, pos.second - 1),
+															std::make_pair(pos.first, pos.second + 1)
+														};
+		for (auto surr : surroundings)
+		{
+			removePosFromAttackPosVec(surr);
+		}
+	}
+}
+
+void BattleshipGameAlgoSmart::removePosFromAttackPosVec(const std::pair<int, int>& attackedPos)
+{
+	auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), attackedPos);
+	if (pos != attackPosVec.end()) {
+		attackPosVec.erase(pos);
+	}
 }
 
 void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col, AttackResult result) {
@@ -292,7 +320,7 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 					direction = Direction::horizontal;
 				}
 				//Update attackHitPosVec
-				if ((lastAttackedDirection == Direction::left) || (lastAttackedDirection == Direction::up)) {
+				if ((lastAttackedDirection == Direction::none) || (lastAttackedDirection == Direction::left) || (lastAttackedDirection == Direction::up)) {
 					attackHitPosVec.insert(attackHitPosVec.begin(), attackedPos);
 				}
 				else{
@@ -301,6 +329,7 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 				break;
 			}
 			case AttackResult::Sink: {
+				removeShipsSurroundingPos();
 				resetAttack();
 				break;
 			}
@@ -311,10 +340,7 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 	}
 	else{
 		if (result != AttackResult::Hit) {
-			auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), attackedPos);
-			if (pos != attackPosVec.end()) {
-				attackPosVec.erase(pos);
-			}
+			removePosFromAttackPosVec(attackedPos);
 		}
 	}
 }
