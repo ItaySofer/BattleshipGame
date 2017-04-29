@@ -1,6 +1,8 @@
 
 #include "BattleshipGameManager.h"
 #include "BattleshipGameAlgoFromFile.h"
+#include "BattleshipGameAlgoNaive.h"
+#include "BattleshipGameAlgoSmart.h"
 
 bool BattleshipGameManager::initGame(){
 	
@@ -51,7 +53,7 @@ bool BattleshipGameManager::initPlayers()
 		return false;
 	}
 
-	playerB = new BattleshipGameAlgoFromFile();
+	playerB = new BattleshipGameAlgoSmart();
 	sendBoard(false);//player B
 	if (!playerB->init(inputProcessor.getFolderPath()))
 	{
@@ -150,15 +152,15 @@ void BattleshipGameManager::playGame() {
 				goSetPrintSleep(currAttack.first, colIndexRight, SINK_COLOR, '@', -1);
 				colIndexRight += 1;
 			}
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Sink);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Sink);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
 			goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Hit);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Hit);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
@@ -175,8 +177,8 @@ void BattleshipGameManager::playGame() {
 					goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
 				}
 			}
-			playerA->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
-			playerB->notifyOnAttackResult(currPlayer, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Miss);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first, currAttack.second, AttackResult::Miss);
 			currPlayer += doneAttackingPlayers > 0 ? 0 : 1;
 		}
 	}

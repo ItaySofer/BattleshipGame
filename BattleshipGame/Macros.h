@@ -10,7 +10,7 @@
 #define NUM_OF_SHIP_TYPES 4
 #define VALID_SHIP_NUM 5
 
-#define DEFAULT_DELAY_MS 4000
+#define DEFAULT_DELAY_MS 1000
 
 #define A_COLOR 10
 #define B_COLOR 11
