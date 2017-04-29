@@ -31,7 +31,7 @@ bool BattleshipGameManager::initGame(){
 bool BattleshipGameManager::initBoard()
 {
 	//Read board file to matrix
-	readBoardFileToMatrix(inputProcessor.getBoardFilePath());
+	if (!readBoardFileToMatrix(inputProcessor.getBoardFilePath())) return false;
 
 	//Validate board
 	if (!validateBoard())
@@ -65,8 +65,7 @@ bool BattleshipGameManager::initPlayers()
 }
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){
-	char** board;
-	board = new char*[NUM_ROWS];
+	 char** board = new char*[NUM_ROWS];
 	for (int i = 0; i < gameBoard.R; i++)
 	{
 		board[i] = new char[NUM_COLS];
@@ -86,11 +85,10 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 }
 
 void BattleshipGameManager::modifyBoard(char** board, bool isPlayerA){
-	char* pos;
 	for (int i = 0; i < gameBoard.R; i++){
 		for (int j = 0; j < gameBoard.R; j++){
 			if (board[i][j] != ' '){
-				pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
+				char* pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
 				if (((std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) && !isPlayerA) ||
 					((std::distance(typeArr, pos) >= NUM_OF_SHIP_TYPES) && isPlayerA)){
 					board[i][j] = ' ';
@@ -198,9 +196,15 @@ void BattleshipGameManager::playGame() {
 	Sleep(2000);	// see results before quitting
 };
 
-void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
+bool BattleshipGameManager::readBoardFileToMatrix(const std::string& boardFile){
 
 	std::ifstream fin(boardFile);
+	if (!fin.is_open())
+	{
+		std::cout << "Error while open internal file" << std::endl;
+		return false;
+	}
+
 	gameBoard.R = NUM_ROWS;
 	gameBoard.C = NUM_COLS;
 	gameBoard.matrix = new std::string[gameBoard.R];
@@ -214,33 +218,30 @@ void BattleshipGameManager::readBoardFileToMatrix(const std::string boardFile){
 	fin.close();
 
 	//replace all unknown characters with ' '
-	char* pos;
 	for (int i = 0; i < gameBoard.R; i++){
 		for (int j = 0; j < gameBoard.C; j++){
 			if (gameBoard.matrix[i][j] != ' ') {
-				pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
+				char* pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
 				if (pos == std::end(typeArr)) { //element not found
 					gameBoard.matrix[i][j] = ' ';
 				}
 			}
 		}
 	}
+	return true;
 }
 
 bool BattleshipGameManager::validateBoard(){
 	int Acount = 0;
 	int Bcount = 0;
-	bool isValidRight;
-	bool isValidBottom;
 
 	//Search for valid ships
-	char* pos;
 	for (int i = 0; i < gameBoard.R; i++){
 		for (int j = 0; j < gameBoard.C; j++){
-			pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);	
+			char* pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[i][j]);
 			if (pos != std::end(typeArr)) { //element found
-				isValidRight = true;
-				isValidBottom = true;
+				bool isValidRight = true;
+				bool isValidBottom = true;
 				//check if need to check ship to the right
 				if ((j == 0) || (gameBoard.matrix[i][j - 1] != gameBoard.matrix[i][j])){
 					//Check to the right
@@ -315,7 +316,7 @@ bool BattleshipGameManager::validateBoard(){
 	return (valid);
 }
 
-bool BattleshipGameManager::isValidShipRight(int x, int y){
+bool BattleshipGameManager::isValidShipRight(int x, int y) const{
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 
@@ -331,7 +332,7 @@ bool BattleshipGameManager::isValidShipRight(int x, int y){
 	return (size == getSize(type));
 }
 
-bool BattleshipGameManager::isValidShipBottom(int x, int y){
+bool BattleshipGameManager::isValidShipBottom(int x, int y) const{
 	char type = gameBoard.matrix[x][y];
 	int size = 0;
 
@@ -442,7 +443,7 @@ bool BattleshipGameManager::isActivePlayer(int playerIndex) {
 	return numShips[playerIndex] > 0;
 }
 
-bool BattleshipGameManager::isLonely(BattleBoard& gameBoard, int row, int col) {
+bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, int row, int col) {
 	int rowIndexDown = row + 1, rowIndexUp = row - 1, colIndexLeft = col - 1, colIndexRight = col + 1;
 	while (rowIndexDown < NUM_ROWS && gameBoard.matrix[rowIndexDown][col] != ' ') {
 		if (gameBoard.matrix[rowIndexDown][col] != '*') {
@@ -538,7 +539,7 @@ int BattleshipGameManager::numActivePlayers() {
 	return count;
 }
 
-void BattleshipGameManager::graphicPrintBoard(BattleBoard& gameBoard) {
+void BattleshipGameManager::graphicPrintBoard(const BattleBoard& gameBoard) const{
 	if (inputProcessor.getQuiet()) {
 		// no printing is required
 		return;
@@ -610,7 +611,7 @@ void BattleshipGameManager::ShowConsoleCursor(bool showFlag) {
 	SetConsoleCursorInfo(out, &cursorInfo);
 }
 
-void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char output, int player) {
+void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char output, int player) const{
 	// below constants are used only for this function, thus MACROS definitions are redundant
 	if (player >= 0) {
 		gotoxy(48, 3);

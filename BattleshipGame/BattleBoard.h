@@ -10,14 +10,14 @@ public:
 	int C;
 	std::string* matrix;
 
-	BattleBoard() : matrix(NULL) {}
+	BattleBoard() : R(0), C(0), matrix(nullptr) {}
 
-	//BattleBoard(const BattleBoard&) = delete;
-	//BattleBoard& operator=(const BattleBoard&) = delete;
+	BattleBoard(const BattleBoard&) = delete;
+	BattleBoard& operator=(const BattleBoard&) = delete;
 
 	~BattleBoard()
 	{
-		if (matrix != NULL)
+		if (matrix != nullptr)
 		{
 			delete[] matrix;
 		}

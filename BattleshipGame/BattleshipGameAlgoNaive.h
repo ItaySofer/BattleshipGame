@@ -2,12 +2,6 @@
 #define BattleshipGameAlgoNaiveH
 
 #include "BattleshipGameAlgoBase.h"
-//#include <fstream>
-//#include <vector>
-//#include <iostream>
-//#include "StringUtils.h"
-//#include <string>
-//#include "Macros.h"
 
 class BattleshipGameAlgoNaive : public BattleshipGameAlgoBase {
 

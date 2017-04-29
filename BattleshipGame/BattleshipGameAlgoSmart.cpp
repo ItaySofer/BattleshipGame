@@ -1,9 +1,9 @@
 #include "BattleshipGameAlgoSmart.h"
 
 std::pair<int, int> BattleshipGameAlgoSmart::attack() {
-	std::pair<int, int> res = std::make_pair(-1, -1);
 	//In case that there are no previous "hit" positions, choose random position to attack from attackPosVec
 	if (attackHitPosVec.empty()) {
+		std::pair<int, int> res = std::make_pair(-1, -1);
 		size_t size = attackPosVec.size();
 		if (size > 0) {
 			int pos = rand() % size;
@@ -14,12 +14,10 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 		return res;
 	}
 	else {
-		std::pair<int, int> currPos;
 		switch (direction) {
 			case Direction::none:{
-				int dirPos;
 				while (checkDirections.size() > 0) {
-					dirPos = rand() % checkDirections.size();
+					int dirPos = rand() % checkDirections.size();
 					Direction dir = checkDirections[dirPos];
 					checkDirections.erase(checkDirections.begin() + dirPos);
 					switch (dir) {

@@ -15,11 +15,14 @@
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(InputProcessor& inputProc) : inputProcessor(inputProc) {}
+	BattleshipGameManager(InputProcessor& inputProc) : inputProcessor(inputProc), playerA(nullptr), playerB(nullptr) {}
 	~BattleshipGameManager() {
 		delete playerA;
 		delete playerB;
 	};
+
+	BattleshipGameManager(const BattleshipGameManager&) = delete;
+	BattleshipGameManager& operator=(const BattleshipGameManager&) = delete;
 
 	bool initGame(); //initiates board, calls players' "setBoard" methods
 	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
@@ -56,27 +59,27 @@ private:
 	//Functions
 	bool initBoard();
 	bool initPlayers();
-	void readBoardFileToMatrix(const std::string boardFile);//initiate game board from file.
+	bool readBoardFileToMatrix(const std::string& boardFile);//initiate game board from file.
 	bool validateBoard();//check if board is valid according to game specifications
 	void sendBoard(bool isPlayerA);
 	void modifyBoard(char** board, bool isPlayerA);
 
-	bool isValidShipRight(int x, int y);//check if a valid ship starts at (x,y) position to the right
-	bool isValidShipBottom(int x, int y);//check if a valid ship starts at (x,y) position to the bottom
-	int getSize(char type);//return ship valid size by given type
+	bool isValidShipRight(int x, int y) const;//check if a valid ship starts at (x,y) position to the right
+	bool isValidShipBottom(int x, int y) const;//check if a valid ship starts at (x,y) position to the bottom
+	static int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex);
-	bool isLonely(BattleBoard& gameBoard, int row, int col);
+	static bool isLonely(const BattleBoard& gameBoard, int row, int col);
 	int handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col);
 	int numActivePlayers();
-	void graphicPrintBoard(BattleBoard& gameBoard);
-	void gotoxy(int x, int y);
-	void setTextColor(int color);
-	void ShowConsoleCursor(bool showFlag);
+	void graphicPrintBoard(const BattleBoard& gameBoard)const;
+	static void gotoxy(int x, int y);
+	static void setTextColor(int color);
+	static void ShowConsoleCursor(bool showFlag);
 
-	void goSetPrintSleep(int row, int col, int color, char output, int player);
+	void goSetPrintSleep(int row, int col, int color, char output, int player) const;
 
 	//Variables
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),

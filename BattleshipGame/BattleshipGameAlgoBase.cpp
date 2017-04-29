@@ -8,12 +8,15 @@ void BattleshipGameAlgoBase::setBoard(int player, const char** board, int numRow
 	myPlayerNumber = player;
 	rows = numRows;
 	cols = numCols;
+
 	//Initialize boolean matrix
-	bool** dontAttackMatrix;
-	dontAttackMatrix = new bool*[numRows];
-	for (int i = 0; i < numRows; i++)
-	{
-		dontAttackMatrix[i] = new bool[numCols]();
+	std::vector<std::vector<bool>> dontAttackMatrix;
+	std::vector<bool> rowvector;
+	for (int i = 0; i<rows; i++){
+		rowvector.clear();
+		for (int j = 0; j<cols; j++)
+			rowvector.push_back(false);
+		dontAttackMatrix.push_back(rowvector);
 	}
 
 	//Find dontAttack positions
@@ -44,13 +47,6 @@ void BattleshipGameAlgoBase::setBoard(int player, const char** board, int numRow
 	}
 	//Set attack positions vector's iterator to vector begin
 	attackPosVecIt = attackPosVec.begin();
-
-	//Delete dontAttackMatrix
-	for (int i = 0; i < numRows; i++)
-	{
-		delete[] dontAttackMatrix[i];
-	}
-	delete[] dontAttackMatrix;
 }
 
 bool BattleshipGameAlgoBase::init(const std::string& path) { return true;}
