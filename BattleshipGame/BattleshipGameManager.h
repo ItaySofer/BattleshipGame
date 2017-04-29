@@ -9,6 +9,8 @@
 #include <cstring>
 #include <fstream>
 #include "InputProcessor.h"
+#include <windows.h>
+#include <stdlib.h>
 
 class BattleshipGameManager {
 
@@ -63,12 +65,19 @@ private:
 	bool isValidShipBottom(int x, int y);//check if a valid ship starts at (x,y) position to the bottom
 	int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
+	int getShipColor(char c);
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex);
 	bool isLonely(BattleBoard& gameBoard, int row, int col);
 	int handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col);
 	int numActivePlayers();
+	void graphicPrintBoard(BattleBoard& gameBoard);
+	void gotoxy(int x, int y);
+	void setTextColor(int color);
+	void ShowConsoleCursor(bool showFlag);
+
+	void goSetPrintSleep(int row, int col, int color, char output, int player);
 
 	//Variables
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),

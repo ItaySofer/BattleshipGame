@@ -74,7 +74,6 @@ bool InputProcessor::validateInput()
 	return boardFileExists && dllFilesExist;
 }
 
-
 bool InputProcessor::tryExtractBoardFileName()
 {
 	std::vector<std::string> boardFiles = FileUtils::getFilesPathsBySuffix(folderPath, boardSuffix);

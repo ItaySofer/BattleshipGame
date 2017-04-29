@@ -10,7 +10,13 @@
 #define NUM_OF_SHIP_TYPES 4
 #define VALID_SHIP_NUM 5
 
-#define DEFAULT_DELAY_MS 1000
+#define DEFAULT_DELAY_MS 4000
+
+#define A_COLOR 10
+#define B_COLOR 11
+#define HIT_COLOR 14
+#define SINK_COLOR 12
+#define MISS_COLOR 15
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
