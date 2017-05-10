@@ -2,6 +2,10 @@
 #include "FileUtils.h"
 
 
+IBattleshipGameAlgo* GetAlgorithm() {
+	return new BattleshipGameAlgoFromFile();
+}
+
 void BattleshipGameAlgoFromFile::setBoard(int player, const char** board, int numRows, int numCols)
 {
 	playerNum = player;

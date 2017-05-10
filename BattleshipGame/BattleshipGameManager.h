@@ -19,6 +19,11 @@ public:
 	~BattleshipGameManager() {
 		delete playerA;
 		delete playerB;
+
+		// Free dynamic libs
+		for (int i = 0; i < NUM_PLAYERS; i++) {
+			FreeLibrary(hInstances[i]);
+		}
 	};
 
 	BattleshipGameManager(const BattleshipGameManager&) = delete;
@@ -106,6 +111,7 @@ private:
 	IBattleshipGameAlgo* playerB;
 	int numShips[NUM_PLAYERS] = { VALID_SHIP_NUM , VALID_SHIP_NUM };
 	int scores[NUM_PLAYERS] = {0, 0};
+	HINSTANCE hInstances[NUM_PLAYERS] = { NULL, NULL };
 };
 
 #endif

@@ -1,5 +1,9 @@
 #include "BattleshipGameAlgoSmart.h"
 
+IBattleshipGameAlgo* GetAlgorithm() {
+	return new BattleshipGameAlgoSmart();
+}
+
 std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 	//In case that there are no previous "hit" positions, choose random position to attack from attackPosVec
 	if (attackHitPosVec.empty()) {

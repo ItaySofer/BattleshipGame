@@ -41,7 +41,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -68,7 +68,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -84,6 +86,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>ALGO_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -119,39 +122,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleshipGame.cpp" />
-    <ClCompile Include="BattleshipGameAlgoBase.cpp" />
-    <ClCompile Include="BattleshipGameAlgoFromFile.cpp" />
-    <ClCompile Include="BattleshipGameAlgoFromFileTest.cpp" />
-    <ClCompile Include="BattleshipGameAlgoNaive.cpp" />
-    <ClCompile Include="BattleshipGameAlgoSmart.cpp" />
     <ClCompile Include="BattleshipGameManager.cpp" />
-    <ClCompile Include="BattleshipGameManagerTest.cpp" />
-    <ClCompile Include="FileUtils.cpp" />
-    <ClCompile Include="FileUtilsTest.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
-    <ClCompile Include="InputProcessorTest.cpp" />
-    <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="StringUtilsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleBoard.h" />
-    <ClInclude Include="BattleshipGameAlgoBase.h" />
-    <ClInclude Include="BattleshipGameAlgoFromFile.h" />
-    <ClInclude Include="BattleshipGameAlgoFromFileTest.h" />
-    <ClInclude Include="BattleshipGameAlgoNaive.h" />
-    <ClInclude Include="BattleshipGameAlgoSmart.h" />
     <ClInclude Include="BattleshipGameManager.h" />
-    <ClInclude Include="BattleshipGameManagerTest.h" />
-    <ClInclude Include="FileUtils.h" />
-    <ClInclude Include="FileUtilsTest.h" />
-    <ClInclude Include="IBattleshipGameAlgo.h" />
     <ClInclude Include="InputProcessor.h" />
-    <ClInclude Include="InputProcessorTest.h" />
-    <ClInclude Include="Macros.h" />
-    <ClInclude Include="MockBattleshipGameAlgo.h" />
-    <ClInclude Include="MockInputProcessor.h" />
-    <ClInclude Include="StringUtils.h" />
-    <ClInclude Include="StringUtilsTest.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard" />
@@ -160,6 +137,20 @@
     <None Include="bad_board_3.sboard" />
     <None Include="good_board_0.sboard" />
     <None Include="good_board_1.sboard" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{66dc7e3b-e74c-4659-9a48-cef8cec57e1c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\FileDLL\FileDLL.vcxproj">
+      <Project>{cc39ffc8-94cf-4d11-910d-bbd490463ae0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NaiveDLL\NaiveDLL.vcxproj">
+      <Project>{5ea62c78-886e-4731-abb1-9cbf0e5656b6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SmartDLL\SmartDLL.vcxproj">
+      <Project>{05ec74e6-ea31-431b-813b-4fb819e06ab2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

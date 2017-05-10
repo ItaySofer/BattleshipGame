@@ -1,8 +1,9 @@
-
+#include <iostream>
+#include <string>
 #include "BattleshipGameManager.h"
-#include "BattleshipGameAlgoFromFile.h"
+/*#include "BattleshipGameAlgoFromFile.h"
 #include "BattleshipGameAlgoNaive.h"
-#include "BattleshipGameAlgoSmart.h"
+#include "BattleshipGameAlgoSmart.h"*/
 
 bool BattleshipGameManager::initGame(){
 	
@@ -44,8 +45,43 @@ bool BattleshipGameManager::initBoard()
 
 bool BattleshipGameManager::initPlayers()
 {
+	HANDLE dir;
+	WIN32_FIND_DATAA fileData;
+	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
+	std::string path = inputProcessor.getFolderPath();
+	std::string s = "\\*.dll";
+	int dllCounter = 0;
+	GetAlgorithmFuncType dllArr[NUM_PLAYERS] = { NULL, NULL };
+	dir = FindFirstFileA((path + s).c_str(), &fileData);
+	do {
+		if (dir != INVALID_HANDLE_VALUE) {
+			std::string fileName = fileData.cFileName;
+			std::string fullFileName = path + "\\" + fileName;
+
+			// Load dynamic library
+			HINSTANCE hDll = LoadLibraryA(fullFileName.c_str());
+			if (!hDll) {
+				std::cout << "1 - Cannot load dll: " << fullFileName << std::endl;
+				return false;
+			}
+			// Get function pointer
+			dllArr[dllCounter] = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
+			hInstances[dllCounter] = hDll;
+			if (!dllArr[dllCounter++])
+			{
+				std::cout << "2 - Cannot load dll: " << fullFileName << std::endl;
+				return false;
+			}
+		}
+	} while (dllCounter < NUM_PLAYERS && FindNextFileA(dir, &fileData));
+	if (dllCounter < NUM_PLAYERS) {
+		std::cout << "Missing an algorithm (dll) file looking in path: " << path << std::endl;
+		return false;
+	}
+	playerA = dllArr[0]();
+	playerB = dllArr[1]();
+	
 	//Send each player his board
-	playerA = new BattleshipGameAlgoFromFile();
 	sendBoard(true);//player A
 	if (!playerA->init(inputProcessor.getFolderPath()))
 	{
@@ -53,7 +89,6 @@ bool BattleshipGameManager::initPlayers()
 		return false;
 	}
 
-	playerB = new BattleshipGameAlgoSmart();
 	sendBoard(false);//player B
 	if (!playerB->init(inputProcessor.getFolderPath()))
 	{
@@ -193,7 +228,13 @@ void BattleshipGameManager::playGame() {
 	std::cout << "Points:\n";
 	std::cout << "Player A: " << scores[0] << "\n";
 	std::cout << "Player B: " << scores[1] << "\n";
-	Sleep(2000);	// see results before quitting
+
+	// free dynamic libs
+	/*for (int i = 0; i < NUM_PLAYERS; i++) {
+		FreeLibrary(hInstances[i]);
+	}*/
+
+	Sleep(2000);	// see results
 };
 
 bool BattleshipGameManager::readBoardFileToMatrix(const std::string& boardFile){
@@ -485,7 +526,7 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 			}
 			else {
 				// second hit on a ship that's still afloat - report hit
-				return 1;
+				return -1;
 			}
 		}
 		else {
@@ -616,7 +657,7 @@ void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char ou
 	if (player >= 0) {
 		gotoxy(48, 3);
 		setTextColor(MISS_COLOR);
-		std::cout << "PLAYER " << (player % 2 == 0 ? "A" : "B") << ": (" << (row + 1) << "," << (col + 1) << ")";
+		std::cout << "PLAYER " << (player % 2 == 0 ? "A" : "B") << ": (" << (row + 1) << "," << (col + 1) << ")  ";
 	}
 	else {
 		gotoxy(48, 3);
