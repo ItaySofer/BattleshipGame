@@ -6,8 +6,8 @@
 class BattleshipGameAlgoSmart : public BattleshipGameAlgoBase {
 
 public:
-	std::pair<int, int> attack() override; // ask player for his move
-	void notifyOnAttackResult(int player, int row, int col, AttackResult result) override; // notify on last move result
+	Coordinate attack() override; // ask player for his move
+	void notifyOnAttackResult(int player, Coordinate move, AttackResult result) override; // notify on last move result
 
 private:
 
@@ -18,28 +18,39 @@ private:
 		horizontal,
 		left,
 		right,
+		depth,
+		above,
+		under,
 		none
 	};
 
-	std::pair<int, int> attackUp(bool done);
-	std::pair<int, int> attackDown(bool done);
-	std::pair<int, int> attackUpDown(bool done);
-	std::pair<int, int> attackDownUp(bool done);
-	std::pair<int, int> attackLeft(bool done);
-	std::pair<int, int> attackRight(bool done);
-	std::pair<int, int> attackLeftRight(bool done);
-	std::pair<int, int> attackRightLeft(bool done);
-	std::pair<int, int> attackBothDirections(std::pair<int, int>(BattleshipGameAlgoSmart::*firstAttackDirection)(bool), std::pair<int, int>(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir);
+	Coordinate attackUp(bool done);
+	Coordinate attackDown(bool done);
+	Coordinate attackUpDown(bool done);
+	Coordinate attackDownUp(bool done);
+	Coordinate attackLeft(bool done);
+	Coordinate attackRight(bool done);
+	Coordinate attackLeftRight(bool done);
+	Coordinate attackRightLeft(bool done);
+	Coordinate attackAbove(bool done);
+	Coordinate attackUnder(bool done);
+	Coordinate attackAboveUnder(bool done);
+	Coordinate attackUnderAbove(bool done);
+
+	Coordinate attackBothDirections(Coordinate(BattleshipGameAlgoSmart::*firstAttackDirection)(bool), Coordinate(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir);
 	void resetAttack();
 	void removeShipsSurroundingPos();
-	void removePosFromAttackPosVec(const std::pair<int, int>& attackedPos);
-	std::pair<int, int> handlDoneDirection(bool done);
+	void removePosFromAttackPosVec(const Coordinate& attackedPos);
+	Coordinate handlDoneDirection(bool done);
+	static bool notMius1Coordinate(const Coordinate& coor);
 
-	std::vector<std::pair<int, int>> attackHitPosVec;
+	std::vector<Coordinate> attackHitPosVec;
 
 	Direction direction = Direction::none;
 	Direction lastAttackedDirection = Direction::none;
-	std::vector<Direction> checkDirections = { Direction::up, Direction::down, Direction::left, Direction::right };
+	std::vector<Direction> checkDirections = { Direction::up, Direction::down, 
+											   Direction::left, Direction::right,
+											   Direction::above, Direction::under };
 };
 
 #endif
