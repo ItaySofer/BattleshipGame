@@ -36,43 +36,19 @@ public:
 	friend class BattleshipGameManagerTest;
 
 private:
-	//ENUMs
-	enum class shipSize {
-		bSize = 1,
-		pSize,
-		mSize,
-		dSize
-	};
-
-	enum class ErrorMsg {
-		WRONG_SIZE_SHAPE_D_A = 0,	//"Wrong size or shape for ship d for player A"
-		WRONG_SIZE_SHAPE_M_A,		//"Wrong size or shape for ship m for player A"
-		WRONG_SIZE_SHAPE_P_A,		//"Wrong size or shape for ship p for player A"
-		WRONG_SIZE_SHAPE_B_A,		//"Wrong size or shape for ship b for player A"
-		WRONG_SIZE_SHAPE_D_B,		//"Wrong size or shape for ship d for player B"
-		WRONG_SIZE_SHAPE_M_B,		//"Wrong size or shape for ship m for player B"
-		WRONG_SIZE_SHAPE_P_B,		//"Wrong size or shape for ship p for player B"
-		WRONG_SIZE_SHAPE_B_B,		//"Wrong size or shape for ship b for player B"
-		TOO_MANY_A,					//"Too many ships for player A"
-		TOO_FEW_A,					//"Too few ships for player A"
-		TOO_MANY_B,					//"Too many ships for player B"
-		TOO_FEW_B,					//"Too few ships for player B"
-		AJACENT_ON_BOARD,			//"Adjacent Ships on Board"
-		ERR_MGS_MAX
-	};
 
 	//Functions
 	void initPlayers();
-	bool readBoardFileToMatrix(const std::string& boardFile);//initiate game board from file.
-	bool validateBoard();//check if board is valid according to game specifications
+	//bool readBoardFileToMatrix(const std::string& boardFile);//initiate game board from file.
+	//bool validateBoard();//check if board is valid according to game specifications
 	void sendBoard(bool isPlayerA);
 	void modifyBoard(char*** board, bool isPlayerA);
 
-	bool isValidShipRight(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the right
-	bool isValidShipDown(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the bottom
-	bool isValidShipUnder(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the deaper layers
-	static int getSize(char type);//return ship valid size by given type
-	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
+	//bool isValidShipRight(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the right
+	//bool isValidShipDown(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the bottom
+	//bool isValidShipUnder(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the deaper layers
+	//static int getSize(char type);//return ship valid size by given type
+	//void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex) const;
@@ -87,20 +63,7 @@ private:
 	void goSetPrintSleep(int row, int col, int color, char output, int player) const;
 
 	//Variables
-	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),
-																   std::make_pair(false, "Wrong size or shape for ship M for player A"),
-																   std::make_pair(false, "Wrong size or shape for ship P for player A"),
-																   std::make_pair(false, "Wrong size or shape for ship B for player A"),
-																   std::make_pair(false, "Wrong size or shape for ship d for player B"),
-																   std::make_pair(false, "Wrong size or shape for ship m for player B"),
-																   std::make_pair(false, "Wrong size or shape for ship p for player B"),
-																   std::make_pair(false, "Wrong size or shape for ship b for player B"),
-																   std::make_pair(false, "Too many ships for player A"),
-																   std::make_pair(false, "Too few ships for player A"),
-																   std::make_pair(false, "Too many ships for player B"),
-																   std::make_pair(false, "Too few ships for player B"),
-																   std::make_pair(false, "Adjacent Ships on Board")
-	};
+
 	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
 
 	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
