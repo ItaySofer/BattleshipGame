@@ -66,10 +66,11 @@ private:
 	bool readBoardFileToMatrix(const std::string& boardFile);//initiate game board from file.
 	bool validateBoard();//check if board is valid according to game specifications
 	void sendBoard(bool isPlayerA);
-	void modifyBoard(char** board, bool isPlayerA);
+	void modifyBoard(char*** board, bool isPlayerA);
 
-	bool isValidShipRight(int x, int y) const;//check if a valid ship starts at (x,y) position to the right
-	bool isValidShipBottom(int x, int y) const;//check if a valid ship starts at (x,y) position to the bottom
+	bool isValidShipRight(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the right
+	bool isValidShipDown(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the bottom
+	bool isValidShipUnder(int d, int x, int y) const;//check if a valid ship starts at depth d at (x,y) position to the deaper layers
 	static int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 

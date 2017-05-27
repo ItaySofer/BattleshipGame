@@ -47,6 +47,56 @@ void BattleshipCompetitionManager::readBoards()
 bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFile, BattleBoard& output)
 {
 	//reads board from boardFile to output. true\ false if reading succeeded or failed.
+	std::ifstream fin(boardFile);
+	if (!fin.is_open())
+	{
+		std::cout << "Error while open internal file" << std::endl;
+		return false;
+	}
+
+	//read dimensions
+	std::string dimensions;
+	std::getline(fin, dimensions);//get dimentions line (first line)
+	std::vector<std::string> dimResult;//
+	StringUtils::split(dimensions, "x", dimResult);
+	output.setCols(std::stoi(dimResult[0]));
+	output.setRows(std::stoi(dimResult[1]));
+	output.setDepth(std::stoi(dimResult[2]));
+
+	output.matrix = new std::string*[output.depth()];
+
+	//read each layer
+	for (int k = 0; k < output.depth(); k++)
+	{
+		output.matrix[k] = new std::string[output.rows()];
+		//Read space line first
+		std::getline(fin, output.matrix[k][0]);
+		//Read the k'th layer matrix
+		for (int i = 0; i < output.rows(); i++)
+		{
+			std::getline(fin, output.matrix[k][i]);
+			StringUtils::replaceAll(output.matrix[k][i], "\r", "");
+			//resize each matrix row to size=gameBoard.C, add ' ' if needed 
+			output.matrix[k][i].resize(output.cols(), ' ');
+		}
+	}
+
+	fin.close();
+
+	//replace all unknown characters with ' '
+	for (int k = 0; k < output.depth(); k++) {
+		for (int i = 0; i < output.rows(); i++) {
+			for (int j = 0; j < output.cols(); j++) {
+				if (output.matrix[k][i][j] != ' ') {
+					char* pos = std::find(std::begin(typeArr), std::end(typeArr), output.matrix[k][i][j]);
+					if (pos == std::end(typeArr)) { //element not found
+						output.matrix[k][i][j] = ' ';
+					}
+				}
+			}
+		}
+	}
+	return true;
 }
 
 bool BattleshipCompetitionManager::isValid(BattleBoard& board)

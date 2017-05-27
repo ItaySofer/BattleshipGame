@@ -11,9 +11,9 @@ public:
 	BattleshipGameAlgoBase();
 	~BattleshipGameAlgoBase() override;
 
-	void setBoard(int player, const char** board, int numRows, int numCols) override; // called once to notify player on his board
-	bool init(const std::string& path) override;
-	virtual Coordinate attack() override = 0; // ask player for his move
+	void setPlayer(int player) override;				// called every time the player changes his order
+	void setBoard(const BoardData& board) override;		// called every time the player changes his order
+	virtual Coordinate attack() override = 0;			// ask player for his move
 	virtual void notifyOnAttackResult(int player, Coordinate move, AttackResult result) override; // notify on last move result
 	static void adjustPosStartFrom1(Coordinate& pos);
 
@@ -21,9 +21,6 @@ public:
 	std::vector<Coordinate>::iterator attackPosVecIt;
 
 	int myPlayerNumber;
-	int rows;
-	int cols;
-	int dep;
 };
 
 #endif

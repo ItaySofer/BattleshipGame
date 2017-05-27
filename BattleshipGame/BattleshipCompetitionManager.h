@@ -44,6 +44,8 @@ private:
 	std::vector<IBattleshipGameAlgo*> players;
 	std::vector<Match> matches;
 
+	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
+
 };
 
 #endif
