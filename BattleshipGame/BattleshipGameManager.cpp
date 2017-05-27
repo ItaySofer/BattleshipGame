@@ -5,98 +5,53 @@
 #include "BattleshipGameAlgoNaive.h"
 #include "BattleshipGameAlgoSmart.h"*/
 
-bool BattleshipGameManager::initGame(){
+void BattleshipGameManager::initGame(){
 	
-	bool boardFileExists = inputProcessor.tryExtractBoardFileName();
-
-	bool boardValid = false;
-	if (boardFileExists) {
-		boardValid = initBoard();
-	}
-
-	bool dllFilesExist = inputProcessor.tryExtractDllFileNames();
-
-	if (!boardFileExists || !boardValid || !dllFilesExist)
-	{
-		return false;
-	}
-
-	if (!initPlayers())
-	{
-		return false;
-	}
-
-	return true;
+	initPlayers();
 };
 
-bool BattleshipGameManager::initBoard()
+void BattleshipGameManager::initPlayers()
 {
-	//Read board file to matrix
-	if (!readBoardFileToMatrix(inputProcessor.getBoardFilePath())) return false;
-
-	//Validate board
-	if (!validateBoard())
-	{
-		return false;
-	}
-
-	return true;
-}
-
-bool BattleshipGameManager::initPlayers()
-{
-	HANDLE dir;
-	WIN32_FIND_DATAA fileData;
-	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
-	std::string path = inputProcessor.getFolderPath();
-	std::string s = "\\*.dll";
-	int dllCounter = 0;
-	GetAlgorithmFuncType dllArr[NUM_PLAYERS] = { NULL, NULL };
-	dir = FindFirstFileA((path + s).c_str(), &fileData);
-	do {
-		if (dir != INVALID_HANDLE_VALUE) {
-			std::string fileName = fileData.cFileName;
-			std::string fullFileName = path + "\\" + fileName;
-
-			// Load dynamic library
-			HINSTANCE hDll = LoadLibraryA(fullFileName.c_str());
-			if (!hDll) {
-				std::cout << "1 - Cannot load dll: " << fullFileName << std::endl;
-				return false;
-			}
-			// Get function pointer
-			dllArr[dllCounter] = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
-			hInstances[dllCounter] = hDll;
-			if (!dllArr[dllCounter++])
-			{
-				std::cout << "2 - Cannot load dll: " << fullFileName << std::endl;
-				return false;
-			}
-		}
-	} while (dllCounter < NUM_PLAYERS && FindNextFileA(dir, &fileData));
-	if (dllCounter < NUM_PLAYERS) {
-		std::cout << "Missing an algorithm (dll) file looking in path: " << path << std::endl;
-		return false;
-	}
-	playerA = dllArr[0]();
-	playerB = dllArr[1]();
+//	HANDLE dir;
+//	WIN32_FIND_DATAA fileData;
+//	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
+//	std::string path = inputProcessor.getFolderPath();
+//	std::string s = "\\*.dll";
+//	int dllCounter = 0;
+//	GetAlgorithmFuncType dllArr[NUM_PLAYERS] = { NULL, NULL };
+//	dir = FindFirstFileA((path + s).c_str(), &fileData);
+//	do {
+//		if (dir != INVALID_HANDLE_VALUE) {
+//			std::string fileName = fileData.cFileName;
+//			std::string fullFileName = path + "\\" + fileName;
+//
+//			// Load dynamic library
+//			HINSTANCE hDll = LoadLibraryA(fullFileName.c_str());
+//			if (!hDll) {
+//				std::cout << "1 - Cannot load dll: " << fullFileName << std::endl;
+//				return false;
+//			}
+//			// Get function pointer
+//			dllArr[dllCounter] = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
+//			hInstances[dllCounter] = hDll;
+//			if (!dllArr[dllCounter++])
+//			{
+//				std::cout << "2 - Cannot load dll: " << fullFileName << std::endl;
+//				return false;
+//			}
+//		}
+//	} while (dllCounter < NUM_PLAYERS && FindNextFileA(dir, &fileData));
+//	if (dllCounter < NUM_PLAYERS) {
+//		std::cout << "Missing an algorithm (dll) file looking in path: " << path << std::endl;
+//		return false;
+//	}
+//	playerA = dllArr[0]();
+//	playerB = dllArr[1]();
 	
 	//Send each player his board
 	sendBoard(true);//player A
-	if (!playerA->init(inputProcessor.getFolderPath()))
-	{
-		std::cout << "Algorithm initialization failed for dll: " << inputProcessor.getPlayerADllFilePath() << std::endl;
-		return false;
-	}
 
 	sendBoard(false);//player B
-	if (!playerB->init(inputProcessor.getFolderPath()))
-	{
-		std::cout << "Algorithm initialization failed for dll: " << inputProcessor.getPlayerBDllFilePath() << std::endl;
-		return false;
-	}
-
-	return true;
 }
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){

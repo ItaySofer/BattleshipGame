@@ -121,14 +121,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BattleshipCompetitionManager.cpp" />
     <ClCompile Include="BattleshipGame.cpp" />
     <ClCompile Include="BattleshipGameManager.cpp" />
     <ClCompile Include="InputProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleBoard.h" />
+    <ClInclude Include="BattleshipCompetitionManager.h" />
     <ClInclude Include="BattleshipGameManager.h" />
     <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="Match.h" />
+    <ClInclude Include="MatchResult.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bad_board_0.sboard" />

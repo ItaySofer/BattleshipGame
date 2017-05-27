@@ -10,8 +10,6 @@
 class InputProcessor
 {
 	std::string folderPath = "";
-	std::string boardFilePath = "";
-	std::string dllFilesPaths[NUM_PLAYERS] = { "", "" };
 	int delayMs = DEFAULT_DELAY_MS;
 	bool quiet = false;
 
@@ -20,16 +18,17 @@ class InputProcessor
 
 	
 public:
+
+	std::vector<std::string> boardFilesPaths;
+	std::vector<std::string> dllFilesPaths;
+
 	InputProcessor(int argc, char* argv[]);
 
 	bool validateFolderPath();
 	bool validateInput(); //Validates files exist.
-	bool tryExtractBoardFileName();
+	bool tryExtractBoardFileNames();
 	bool tryExtractDllFileNames();
 
-	std::string getPlayerADllFilePath() const;
-	std::string getPlayerBDllFilePath() const;
-	virtual std::string getBoardFilePath() const;
 	int getDelayMs() const;
 	bool getQuiet() const;
 	std::string getFolderPath() const;

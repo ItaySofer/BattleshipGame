@@ -29,7 +29,7 @@ public:
 	BattleshipGameManager(const BattleshipGameManager&) = delete;
 	BattleshipGameManager& operator=(const BattleshipGameManager&) = delete;
 
-	bool initGame(); //initiates board, calls players' "setBoard" methods
+	void initGame(); //initiates board, calls players' "setBoard" methods
 	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
 					 //Output propper messages ("Player _ won. Points: ...")
 
@@ -62,8 +62,7 @@ private:
 	};
 
 	//Functions
-	bool initBoard();
-	bool initPlayers();
+	void initPlayers();
 	bool readBoardFileToMatrix(const std::string& boardFile);//initiate game board from file.
 	bool validateBoard();//check if board is valid according to game specifications
 	void sendBoard(bool isPlayerA);

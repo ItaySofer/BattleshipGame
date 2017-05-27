@@ -59,55 +59,36 @@ void InputProcessor::updateDelayParamIfNeeded(const std::string& arg, size_t fin
 bool InputProcessor::validateInput()
 {
 	validateFolderPath();
-	bool boardFileExists = tryExtractBoardFileName();
+	bool boardFilesExists = tryExtractBoardFileNames();
 	bool dllFilesExist = tryExtractDllFileNames();
-	return boardFileExists && dllFilesExist;
+	return boardFilesExists && dllFilesExist;
 }
 
-bool InputProcessor::tryExtractBoardFileName()
+bool InputProcessor::tryExtractBoardFileNames()
 {
-	std::vector<std::string> boardFiles = FileUtils::getFilesPathsBySuffix(folderPath, boardSuffix);
-	boardFilePath = boardFiles.size() > 0 ? boardFiles[0] : "";
+	boardFilesPaths = FileUtils::getFilesPathsBySuffix(folderPath, boardSuffix);
 
 	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
-
-	if (boardFilePath.empty())
+	if (boardFilesPaths.size() == 0)
 	{
-		std::cout << "Missing board file (*.sboard) looking in path: " << wrongPath << std::endl;
+		std::cout << "No board files (*.sboard) looking in path: " << wrongPath << std::endl;
 	}
 
-	return !boardFilePath.empty();
+	return boardFilesPaths.size() > 0;
 }
 
 bool InputProcessor::tryExtractDllFileNames()
 {
-	std::vector<std::string> dllFiles = FileUtils::getFilesPathsBySuffix(folderPath, dllSuffix);
-	dllFilesPaths[0] = dllFiles.size() > 0 ? dllFiles[0] : "";
-	dllFilesPaths[1] = dllFiles.size() > 1 ? dllFiles[1] : "";
+	dllFilesPaths = FileUtils::getFilesPathsBySuffix(folderPath, dllSuffix);
 
 	std::string wrongPath = folderPath.empty() ? "Working Directory" : folderPath;
 
-	if (dllFilesPaths[0].empty() || dllFilesPaths[1].empty())
+	if (dllFilesPaths.size() < NUM_PLAYERS)
 	{
-		std::cout << "Missing an algorithm (dll) file looking in path: " << wrongPath << std::endl;
+		std::cout << "Missing algorithm (dll) files looking in path: " << wrongPath << " (needs at least two)" << std::endl;
 	}
 
-	return !dllFilesPaths[0].empty() && !dllFilesPaths[1].empty();
-}
-
-std::string InputProcessor::getPlayerADllFilePath() const
-{
-	return dllFilesPaths[0];
-}
-
-std::string InputProcessor::getPlayerBDllFilePath() const
-{
-	return dllFilesPaths[1];
-}
-
-std::string InputProcessor::getBoardFilePath() const
-{
-	return boardFilePath;
+	return dllFilesPaths.size() < NUM_PLAYERS;
 }
 
 int InputProcessor::getDelayMs() const

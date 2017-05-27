@@ -23,6 +23,9 @@
     <ClCompile Include="InputProcessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BattleshipCompetitionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BattleshipGameManager.h">
@@ -32,6 +35,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BattleBoard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BattleshipCompetitionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Match.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatchResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

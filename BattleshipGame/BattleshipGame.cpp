@@ -5,6 +5,7 @@
 #include "BattleshipGameAlgoFromFileTest.h"
 #include "InputProcessorTest.h"
 #include "FileUtilsTest.h"
+#include "BattleshipCompetitionManager.h"
 
 #define TEST false
 
@@ -24,14 +25,14 @@ int main(int argc, char* argv[])
 		{
 			return -1;
 		}
-		BattleshipGameManager battleshipManneger(inputProcessor);
+		BattleshipCompetitionManager battleshipCompetitionManager(inputProcessor);
 
-		if (!battleshipManneger.initGame())
+		if (!battleshipCompetitionManager.initCompetition())
 		{
 			Sleep(7000);
 			return -1;
 		}
-		battleshipManneger.playGame();
+		battleshipCompetitionManager.startCompetition();
 		Sleep(2000);
 	}
 }
