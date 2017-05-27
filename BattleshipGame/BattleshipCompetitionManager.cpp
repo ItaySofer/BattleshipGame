@@ -209,7 +209,6 @@ bool BattleshipCompetitionManager::isValid(const BattleBoard& board)
 	return (valid);
 }
 
-
 bool BattleshipCompetitionManager::isValidShipRight(const BattleBoard& board, int d, int x, int y) const {
 	char type = board.matrix[d][x][y];
 	int size = 0;

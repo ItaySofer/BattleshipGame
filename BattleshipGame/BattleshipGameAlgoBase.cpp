@@ -9,6 +9,9 @@ void BattleshipGameAlgoBase::setPlayer(int player)
 }
 
 void BattleshipGameAlgoBase::setBoard(const BoardData& board) {
+	rows = board.rows();
+	cols = board.cols();
+	depth = board.depth();
 
 	//Initialize boolean matrix
 	std::vector<std::vector<std::vector<bool>>> dontAttackMatrix;

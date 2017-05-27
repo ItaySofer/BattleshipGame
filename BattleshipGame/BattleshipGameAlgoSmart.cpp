@@ -269,7 +269,7 @@ Coordinate BattleshipGameAlgoSmart::attackAbove(bool done) {
 Coordinate BattleshipGameAlgoSmart::attackUnder(bool done) {
 	//Check if can attack right
 	Coordinate currPos = *(attackHitPosVec.end() - 1);
-	if (currPos.depth + 1 < dep) {
+	if (currPos.depth + 1 < depth) {
 		currPos.depth++;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos

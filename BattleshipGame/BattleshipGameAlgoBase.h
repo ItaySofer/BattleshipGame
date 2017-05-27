@@ -21,6 +21,9 @@ public:
 	std::vector<Coordinate>::iterator attackPosVecIt;
 
 	int myPlayerNumber;
+	int rows;
+	int cols;
+	int depth;
 };
 
 #endif
