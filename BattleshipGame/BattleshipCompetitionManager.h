@@ -55,6 +55,8 @@ private:
 		ERR_MGS_MAX
 	};
 
+	bool tryExtractInputFilesNames();
+	bool readInputFilesToObjects();
 	void readBoards();
 	bool readBoardFromFile(const std::string& boardFile, BattleBoard& output);
 

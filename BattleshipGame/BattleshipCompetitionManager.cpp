@@ -5,22 +5,13 @@
 
 bool BattleshipCompetitionManager::initCompetition()
 {
-	bool boardFilesExists = inputProcessor.tryExtractBoardFileNames();
 
-	bool dllFilesExist = inputProcessor.tryExtractDllFileNames();
-
-	if (!boardFilesExists || !dllFilesExist)
+	if (!tryExtractInputFilesNames())
 	{
 		return false;
 	}
 
-	readBoards();
-	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
-
-	readPlayers();
-	std::cout << "Number of legal players: " << players.size() << std::endl;
-
-	if (gameBoards.size() == 0 || players.size() < NUM_PLAYERS)
+	if (!readInputFilesToObjects())
 	{
 		return false;
 	}
@@ -56,6 +47,28 @@ void BattleshipCompetitionManager::startCompetition()
 	
 	printCurrentScores();
 	
+}
+
+bool BattleshipCompetitionManager::tryExtractInputFilesNames()
+{
+	bool boardFilesExists = inputProcessor.tryExtractBoardFileNames();
+
+	bool dllFilesExist = inputProcessor.tryExtractDllFileNames();
+
+	return boardFilesExists && dllFilesExist;
+
+}
+
+bool BattleshipCompetitionManager::readInputFilesToObjects()
+{
+	readBoards();
+	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
+
+	readPlayers();
+	std::cout << "Number of legal players: " << players.size() << std::endl;
+
+	return gameBoards.size() > 0 && players.size() >= NUM_PLAYERS;
+
 }
 
 void BattleshipCompetitionManager::readBoards()
