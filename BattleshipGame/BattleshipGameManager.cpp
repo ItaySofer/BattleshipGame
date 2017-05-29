@@ -17,7 +17,7 @@ void BattleshipGameManager::initPlayers()
 //	HANDLE dir;
 //	WIN32_FIND_DATAA fileData;
 //	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
-//	std::string path = inputProcessor.getFolderPath();
+//	std::string path = inputProcessor.folderPath;
 //	std::string s = "\\*.dll";
 //	int dllCounter = 0;
 //	GetAlgorithmFuncType dllArr[NUM_PLAYERS] = { NULL, NULL };

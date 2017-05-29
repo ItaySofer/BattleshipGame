@@ -19,6 +19,7 @@
 #define MISS_COLOR 15
 
 #define NUM_THREADS 4
+#define THREADS_PARAM "-threads="
 #define TEST false
 
 template<typename T>

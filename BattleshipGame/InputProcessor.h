@@ -9,19 +9,17 @@
 
 class InputProcessor
 {
-	std::string folderPath = "";
-	int delayMs = DEFAULT_DELAY_MS;
-	bool quiet = false;
 
 	const std::string boardSuffix = ".sboard";
 	const std::string dllSuffix = ".dll";
 
 	
 public:
-
+	
+	std::string folderPath = "";
+	int threads = NUM_THREADS;
 	std::vector<std::string> boardFilesPaths;
 	std::vector<std::string> dllFilesPaths;
-	int threads;
 
 	InputProcessor(int argc, char* argv[]);
 
@@ -37,7 +35,7 @@ public:
 	friend class InputProcessorTest;
 
 private:
-	void updateDelayParamIfNeeded(const std::string& arg, size_t find);
+	void updateThreadsParamIfNeeded(const std::string& arg, size_t find);
 
 
 };
