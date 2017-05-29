@@ -61,11 +61,11 @@ bool BattleshipCompetitionManager::tryExtractInputFilesNames()
 
 bool BattleshipCompetitionManager::readInputFilesToObjects()
 {
-	readBoards();
-	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
-
 	readPlayers();
 	std::cout << "Number of legal players: " << players.size() << std::endl;
+
+	readBoards();
+	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
 
 	return gameBoards.size() > 0 && players.size() >= NUM_PLAYERS;
 
