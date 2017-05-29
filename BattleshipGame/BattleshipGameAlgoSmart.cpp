@@ -4,10 +4,10 @@ IBattleshipGameAlgo* GetAlgorithm() {
 	return new BattleshipGameAlgoSmart();
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attack() {
+Coordinate BattleshipGameAlgoSmart::attack() {
 	//In case that there are no previous "hit" positions, choose random position to attack from attackPosVec
 	if (attackHitPosVec.empty()) {
-		std::pair<int, int> res = std::make_pair(-1, -1);
+		Coordinate res(-1, -1, -1);
 		size_t size = attackPosVec.size();
 		if (size > 0) {
 			int pos = rand() % size;
@@ -26,36 +26,50 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 					checkDirections.erase(checkDirections.begin() + dirPos);
 					switch (dir) {
 						case Direction::up: {
-							std::pair<int, int> res = attackUp(false);
-							if (res != std::make_pair(-1, -1)) {
+							Coordinate res = attackUp(false);
+							if (notMius1Coordinate(res)) {
 								return res;
 							}
 							break;
 						}
 						case Direction::down: {
-							std::pair<int, int> res = attackDown(false);
-							if (res != std::make_pair(-1, -1)) {
+							Coordinate res = attackDown(false);
+							if (notMius1Coordinate(res)) {
 								return res;
 							}
 							break;
 						}
 						case Direction::left: {
-							std::pair<int, int> res = attackLeft(false);
-							if (res != std::make_pair(-1, -1)) {
+							Coordinate res = attackLeft(false);
+							if (notMius1Coordinate(res)) {
 								return res;
 							}
 							break;
 						}
 						case Direction::right: {
-							std::pair<int, int> res = attackRight(false);
-							if (res != std::make_pair(-1, -1)) {
+							Coordinate res = attackRight(false);
+							if (notMius1Coordinate(res)) {
+								return res;
+							}
+							break;
+						}
+						case Direction::above: {
+							Coordinate res = attackAbove(false);
+							if (notMius1Coordinate(res)) {
+								return res;
+							}
+							break;
+						}
+						case Direction::under: {
+							Coordinate res = attackUnder(false);
+							if (notMius1Coordinate(res)) {
 								return res;
 							}
 							break;
 						}
 						default: {
 							//should not get here - just for compilation
-							return (std::make_pair(-1, -1));
+							return (Coordinate(-1, -1, -1));
 							break;
 						}
 					}
@@ -108,31 +122,51 @@ std::pair<int, int> BattleshipGameAlgoSmart::attack() {
 				break;
 			}
 
+			case Direction::depth: {
+				int isAbove = rand() % 2;
+				if (isAbove) {
+					return attackAboveUnder(true);
+				}
+				else {
+					return attackUnderAbove(true);
+				}
+				break;
+			}
+
+			case Direction::above: {
+				return attackAbove(true);
+				break;
+			}
+
+			case Direction::under: {
+				return attackUnder(true);
+				break;
+			}
 			default:{
 				//should not get here - just for compilation
-				return (std::make_pair(-1, -1));
+				return (Coordinate(-1, -1, -1));
 				break;
 			}
 		}
 	}
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::handlDoneDirection(bool done)
+Coordinate BattleshipGameAlgoSmart::handlDoneDirection(bool done)
 {
 	if (done) {
 		resetAttack();
 		return attack();
 	}
 	else {
-		return (std::make_pair(-1, -1));
+		return (Coordinate(-1, -1, -1));
 	}
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackUp(bool done) {
 	//Check if can attack up
-	std::pair<int, int> currPos = *(attackHitPosVec.begin());
-	if (currPos.first - 1 >= 0) {
-		currPos.first--;
+	Coordinate currPos = *(attackHitPosVec.begin());
+	if (currPos.row - 1 >= 0) {
+		currPos.row--;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::up;
@@ -145,11 +179,11 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackUp(bool done) {
 	return handlDoneDirection(done);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackDown(bool done) {
 	//Check if can attack down
-	std::pair<int, int> currPos = *(attackHitPosVec.end() - 1);
-	if (currPos.first + 1 < rows) {
-		currPos.first++;
+	Coordinate currPos = *(attackHitPosVec.end() - 1);
+	if (currPos.row + 1 < rows) {
+		currPos.row++;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::down;
@@ -163,19 +197,19 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackDown(bool done) {
 
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackUpDown(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackUpDown(bool done) {
 	return attackBothDirections(&BattleshipGameAlgoSmart::attackUp, &BattleshipGameAlgoSmart::attackDown, done, Direction::down);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackDownUp(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackDownUp(bool done) {
 	return attackBothDirections(&BattleshipGameAlgoSmart::attackDown, &BattleshipGameAlgoSmart::attackUp, done, Direction::up);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackLeft(bool done) {
 	//Check if can attack left
-	std::pair<int, int> currPos = *(attackHitPosVec.begin());
-	if (currPos.second - 1 >= 0) {
-		currPos.second--;
+	Coordinate currPos = *(attackHitPosVec.begin());
+	if (currPos.col - 1 >= 0) {
+		currPos.col--;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::left;
@@ -189,11 +223,11 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackLeft(bool done) {
 	return handlDoneDirection(done);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackRight(bool done) {
 	//Check if can attack right
-	std::pair<int, int> currPos = *(attackHitPosVec.end() - 1);
-	if (currPos.second + 1 < cols) {
-		currPos.second++;
+	Coordinate currPos = *(attackHitPosVec.end() - 1);
+	if (currPos.col + 1 < cols) {
+		currPos.col++;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
 			lastAttackedDirection = Direction::right;
@@ -206,20 +240,63 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackRight(bool done) {
 	return handlDoneDirection(done);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackLeftRight(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackLeftRight(bool done) {
 	return attackBothDirections(&BattleshipGameAlgoSmart::attackLeft, &BattleshipGameAlgoSmart::attackRight, done, Direction::right);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackRightLeft(bool done) {
+Coordinate BattleshipGameAlgoSmart::attackRightLeft(bool done) {
 	return attackBothDirections(&BattleshipGameAlgoSmart::attackRight, &BattleshipGameAlgoSmart::attackLeft, done, Direction::left);
 }
 
-std::pair<int, int> BattleshipGameAlgoSmart::attackBothDirections(std::pair<int, int>(BattleshipGameAlgoSmart::*firstAttackDirection)(bool),
-	std::pair<int, int>(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir)
+Coordinate BattleshipGameAlgoSmart::attackAbove(bool done) {
+	//Check if can attack left
+	Coordinate currPos = *(attackHitPosVec.begin());
+	if (currPos.depth - 1 >= 0) {
+		currPos.depth--;
+		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
+		if (pos != attackPosVec.end()) {//can attack in currPos
+			lastAttackedDirection = Direction::left;
+			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
+			return currPos;
+		}
+	}
+
+	//In case we got here - can't attack left
+	return handlDoneDirection(done);
+}
+
+Coordinate BattleshipGameAlgoSmart::attackUnder(bool done) {
+	//Check if can attack right
+	Coordinate currPos = *(attackHitPosVec.end() - 1);
+	if (currPos.depth + 1 < depth) {
+		currPos.depth++;
+		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
+		if (pos != attackPosVec.end()) {//can attack in currPos
+			lastAttackedDirection = Direction::right;
+			attackPosVec.erase(pos);
+			adjustPosStartFrom1(currPos);
+			return currPos;
+		}
+	}
+	//In case we got here - can't attack right
+	return handlDoneDirection(done);
+}
+
+Coordinate BattleshipGameAlgoSmart::attackAboveUnder(bool done) {
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackAbove, &BattleshipGameAlgoSmart::attackUnder, done, Direction::right);
+}
+
+Coordinate BattleshipGameAlgoSmart::attackUnderAbove(bool done) {
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackUnder, &BattleshipGameAlgoSmart::attackAbove, done, Direction::left);
+}
+
+Coordinate BattleshipGameAlgoSmart::attackBothDirections(Coordinate(BattleshipGameAlgoSmart::*firstAttackDirection)(bool),
+	Coordinate(BattleshipGameAlgoSmart::*secondAttackDirection)(bool), bool done, Direction dir)
 {
 	//Check if can attack first direction
-	std::pair<int, int> currPos = (this->*firstAttackDirection)(false);
-	if (currPos != std::make_pair(-1, -1)) {
+	Coordinate currPos = (this->*firstAttackDirection)(false);
+	if (notMius1Coordinate(currPos)) {
 		return currPos;
 	}
 
@@ -228,22 +305,23 @@ std::pair<int, int> BattleshipGameAlgoSmart::attackBothDirections(std::pair<int,
 	return (this->*secondAttackDirection)(done);
 }
 
-
 void BattleshipGameAlgoSmart::resetAttack() {
 	attackHitPosVec.clear();
 	direction = Direction::none;
 	lastAttackedDirection = Direction::none;
-	checkDirections = { Direction::up, Direction::down, Direction::left, Direction::right };
+	checkDirections = { Direction::up, Direction::down, Direction::left, Direction::right, Direction::above, Direction::under };
 }
 
 void BattleshipGameAlgoSmart::removeShipsSurroundingPos()
 {
 	for (auto pos : attackHitPosVec)
 	{
-		std::vector<std::pair<int, int>> surroundings = {	std::make_pair(pos.first - 1, pos.second),
-															std::make_pair(pos.first + 1, pos.second),
-															std::make_pair(pos.first, pos.second - 1),
-															std::make_pair(pos.first, pos.second + 1)
+		std::vector<Coordinate> surroundings = {	Coordinate(pos.row - 1, pos.col, pos.depth),
+													Coordinate(pos.row + 1, pos.col, pos.depth),
+													Coordinate(pos.row, pos.col - 1, pos.depth),
+													Coordinate(pos.row, pos.col + 1, pos.depth),
+													Coordinate(pos.row, pos.col, pos.depth - 1),
+													Coordinate(pos.row, pos.col, pos.depth + 1)
 														};
 		for (auto surr : surroundings)
 		{
@@ -252,7 +330,7 @@ void BattleshipGameAlgoSmart::removeShipsSurroundingPos()
 	}
 }
 
-void BattleshipGameAlgoSmart::removePosFromAttackPosVec(const std::pair<int, int>& attackedPos)
+void BattleshipGameAlgoSmart::removePosFromAttackPosVec(const Coordinate& attackedPos)
 {
 	auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), attackedPos);
 	if (pos != attackPosVec.end()) {
@@ -260,10 +338,11 @@ void BattleshipGameAlgoSmart::removePosFromAttackPosVec(const std::pair<int, int
 	}
 }
 
-void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col, AttackResult result) {
-	row--;//adjust back to zero-based range
-	col--;//adjust back to zero-based range
-	std::pair<int, int> attackedPos = std::make_pair(row, col);
+void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, Coordinate move, AttackResult result) {
+	move.row--;//adjust back to zero-based range
+	move.col--;//adjust back to zero-based range
+	move.depth--;//adjust back to zero-based range
+	Coordinate attackedPos = move;
 	if (player == myPlayerNumber) {
 		switch (result) {
 			case AttackResult::Miss: {
@@ -279,8 +358,15 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 				else if (direction == Direction::horizontal && lastAttackedDirection == Direction::right) {
 					direction = Direction::left;
 				}
+				else if (direction == Direction::depth && lastAttackedDirection == Direction::under) {
+					direction = Direction::above;
+				}
+				else if (direction == Direction::depth && lastAttackedDirection == Direction::above) {
+					direction = Direction::under;
+				}
 				else if	((direction == Direction::up)|| (direction == Direction::down)|| 
-						(direction == Direction::left) || (direction == Direction::right)) {
+						(direction == Direction::left) || (direction == Direction::right) ||
+						(direction == Direction::above) || (direction == Direction::under)) {
 					resetAttack();
 				}
 				break;
@@ -295,8 +381,13 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 					(direction == Direction::none && lastAttackedDirection == Direction::right)) {
 					direction = Direction::horizontal;
 				}
+				else if ((direction == Direction::none && lastAttackedDirection == Direction::above) ||
+					(direction == Direction::none && lastAttackedDirection == Direction::under)) {
+					direction = Direction::depth;
+				}
 				//Update attackHitPosVec
-				if ((lastAttackedDirection == Direction::none) || (lastAttackedDirection == Direction::left) || (lastAttackedDirection == Direction::up)) {
+				if ((lastAttackedDirection == Direction::none) || (lastAttackedDirection == Direction::left) || 
+					(lastAttackedDirection == Direction::up) || (lastAttackedDirection == Direction::above)) {
 					attackHitPosVec.insert(attackHitPosVec.begin(), attackedPos);
 				}
 				else{
@@ -320,4 +411,11 @@ void BattleshipGameAlgoSmart::notifyOnAttackResult(int player, int row, int col,
 			removePosFromAttackPosVec(attackedPos);
 		}
 	}
+}
+
+bool BattleshipGameAlgoSmart::notMius1Coordinate(const Coordinate& coor)
+{
+	if ((coor.row != -1) || (coor.col != -1) || (coor.depth != -1)) return true;
+
+	return false;
 }

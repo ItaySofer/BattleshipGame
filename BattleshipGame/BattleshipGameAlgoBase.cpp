@@ -3,57 +3,74 @@
 BattleshipGameAlgoBase::BattleshipGameAlgoBase() {}
 BattleshipGameAlgoBase::~BattleshipGameAlgoBase() {}
 
-void BattleshipGameAlgoBase::setBoard(int player, const char** board, int numRows, int numCols) {
-	//Set myPlayerNumber
+void BattleshipGameAlgoBase::setPlayer(int player)
+{
 	myPlayerNumber = player;
-	rows = numRows;
-	cols = numCols;
+}
+
+void BattleshipGameAlgoBase::setBoard(const BoardData& board) {
+	rows = board.rows();
+	cols = board.cols();
+	depth = board.depth();
 
 	//Initialize boolean matrix
-	std::vector<std::vector<bool>> dontAttackMatrix;
-	std::vector<bool> rowvector;
-	for (int i = 0; i<rows; i++){
-		rowvector.clear();
-		for (int j = 0; j<cols; j++)
-			rowvector.push_back(false);
-		dontAttackMatrix.push_back(rowvector);
+	std::vector<std::vector<std::vector<bool>>> dontAttackMatrix;
+	
+	for (int k = 0; k < board.depth(); k++) {
+		std::vector<bool> rowvector;
+		for (int i = 0; i < board.rows(); i++) {
+			rowvector.clear();
+			for (int j = 0; j< board.cols(); j++)
+				rowvector.push_back(false);
+			dontAttackMatrix[k].push_back(rowvector);
+		}
 	}
 
+
 	//Find dontAttack positions
-	for (int i = 0; i < numRows; i++) {
-		for (int j = 0; j < numCols; j++) {
-			if (board[i][j] != ' ') {
-				dontAttackMatrix[i][j] = true;
-				if (i-1 >= 0)			dontAttackMatrix[i-1][j] = true;
-				if (j-1 >= 0)			dontAttackMatrix[i][j-1] = true;
-				if (j + 1 < numCols)	dontAttackMatrix[i][j+1] = true;
-				if (i + 1 < numRows)	dontAttackMatrix[i+1][j] = true;
+	for (int k = 0; k < board.depth(); k++) {
+		for (int i = 0; i < board.rows(); i++) {
+			for (int j = 0; j < board.cols(); j++) {
+				if (board.charAt(Coordinate(k,i,j)) != ' ') {
+					dontAttackMatrix[k][i][j] = true;
+					if (k - 1 >= 0)			dontAttackMatrix[k-1][i][j] = true;
+					if (i - 1 >= 0)			dontAttackMatrix[k][i - 1][j] = true;
+					if (j - 1 >= 0)			dontAttackMatrix[k][i][j - 1] = true;
+					if (j + 1 < board.cols())	dontAttackMatrix[k][i][j + 1] = true;
+					if (i + 1 < board.rows())	dontAttackMatrix[k][i + 1][j] = true;
+					if (k + 1 < board.depth())	dontAttackMatrix[k + 1][i][j] = true;
+				}
 			}
 		}
 	}
+
 	//Count attack positions
 	int count = 0;
-	for (int i = 0; i < numRows; i++) {
-		for (int j = 0; j < numCols; j++) {
-			if (!dontAttackMatrix[i][j]) count++;
+	for (int k = 0; k < board.depth(); k++) {
+		for (int i = 0; i < board.rows(); i++) {
+			for (int j = 0; j < board.cols(); j++) {
+				if (!dontAttackMatrix[k][i][j]) count++;
+			}
 		}
 	}
+
 	//Set attack positions vector
 	attackPosVec.reserve(count);
-	for (int i = 0; i < numRows; i++) {
-		for (int j = 0; j < numCols; j++) {
-			if (!dontAttackMatrix[i][j]) attackPosVec.push_back(std::make_pair(i, j));
+	for (int k = 0; k < board.depth(); k++) {
+		for (int i = 0; i < board.rows(); i++) {
+			for (int j = 0; j < board.cols(); j++) {
+				if (!dontAttackMatrix[k][i][j]) attackPosVec.push_back(Coordinate(k, i, j));
+			}
 		}
 	}
 	//Set attack positions vector's iterator to vector begin
 	attackPosVecIt = attackPosVec.begin();
 }
 
-bool BattleshipGameAlgoBase::init(const std::string& path) { return true;}
+void BattleshipGameAlgoBase::notifyOnAttackResult(int player, Coordinate move, AttackResult result) {}
 
-void BattleshipGameAlgoBase::notifyOnAttackResult(int player, int row, int col, AttackResult result) {}
-
-void BattleshipGameAlgoBase::adjustPosStartFrom1(std::pair<int, int>& pos) {
-	pos.first++;//adjust to one-based range
-	pos.second++;//adjust to one-based range
+void BattleshipGameAlgoBase::adjustPosStartFrom1(Coordinate& pos) {
+	pos.row++;//adjust to one-based range
+	pos.col++;//adjust to one-based range
+	pos.depth++;//adjust to one-based range
 }
