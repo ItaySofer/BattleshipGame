@@ -2,7 +2,7 @@
 #include "FileUtils.h"
 
 
-InputProcessor::InputProcessor(int argc, char* argv[])
+InputProcessor::InputProcessor(int argc, char* argv[]) : threads(NUM_THREADS)
 {
 	std::string arg1 = argc > 1 ? argv[1] : "";
 	std::string arg2 = argc > 2 ? argv[2] : "";
@@ -88,7 +88,7 @@ bool InputProcessor::tryExtractDllFileNames()
 		std::cout << "Missing algorithm (dll) files looking in path: " << wrongPath << " (needs at least two)" << std::endl;
 	}
 
-	return dllFilesPaths.size() < NUM_PLAYERS;
+	return dllFilesPaths.size() >= NUM_PLAYERS;
 }
 
 int InputProcessor::getDelayMs() const

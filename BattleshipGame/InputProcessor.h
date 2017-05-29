@@ -21,6 +21,7 @@ public:
 
 	std::vector<std::string> boardFilesPaths;
 	std::vector<std::string> dllFilesPaths;
+	int threads;
 
 	InputProcessor(int argc, char* argv[]);
 

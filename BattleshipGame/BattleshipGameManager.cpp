@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include "BattleshipGameManager.h"
+#include "MatchResult.h"
+
 /*#include "BattleshipGameAlgoFromFile.h"
 #include "BattleshipGameAlgoNaive.h"
 #include "BattleshipGameAlgoSmart.h"*/
@@ -51,7 +53,8 @@ void BattleshipGameManager::initPlayers()
 	//Send each player his board
 	sendBoard(true);//player A
 
-	sendBoard(false);//player B
+	sendBoard(false);//player B	
+	
 }
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){
@@ -88,10 +91,9 @@ void BattleshipGameManager::modifyBoard(char** board, bool isPlayerA){
 	}
 }
 
-void BattleshipGameManager::playGame() {
+MatchResult BattleshipGameManager::playGame() {
 	int currPlayer = STARTING_PLAYER;
 	int doneAttackingPlayers = 0;
-	graphicPrintBoard(gameBoard);
 	while (numActivePlayers() > 1 && doneAttackingPlayers < NUM_PLAYERS) {
 		std::pair<int, int> currAttack = (currPlayer % 2 == 0) ? playerA->attack() : playerB->attack();
 		
@@ -110,34 +112,29 @@ void BattleshipGameManager::playGame() {
 		int roundResult = handleMove(currPlayer, gameBoard, currAttack.first, currAttack.second);
 		if (std::abs(roundResult) > 1) {
 			// currPlayer sink
-			goSetPrintSleep(currAttack.first, currAttack.second, SINK_COLOR, '@', currPlayer);
 			int rowIndexDown = currAttack.first + 1, rowIndexUp = currAttack.first - 1, colIndexLeft = currAttack.second - 1, colIndexRight = currAttack.second + 1;
 			while (rowIndexDown < NUM_ROWS && gameBoard.matrix[rowIndexDown][currAttack.second] != ' ') {
 				if (gameBoard.matrix[rowIndexDown][currAttack.second] != '*') {
 					break;
 				}
-				goSetPrintSleep(rowIndexDown, currAttack.second, SINK_COLOR, '@', -1);
 				rowIndexDown++;
 			}
 			while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][currAttack.second] != ' ') {
 				if (gameBoard.matrix[rowIndexUp][currAttack.second] != '*') {
 					break;
 				}
-				goSetPrintSleep(rowIndexUp, currAttack.second, SINK_COLOR, '@', -1);
 				rowIndexUp--;
 			}
 			while (colIndexLeft >= 0 && gameBoard.matrix[currAttack.first][colIndexLeft] != ' ') {
 				if (gameBoard.matrix[currAttack.first][colIndexLeft] != '*') {
 					break;
 				}
-				goSetPrintSleep(currAttack.first, colIndexLeft, SINK_COLOR, '@', -1);
 				colIndexLeft--;
 			}
 			while (colIndexRight < NUM_COLS && gameBoard.matrix[currAttack.first][colIndexRight] != ' ') {
 				if (gameBoard.matrix[currAttack.first][colIndexRight] != '*') {
 					break;
 				}
-				goSetPrintSleep(currAttack.first, colIndexRight, SINK_COLOR, '@', -1);
 				colIndexRight++;
 			}
 			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Sink);
@@ -146,23 +143,18 @@ void BattleshipGameManager::playGame() {
 		}
 		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
-			goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
 			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Hit);
 			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Hit);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
 			// currPlayer miss
-			goSetPrintSleep(currAttack.first, currAttack.second, MISS_COLOR, 'o', currPlayer);
 			if (gameBoard.matrix[currAttack.first][currAttack.second] == ' ') {
-				goSetPrintSleep(currAttack.first, currAttack.second, MISS_COLOR, ' ', currPlayer);
 			}
 			else if (gameBoard.matrix[currAttack.first][currAttack.second] == '*') {
 				if (isLonely(gameBoard, currAttack.first, currAttack.second)) {
-					goSetPrintSleep(currAttack.first, currAttack.second, SINK_COLOR, '@', currPlayer);
 				}
 				else {
-					goSetPrintSleep(currAttack.first, currAttack.second, HIT_COLOR, '*', currPlayer);
 				}
 			}
 			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Miss);
@@ -171,25 +163,25 @@ void BattleshipGameManager::playGame() {
 		}
 	}
 	system("cls");
-	gotoxy(0, 0);
-	setTextColor(MISS_COLOR);
 	// game ended, announce winner if exists and scores
+	MatchResult res;
 	if (isActivePlayer(0) && !isActivePlayer(1)) {
-		std::cout << "Player A won\n";
+		res.whoWon = 'A';
 	}
 	else if (isActivePlayer(1) && !isActivePlayer(0)) {
-		std::cout << "Player B won\n";
+		res.whoWon = 'B';
 	}
-	std::cout << "Points:\n";
-	std::cout << "Player A: " << scores[0] << "\n";
-	std::cout << "Player B: " << scores[1] << "\n";
+
+	res.playerAScore = scores[0];
+	res.playerBScore = scores[1];
 
 	// free dynamic libs
 	/*for (int i = 0; i < NUM_PLAYERS; i++) {
 		FreeLibrary(hInstances[i]);
 	}*/
 
-	Sleep(2000);	// see results
+	return res;
+	
 };
 
 bool BattleshipGameManager::readBoardFileToMatrix(const std::string& boardFile){
@@ -533,93 +525,4 @@ int BattleshipGameManager::numActivePlayers() const{
 		}
 	}
 	return count;
-}
-
-void BattleshipGameManager::graphicPrintBoard(const BattleBoard& gameBoard) const{
-	if (inputProcessor.getQuiet()) {
-		// no printing is required
-		return;
-	}
-
-	// disable blinking cursor
-	ShowConsoleCursor(false);
-
-	// clear console
-	system("cls");
-
-	// go to (0,0)
-	gotoxy(0, 0);
-
-	// print board with animations
-	std::cout << "   | ";
-	for (int k = 0; k < 9; k++) {
-		std::cout << k + 1 << " | ";
-	}
-	for (int k = 9; k < gameBoard.C - 1; k++) {
-		std::cout << k + 1;
-	}
-	std::cout << gameBoard.C << "|\n";
-	std::cout << "   |";
-	for (int k = 0; k < gameBoard.C; k++) {
-		std::cout <<"---|";
-	}
-	std::cout << "\n";
-	for (int i = 0; i < gameBoard.R; i++) {
-		//setTextColor(MISS_COLOR);
-		if (i < 9) {
-			std::cout << (i + 1) << "  | ";
-		}
-		else {
-			std::cout << (i + 1) << " | ";
-		}
-		for (int j = 0; j < gameBoard.C; j++) {
-			if (islower(gameBoard.matrix[i][j])) {
-				setTextColor(B_COLOR);
-			}
-			else {
-				setTextColor(A_COLOR);
-			}
-			std::cout << gameBoard.matrix[i][j];
-			setTextColor(MISS_COLOR);
-			std::cout << " | ";
-		}
-		std::cout << "\n";
-	}
-}
-
-void BattleshipGameManager::gotoxy(int x, int y)
-{
-	HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
-	COORD c = { (short)x, (short)y };
-	SetConsoleCursorPosition(h, c);
-}
-
-void BattleshipGameManager::setTextColor(int color) {
-	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleTextAttribute(hConsole, color);
-}
-
-void BattleshipGameManager::ShowConsoleCursor(bool showFlag) {
-	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_CURSOR_INFO     cursorInfo;
-	GetConsoleCursorInfo(out, &cursorInfo);
-	cursorInfo.bVisible = showFlag; // set the cursor visibility
-	SetConsoleCursorInfo(out, &cursorInfo);
-}
-
-void BattleshipGameManager::goSetPrintSleep(int row, int col, int color, char output, int player) const{
-	// below constants are used only for this function, thus MACROS definitions are redundant
-	if (player >= 0) {
-		gotoxy(48, 3);
-		setTextColor(MISS_COLOR);
-		std::cout << "PLAYER " << (player % 2 == 0 ? "A" : "B") << ": (" << (row + 1) << "," << (col + 1) << ")  ";
-	}
-	else {
-		gotoxy(48, 3);
-		std::cout << "                         ";
-	}
-	gotoxy(5 + 4*col, row+2);
-	setTextColor(color);
-	std::cout << output;
-	Sleep(inputProcessor.getDelayMs());
 }

@@ -18,7 +18,10 @@ class BattleshipCompetitionManager {
 
 public:
 	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc) {}
-	~BattleshipCompetitionManager() {}
+	~BattleshipCompetitionManager()
+	{
+		//TODO: release all memory if needed
+	}
 
 	BattleshipCompetitionManager(const BattleshipCompetitionManager&) = delete;
 	BattleshipCompetitionManager& operator=(const BattleshipCompetitionManager&) = delete;
@@ -37,12 +40,17 @@ private:
 	std::vector<std::pair<int, int>> getPairsOneOrder();
 	void barrleshiftClockwise(std::vector<int>& vec, bool firstFixed);
 	void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
-
+	void initRoundsTracking();
+	void handleGameResult(Match match, MatchResult matchResult);
+	bool allPlayersPlayedInCurrentRound();
+	void printCurrentScores();
 
 	InputProcessor& inputProcessor;
 	std::vector<BattleBoard> gameBoards;
 	std::vector<IBattleshipGameAlgo*> players;
 	std::vector<Match> matches;
+	std::vector<int> playerRounds;
+	int currRound;
 
 };
 

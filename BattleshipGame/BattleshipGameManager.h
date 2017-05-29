@@ -11,15 +11,16 @@
 #include "InputProcessor.h"
 #include <windows.h>
 #include <stdlib.h>
+#include "MatchResult.h"
 
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(InputProcessor& inputProc) : inputProcessor(inputProc), playerA(nullptr), playerB(nullptr) {}
+	BattleshipGameManager(BattleBoard board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerA(playerA), playerB(playerB) {}
 	~BattleshipGameManager() {
 		delete playerA;
 		delete playerB;
-
+		
 		// Free dynamic libs
 		for (int i = 0; i < NUM_PLAYERS; i++) {
 			FreeLibrary(hInstances[i]);
@@ -30,7 +31,7 @@ public:
 	BattleshipGameManager& operator=(const BattleshipGameManager&) = delete;
 
 	void initGame(); //initiates board, calls players' "setBoard" methods
-	void playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
+	MatchResult playGame(); //runs game, notifies players about move results. Continiusly checks game status and ends it when needed.
 					 //Output propper messages ("Player _ won. Points: ...")
 
 	friend class BattleshipGameManagerTest;
@@ -78,12 +79,6 @@ private:
 	static bool isLonely(const BattleBoard& gameBoard, int row, int col);
 	int handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col);
 	int numActivePlayers() const;
-	void graphicPrintBoard(const BattleBoard& gameBoard)const;
-	static void gotoxy(int x, int y);
-	static void setTextColor(int color);
-	static void ShowConsoleCursor(bool showFlag);
-
-	void goSetPrintSleep(int row, int col, int color, char output, int player) const;
 
 	//Variables
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),
@@ -104,7 +99,6 @@ private:
 
 	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
 
-	InputProcessor& inputProcessor;
 	BattleBoard gameBoard;
 	IBattleshipGameAlgo* playerA;
 	IBattleshipGameAlgo* playerB;

@@ -7,8 +7,6 @@
 #include "FileUtilsTest.h"
 #include "BattleshipCompetitionManager.h"
 
-#define TEST false
-
 int main(int argc, char* argv[])
 {
 	if (TEST) {
@@ -19,7 +17,6 @@ int main(int argc, char* argv[])
 		BattleshipGameManagerTest::runTests();*/
 		//brake to see test results;
 	} else {
-	
 		InputProcessor inputProcessor(argc, argv);
 		if (!inputProcessor.validateFolderPath())
 		{
@@ -29,11 +26,11 @@ int main(int argc, char* argv[])
 
 		if (!battleshipCompetitionManager.initCompetition())
 		{
-			Sleep(7000);
 			return -1;
 		}
+
 		battleshipCompetitionManager.startCompetition();
-		Sleep(2000);
 	}
 }
+
 
