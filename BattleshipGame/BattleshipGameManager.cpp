@@ -244,7 +244,7 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, Co
 
 	// if we reached here, that means a ship was hit
 	bool lowerFlag = islower(c) == 0 ? false : true;
-	gameBoard.matrix[coor.row][coor.col][coor.depth] = '*';		// mark coordinate as a hit
+	gameBoard.matrix[coor.depth][coor.row][coor.col] = '*';		// mark coordinate as a hit
 	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
 		if (lonelyFlag) {
 			// report sink
