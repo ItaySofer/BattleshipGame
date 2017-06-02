@@ -32,7 +32,7 @@ void BattleshipGameManager::sendBoard(bool isPlayerA){
 	}
 	
 	modifyBoard(board, isPlayerA);
-	IBattleshipGameAlgo* player = isPlayerA ? playerA : playerB;
+	std::unique_ptr<IBattleshipGameAlgo>& player = isPlayerA ? playerA : playerB;
 	int playerNum = isPlayerA ? 0 : 1;
 	player->setPlayer(playerNum);
 

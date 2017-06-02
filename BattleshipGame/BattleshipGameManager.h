@@ -12,14 +12,13 @@
 #include <windows.h>
 #include <stdlib.h>
 #include "MatchResult.h"
+#include <memory>
 
 class BattleshipGameManager {
 
 public:
 	BattleshipGameManager(BattleBoard board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerA(playerA), playerB(playerB) {}
 	~BattleshipGameManager() {
-		delete playerA;
-		delete playerB;
 		
 //		// Free dynamic libs //TODO: move to the right place in code
 //		for (int i = 0; i < NUM_PLAYERS; i++) {
@@ -56,8 +55,8 @@ private:
 	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
 
 	BattleBoard gameBoard;
-	IBattleshipGameAlgo* playerA;
-	IBattleshipGameAlgo* playerB;
+	std::unique_ptr<IBattleshipGameAlgo> playerA;
+	std::unique_ptr<IBattleshipGameAlgo> playerB;
 	int numShips[NUM_PLAYERS] = { VALID_SHIP_NUM , VALID_SHIP_NUM };
 	int scores[NUM_PLAYERS] = {0, 0};
 };

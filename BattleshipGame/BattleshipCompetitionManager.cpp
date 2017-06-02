@@ -34,7 +34,7 @@ void BattleshipCompetitionManager::startCompetition()
 		Match match = matches.at(i);
 		gamesPool.enqueue([match, &resultsPool, this]()
 		{
-			BattleshipGameManager manager(this->gameBoards.at(match.boardIndex), this->players.at(match.playerAIndex), this->players.at(match.playerBIndex));//TODO: init game manager with correct types of board and players
+			BattleshipGameManager manager(this->gameBoards.at(match.boardIndex), this->players.at(match.playerAIndex)(), this->players.at(match.playerBIndex)());
 			manager.initGame();
 			MatchResult matchResult = manager.playGame();
 			resultsPool.enqueue([match, matchResult, this]()
@@ -400,7 +400,6 @@ void BattleshipCompetitionManager::readPlayers()
 {
 	//reads all dll into players vector (as unique_ptrs)
 	std::vector<HINSTANCE> hInstances;
-	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 
 	for (int currDllPath = 0; currDllPath < inputProcessor.dllFilesPaths.size(); currDllPath++) {
 		// Load dynamic library
@@ -416,8 +415,8 @@ void BattleshipCompetitionManager::readPlayers()
 		if (!initPlayerFunc) {
 			continue;
 		}
-		IBattleshipGameAlgo* player = initPlayerFunc();
-		players.push_back(player);
+
+		players.push_back(initPlayerFunc);
 
 		std::string currPlayerDllPath = inputProcessor.dllFilesPaths.at(currDllPath);
 		std::string currPlayerName = dllPathToPlayerName(currPlayerDllPath);
@@ -466,7 +465,7 @@ std::vector<std::pair<int, int>> BattleshipCompetitionManager::computePairsForBo
 std::vector<std::pair<int, int>> BattleshipCompetitionManager::getPairsOneOrder()
 {
 	std::vector<int> playersNum;
-	int size = players.size();
+	size_t size = players.size();
 	for (int i = 0; i < size; i++)
 	{
 		playersNum.push_back(i);
@@ -491,7 +490,7 @@ void BattleshipCompetitionManager::barrleshiftClockwise(std::vector<int>& vec, b
 {
 	int firstIndex = firstFixed ? 1 : 0;
 	int last = vec.at(vec.size() - 1);
-	for (int i = vec.size() - 1; i > firstIndex; i--)
+	for (size_t i = vec.size() - 1; i > firstIndex; i--)
 	{
 		vec.at(i) = vec.at(i - 1);
 	}
@@ -500,7 +499,7 @@ void BattleshipCompetitionManager::barrleshiftClockwise(std::vector<int>& vec, b
 
 void BattleshipCompetitionManager::addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs)
 {
-	int firstHalfSize = pairs.size();
+	size_t firstHalfSize = pairs.size();
 	for (int i = 0; i < firstHalfSize; i++)
 	{
 		std::pair<int, int> pair = pairs.at(i);

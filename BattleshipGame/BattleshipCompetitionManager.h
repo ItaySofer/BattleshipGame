@@ -16,11 +16,12 @@
 #include "MatchResult.h"
 #include "PlayerStatus.h"
 
+typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 
 class BattleshipCompetitionManager {
 
 public:
-	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc) {}
+	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc), currRound(0) {}
 	~BattleshipCompetitionManager()
 	{
 		//TODO: release all memory if needed
@@ -83,7 +84,7 @@ private:
 
 	InputProcessor& inputProcessor;
 	std::vector<BattleBoard> gameBoards;
-	std::vector<IBattleshipGameAlgo*> players;
+	std::vector<GetAlgorithmFuncType> players;
 	std::vector<Match> matches;
 	std::vector<PlayerStatus> playersStatus;
 	int currRound;
