@@ -13,6 +13,9 @@
 #include <stdlib.h>
 #include <memory>
 #include "Match.h"
+#include "MatchResult.h"
+#include "PlayerStatus.h"
+
 
 class BattleshipCompetitionManager {
 
@@ -68,12 +71,12 @@ private:
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	void readPlayers();
+	std::string dllPathToPlayerName(const std::string& dllPath);
 	void buildCompetition();
 	std::vector<std::pair<int, int>> computePairsForBoard();
 	std::vector<std::pair<int, int>> getPairsOneOrder();
 	void barrleshiftClockwise(std::vector<int>& vec, bool firstFixed);
 	void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
-	void initRoundsTracking();
 	void handleGameResult(Match match, MatchResult matchResult);
 	bool allPlayersPlayedInCurrentRound();
 	void printCurrentScores();
@@ -82,7 +85,7 @@ private:
 	std::vector<BattleBoard> gameBoards;
 	std::vector<IBattleshipGameAlgo*> players;
 	std::vector<Match> matches;
-	std::vector<int> playerRounds;
+	std::vector<PlayerStatus> playersStatus;
 	int currRound;
 
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),

@@ -1,6 +1,8 @@
 #include "BattleshipCompetitionManager.h"
 #include "ThreadPool.h"
 #include "BattleshipGameManager.h"
+#include "PlayerStatus.h"
+#include <iomanip>
 
 
 bool BattleshipCompetitionManager::initCompetition()
@@ -18,7 +20,7 @@ bool BattleshipCompetitionManager::initCompetition()
 
 	buildCompetition();
 
-	initRoundsTracking();
+	currRound = 1;
 
 	return true;
 }
@@ -416,7 +418,26 @@ void BattleshipCompetitionManager::readPlayers()
 		}
 		IBattleshipGameAlgo* player = initPlayerFunc();
 		players.push_back(player);
+
+		std::string currPlayerDllPath = inputProcessor.dllFilesPaths.at(currDllPath);
+		std::string currPlayerName = dllPathToPlayerName(currPlayerDllPath);
+		playersStatus.push_back(PlayerStatus(currPlayerName));
 	}
+}
+
+std::string BattleshipCompetitionManager::dllPathToPlayerName(const std::string& dllPath)
+{
+	std::vector<std::string> words;
+	StringUtils::split(dllPath, ".", words);
+
+	if (words.size() >= 3)
+	{
+		return words.at(words.size() - 3);
+	} else
+	{
+		return "MisformattedDllName";
+	}
+
 }
 
 void BattleshipCompetitionManager::buildCompetition()
@@ -487,20 +508,31 @@ void BattleshipCompetitionManager::addPairsOtherOrder(std::vector<std::pair<int,
 	}
 }
 
-void BattleshipCompetitionManager::initRoundsTracking()
-{
-	currRound = 1;
-	for (int i = 0; i < players.size(); i++)
-	{
-		playerRounds.push_back(0);
-	}
-}
-
 void BattleshipCompetitionManager::handleGameResult(Match match, MatchResult matchResult)
 {
-	playerRounds.at(match.playerAIndex)++;
-	playerRounds.at(match.playerBIndex)++;
-	//TODO: save players scores
+	playersStatus.at(match.playerAIndex).round++;
+	playersStatus.at(match.playerBIndex).round++;
+
+	if (matchResult.whoWon == 'A')
+	{
+		playersStatus.at(match.playerAIndex).wins++;
+		playersStatus.at(match.playerBIndex).loses++;
+	}
+	else if (matchResult.whoWon == 'B') 
+	{
+		playersStatus.at(match.playerBIndex).wins++;
+		playersStatus.at(match.playerAIndex).loses++;
+	}
+
+	playersStatus.at(match.playerAIndex).percent = playersStatus.at(match.playerAIndex).wins / (playersStatus.at(match.playerAIndex).wins + playersStatus.at(match.playerAIndex).loses);
+	playersStatus.at(match.playerBIndex).percent = playersStatus.at(match.playerBIndex).wins / (playersStatus.at(match.playerBIndex).wins + playersStatus.at(match.playerBIndex).loses);
+
+	playersStatus.at(match.playerAIndex).pointsFor += matchResult.playerAScore;
+	playersStatus.at(match.playerBIndex).pointsFor += matchResult.playerBScore;
+
+	playersStatus.at(match.playerAIndex).pointsAgainst += matchResult.playerBScore;
+	playersStatus.at(match.playerBIndex).pointsAgainst += matchResult.playerAScore;
+
 	if (allPlayersPlayedInCurrentRound())
 	{
 		printCurrentScores();
@@ -510,9 +542,9 @@ void BattleshipCompetitionManager::handleGameResult(Match match, MatchResult mat
 
 bool BattleshipCompetitionManager::allPlayersPlayedInCurrentRound()
 {
-	for (int i = 0; i < playerRounds.size(); i++)
+	for (int i = 0; i < playersStatus.size(); i++)
 	{
-		if (playerRounds.at(i) < currRound)
+		if (playersStatus.at(i).round < currRound)
 		{
 			return false;
 		}
@@ -523,7 +555,17 @@ bool BattleshipCompetitionManager::allPlayersPlayedInCurrentRound()
 
 void BattleshipCompetitionManager::printCurrentScores()
 {
-	//TODO: print players scores
+	std::vector<PlayerStatus> sorted = playersStatus;
+	std::sort(sorted.begin(), sorted.end(), [](PlayerStatus& first, PlayerStatus& second) {return first.percent > second.percent; });
+
+	std::cout << std::endl << std::endl;
+	std::cout << std::setw(8) << "#" << std::setw(24) << "Team Name" << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
+
+	for (int i = 0; i < playersStatus.size(); i++)
+	{
+		PlayerStatus currPlayer = playersStatus.at(i);
+		std::cout << std::setw(8) << i + 1 << "." << std::setw(24) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(3) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
+	}
 }
 
 
