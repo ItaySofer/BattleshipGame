@@ -22,52 +22,28 @@ void BattleshipGameManager::initPlayers()
 }
 
 void BattleshipGameManager::sendBoard(bool isPlayerA){
-	char*** board = new char**[gameBoard.depth()];
-	for (int k = 0 ; k < gameBoard.depth() ; k++) {
-		for (int i = 0; i < gameBoard.rows(); i++)
-		{
-			board[k][i] = new char[gameBoard.cols()];
-			std::memcpy(board[k][i], gameBoard.matrix[k][i].c_str(), gameBoard.cols());
-		}
-	}
-	
-	modifyBoard(board, isPlayerA);
+
 	std::unique_ptr<IBattleshipGameAlgo>& player = isPlayerA ? playerA : playerB;
 	int playerNum = isPlayerA ? 0 : 1;
 	player->setPlayer(playerNum);
-
-	BattleBoard battleBoard;//TODO: consider init battleBoard with copy constructor from gameBoard, and dont use char*** board
-	for (int k = 0; k < gameBoard.depth(); k++){
-		for (int i = 0; i < gameBoard.rows(); i++) {
-			for (int j = 0; j < gameBoard.cols(); j++) {
-				battleBoard.matrix[k][i][j] = board[k][i][j];
-			}
-		}
-	}
-	player->setBoard(battleBoard);
-
-	//Delete board
-	for (int k = 0; k < gameBoard.depth(); k++)
+	if (isPlayerA)
 	{
-		for (int i = 0; i < gameBoard.rows(); i++)
-		{
-			delete[] board[k][i];
-		}
-		delete[] board[k];
+		player->setBoard(playerABoard);
+	} else
+	{
+		player->setBoard(playerBBoard);
 	}
-	delete[] board;
-
 }
 
-void BattleshipGameManager::modifyBoard(char*** board, bool isPlayerA) {
+void BattleshipGameManager::modifyBoard(BattleBoard& board, bool isPlayerA) {
 	for (int k = 0; k < gameBoard.depth(); k++) {
 		for (int i = 0; i < gameBoard.rows(); i++) {
 			for (int j = 0; j < gameBoard.cols(); j++) {
-				if (board[k][i][j] != ' ') {
+				if (board.matrix[k][i][j] != ' ') {
 					char* pos = std::find(std::begin(typeArr), std::end(typeArr), gameBoard.matrix[k][i][j]);
 					if (((std::distance(typeArr, pos) < NUM_OF_SHIP_TYPES) && !isPlayerA) ||
 						((std::distance(typeArr, pos) >= NUM_OF_SHIP_TYPES) && isPlayerA)) {
-						board[k][i][j] = ' ';
+						board.matrix[k][i][j] = ' ';
 					}
 				}
 			}

@@ -17,7 +17,11 @@
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(BattleBoard board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerA(playerA), playerB(playerB) {}
+	BattleshipGameManager(BattleBoard& board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerABoard(board), playerBBoard(board), playerA(playerA), playerB(playerB)
+	{
+		modifyBoard(playerABoard, true);
+		modifyBoard(playerBBoard, false);
+	}
 	~BattleshipGameManager() {
 		
 //		// Free dynamic libs //TODO: move to the right place in code
@@ -40,7 +44,7 @@ private:
 	//Functions
 	void initPlayers();
 	void sendBoard(bool isPlayerA);
-	void modifyBoard(char*** board, bool isPlayerA);
+	void modifyBoard(BattleBoard& board, bool isPlayerA);
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex) const;
@@ -55,6 +59,8 @@ private:
 	int sinkScoreArr[NUM_OF_SHIP_TYPES] = { 8,7,3,2 };
 
 	BattleBoard gameBoard;
+	BattleBoard playerABoard;
+	BattleBoard playerBBoard;
 	std::unique_ptr<IBattleshipGameAlgo> playerA;
 	std::unique_ptr<IBattleshipGameAlgo> playerB;
 	int numShips[NUM_PLAYERS] = { VALID_SHIP_NUM , VALID_SHIP_NUM };

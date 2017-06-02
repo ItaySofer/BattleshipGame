@@ -21,18 +21,18 @@ public:
 		_cols = board.cols();
 		_depth = board.depth();
 
+		matrix = new std::string*[_depth];
 		for (int k = 0; k < _depth; k++) {
+			matrix[k] = new std::string[_rows];
 			for (int i = 0; i < _rows; i++) {
-				for (int j = 0; j < _cols; j++) {
-					matrix[k][i][j] = board.charAt(Coordinate(i,j,k));//board.matrix[k][i][j];
-				}
+				matrix[k][i] = board.matrix[k][i];
 			}
 		}
 	}
 
 	BattleBoard& operator=(const BattleBoard&) = delete;
 
-	~BattleBoard() override//TODO: need to be modified to 3D deletion?
+	~BattleBoard() override
 	{
 		if (matrix != nullptr)
 		{
@@ -44,11 +44,12 @@ public:
 				}
 			}
 		}
+		delete[] matrix;
 	}
 
 	char charAt(Coordinate c) const override //returns only selected players' chars
 	{
-		return matrix[c.depth][c.row][c.col];//TODO: do we need to check witch player called charAt first?
+		return matrix[c.depth][c.row][c.col];
 	}
 
 	void setRows(int rows) { _rows = rows; }
