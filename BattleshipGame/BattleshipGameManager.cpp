@@ -13,43 +13,7 @@ void BattleshipGameManager::initGame(){
 };
 
 void BattleshipGameManager::initPlayers()
-{
-//	HANDLE dir;
-//	WIN32_FIND_DATAA fileData;
-//	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
-//	std::string path = inputProcessor.folderPath;
-//	std::string s = "\\*.dll";
-//	int dllCounter = 0;
-//	GetAlgorithmFuncType dllArr[NUM_PLAYERS] = { NULL, NULL };
-//	dir = FindFirstFileA((path + s).c_str(), &fileData);
-//	do {
-//		if (dir != INVALID_HANDLE_VALUE) {
-//			std::string fileName = fileData.cFileName;
-//			std::string fullFileName = path + "\\" + fileName;
-//
-//			// Load dynamic library
-//			HINSTANCE hDll = LoadLibraryA(fullFileName.c_str());
-//			if (!hDll) {
-//				std::cout << "1 - Cannot load dll: " << fullFileName << std::endl;
-//				return false;
-//			}
-//			// Get function pointer
-//			dllArr[dllCounter] = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
-//			hInstances[dllCounter] = hDll;
-//			if (!dllArr[dllCounter++])
-//			{
-//				std::cout << "2 - Cannot load dll: " << fullFileName << std::endl;
-//				return false;
-//			}
-//		}
-//	} while (dllCounter < NUM_PLAYERS && FindNextFileA(dir, &fileData));
-//	if (dllCounter < NUM_PLAYERS) {
-//		std::cout << "Missing an algorithm (dll) file looking in path: " << path << std::endl;
-//		return false;
-//	}
-//	playerA = dllArr[0]();
-//	playerB = dllArr[1]();
-	
+{	
 	//Send each player his board
 	sendBoard(true);//player A
 
@@ -115,74 +79,42 @@ MatchResult BattleshipGameManager::playGame() {
 	int currPlayer = STARTING_PLAYER;
 	int doneAttackingPlayers = 0;
 	while (numActivePlayers() > 1 && doneAttackingPlayers < NUM_PLAYERS) {
-		std::pair<int, int> currAttack = (currPlayer % 2 == 0) ? playerA->attack() : playerB->attack();
-		
-		if (currAttack.first == -1 && currAttack.second == -1) {
+		Coordinate currAttack = (currPlayer % 2 == 0) ? playerA->attack() : playerB->attack();
+		Coordinate zeroIndexed = Coordinate(currAttack.row - 1, currAttack.col - 1, currAttack.depth - 1);
+		if (currAttack.row == -1 && currAttack.col == -1 && currAttack.depth == -1) {
 			// currPlayer is done attacking
 			doneAttackingPlayers += 1;
 			currPlayer += 1;
 			continue;
 		}
-		currAttack.first--;
-		currAttack.second--;
-		if (currAttack.first < 0 || currAttack.second < 0 || currAttack.first >= NUM_ROWS || currAttack.second >= NUM_COLS) {
+		currAttack.row--;
+		currAttack.col--;
+		currAttack.depth--;
+		if (zeroIndexed.row < 0 || zeroIndexed.col < 0 || zeroIndexed.depth < 0 || zeroIndexed.row >= gameBoard.rows() ||
+			zeroIndexed.col >= gameBoard.cols() || zeroIndexed.depth >= gameBoard.depth()) {
 			// illegal attack
 			continue;
 		}
-		int roundResult = handleMove(currPlayer, gameBoard, currAttack.first, currAttack.second);
+		int roundResult = handleMove(currPlayer, gameBoard, zeroIndexed);
 		if (std::abs(roundResult) > 1) {
 			// currPlayer sink
-			int rowIndexDown = currAttack.first + 1, rowIndexUp = currAttack.first - 1, colIndexLeft = currAttack.second - 1, colIndexRight = currAttack.second + 1;
-			while (rowIndexDown < NUM_ROWS && gameBoard.matrix[rowIndexDown][currAttack.second] != ' ') {
-				if (gameBoard.matrix[rowIndexDown][currAttack.second] != '*') {
-					break;
-				}
-				rowIndexDown++;
-			}
-			while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][currAttack.second] != ' ') {
-				if (gameBoard.matrix[rowIndexUp][currAttack.second] != '*') {
-					break;
-				}
-				rowIndexUp--;
-			}
-			while (colIndexLeft >= 0 && gameBoard.matrix[currAttack.first][colIndexLeft] != ' ') {
-				if (gameBoard.matrix[currAttack.first][colIndexLeft] != '*') {
-					break;
-				}
-				colIndexLeft--;
-			}
-			while (colIndexRight < NUM_COLS && gameBoard.matrix[currAttack.first][colIndexRight] != ' ') {
-				if (gameBoard.matrix[currAttack.first][colIndexRight] != '*') {
-					break;
-				}
-				colIndexRight++;
-			}
-			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Sink);
-			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Sink);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Sink);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Sink);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (std::abs(roundResult) == 1) {
 			// currPlayer hit
-			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Hit);
-			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Hit);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Hit);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Hit);
 			currPlayer += (roundResult > 0 || doneAttackingPlayers > 0) ? 0 : 1;
 		}
 		else if (roundResult == 0) {
 			// currPlayer miss
-			if (gameBoard.matrix[currAttack.first][currAttack.second] == ' ') {
-			}
-			else if (gameBoard.matrix[currAttack.first][currAttack.second] == '*') {
-				if (isLonely(gameBoard, currAttack.first, currAttack.second)) {
-				}
-				else {
-				}
-			}
-			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Miss);
-			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack.first + 1, currAttack.second + 1, AttackResult::Miss);
+			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Miss);
+			playerB->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Miss);
 			currPlayer += doneAttackingPlayers > 0 ? 0 : 1;
 		}
 	}
-	system("cls");
 	// game ended, announce winner if exists and scores
 	MatchResult res;
 	if (isActivePlayer(0) && !isActivePlayer(1)) {
@@ -195,13 +127,7 @@ MatchResult BattleshipGameManager::playGame() {
 	res.playerAScore = scores[0];
 	res.playerBScore = scores[1];
 
-	// free dynamic libs
-	/*for (int i = 0; i < NUM_PLAYERS; i++) {
-		FreeLibrary(hInstances[i]);
-	}*/
-
 	return res;
-	
 };
 
 int BattleshipGameManager::getSinkScoreByChar(char c) {
@@ -217,39 +143,87 @@ bool BattleshipGameManager::isActivePlayer(int playerIndex) const{
 	return numShips[playerIndex] > 0;
 }
 
-bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, int row, int col) {
+bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate coor) {
+	int row = coor.row, col = coor.col, depth = coor.depth;
 	int rowIndexDown = row + 1, rowIndexUp = row - 1, colIndexLeft = col - 1, colIndexRight = col + 1;
-	while (rowIndexDown < NUM_ROWS && gameBoard.matrix[rowIndexDown][col] != ' ') {
-		if (gameBoard.matrix[rowIndexDown][col] != '*') {
+	int depthIndexBack = depth - 1, depthIndexFront = depth + 1;
+	Coordinate travel = Coordinate(row, col, depth);
+	char travelChar;
+	while (rowIndexDown < gameBoard.rows()) {
+		travel.row = rowIndexDown;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
 			return false;
 		}
 		rowIndexDown++;
 	}
-	while (rowIndexUp >= 0 && gameBoard.matrix[rowIndexUp][col] != ' ') {
-		if (gameBoard.matrix[rowIndexUp][col] != '*') {
+	while (rowIndexUp >= 0) {
+		travel.row = rowIndexUp;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
 			return false;
 		}
 		rowIndexUp--;
 	}
-	while (colIndexLeft >= 0 && gameBoard.matrix[row][colIndexLeft] != ' ') {
-		if (gameBoard.matrix[row][colIndexLeft] != '*') {
+	travel.row = row;
+	while (colIndexLeft >= 0) {
+		travel.col = colIndexLeft;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
 			return false;
 		}
 		colIndexLeft--;
 	}
-	while (colIndexRight < NUM_COLS && gameBoard.matrix[row][colIndexRight] != ' ') {
-		if (gameBoard.matrix[row][colIndexRight] != '*') {
+	while (colIndexRight < gameBoard.cols()) {
+		travel.col = colIndexRight;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
 			return false;
 		}
 		colIndexRight++;
 	}
+	travel.col = col;
+	while (depthIndexBack >= 0) {
+		travel.depth = depthIndexBack;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
+			return false;
+		}
+		depthIndexBack--;
+	}
+	while (depthIndexFront < gameBoard.depth()) {
+		travel.depth = depthIndexFront;
+		travelChar = gameBoard.charAt(travel);
+		if (travelChar == ' ') {
+			break;
+		}
+		if (travelChar != '*') {
+			return false;
+		}
+		depthIndexFront++;
+	}
 	return true;
 }
 
-int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, int row, int col) {
-	char c = gameBoard.matrix[row][col];
+int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, Coordinate coor) {
+	char c = gameBoard.charAt(coor);
 	bool starFlag = c == '*';
-	bool lonelyFlag = isLonely(gameBoard, row, col);
+	bool lonelyFlag = isLonely(gameBoard, coor);
 	int sinkScore = getSinkScoreByChar(c);
 	if (sinkScore == 0) {
 		if (starFlag) {
@@ -270,7 +244,7 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, in
 
 	// if we reached here, that means a ship was hit
 	bool lowerFlag = islower(c) == 0 ? false : true;
-	gameBoard.matrix[row][col] = '*';		// mark coordinate as a hit
+	gameBoard.matrix[coor.row][coor.col][coor.depth] = '*';		// mark coordinate as a hit
 	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
 		if (lonelyFlag) {
 			// report sink
@@ -307,7 +281,7 @@ int BattleshipGameManager::numActivePlayers() const{
 	int count = 0;
 	for (int i = 0; i < NUM_PLAYERS; i++) {
 		if (isActivePlayer(i)) {
-			count += 1;
+			count++;
 		}
 	}
 	return count;

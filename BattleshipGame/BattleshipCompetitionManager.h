@@ -100,7 +100,6 @@ private:
 		std::make_pair(false, "Adjacent Ships on Board")
 	};
 	char typeArr[NUM_OF_SHIP_TYPES * 2] = { 'D', 'M', 'P', 'B', 'd', 'm', 'p' ,'b' };
-
 };
 
 #endif

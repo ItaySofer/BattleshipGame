@@ -397,6 +397,26 @@ void BattleshipCompetitionManager::updateErrMsgArrWrongSize(char type) {
 void BattleshipCompetitionManager::readPlayers()
 {
 	//reads all dll into players vector (as unique_ptrs)
+	std::vector<HINSTANCE> hInstances;
+	typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
+
+	for (int currDllPath = 0; currDllPath < inputProcessor.dllFilesPaths.size(); currDllPath++) {
+		// Load dynamic library
+		HINSTANCE hDll = LoadLibraryA(inputProcessor.dllFilesPaths.at(currDllPath).c_str());
+		if (!hDll) {
+			continue;
+		}
+
+		hInstances.push_back(hDll);
+
+		// Get function pointer
+		GetAlgorithmFuncType initPlayerFunc = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
+		if (!initPlayerFunc) {
+			continue;
+		}
+		IBattleshipGameAlgo* player = initPlayerFunc();
+		players.push_back(player);
+	}
 }
 
 void BattleshipCompetitionManager::buildCompetition()
