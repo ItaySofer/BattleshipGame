@@ -16,10 +16,23 @@ public:
 		_depth = 0;
 	}
 
-	BattleBoard(const BattleBoard&) = delete;
+	BattleBoard(const BattleBoard& board) {
+		_rows = board.rows();
+		_cols = board.cols();
+		_depth = board.depth();
+
+		for (int k = 0; k < _depth; k++) {
+			for (int i = 0; i < _rows; i++) {
+				for (int j = 0; j < _cols; j++) {
+					matrix[k][i][j] = board.charAt(Coordinate(i,j,k));//board.matrix[k][i][j];
+				}
+			}
+		}
+	}
+
 	BattleBoard& operator=(const BattleBoard&) = delete;
 
-	~BattleBoard() override
+	~BattleBoard() override//TODO: need to be modified to 3D deletion?
 	{
 		if (matrix != nullptr)
 		{

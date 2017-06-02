@@ -21,10 +21,10 @@ public:
 		delete playerA;
 		delete playerB;
 		
-		// Free dynamic libs
-		for (int i = 0; i < NUM_PLAYERS; i++) {
-			FreeLibrary(hInstances[i]);
-		}
+//		// Free dynamic libs //TODO: move to the right place in code
+//		for (int i = 0; i < NUM_PLAYERS; i++) {
+//			FreeLibrary(hInstances[i]);
+//		}
 	};
 
 	BattleshipGameManager(const BattleshipGameManager&) = delete;
