@@ -28,9 +28,9 @@ public:
 	bool tryExtractBoardFileNames();
 	bool tryExtractDllFileNames();
 
-	int getDelayMs() const;
-	bool getQuiet() const;
-	std::string getFolderPath() const;
+	int getDelayMs() const; //TODO: can be removed?
+	bool getQuiet() const; //TODO: can be removed?
+	std::string getFolderPath() const; //TODO: can be removed?
 
 	friend class InputProcessorTest;
 

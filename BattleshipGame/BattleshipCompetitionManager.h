@@ -59,25 +59,25 @@ private:
 		ERR_MGS_MAX
 	};
 
-	bool tryExtractInputFilesNames();
+	bool tryExtractInputFilesNames() const;
 	bool readInputFilesToObjects();
 	void readBoards();
 	bool readBoardFromFile(const std::string& boardFile, BattleBoard& output);
 
 	bool isValid(const BattleBoard& board);
-	bool isValidShipRight(const BattleBoard& board, int d, int x, int y) const;
-	bool isValidShipDown(const BattleBoard& board, int d, int x, int y) const;
-	bool isValidShipUnder(const BattleBoard& board, int d, int x, int y) const;
+	static bool isValidShipRight(const BattleBoard& board, int d, int x, int y);
+	static bool isValidShipDown(const BattleBoard& board, int d, int x, int y);
+	static bool isValidShipUnder(const BattleBoard& board, int d, int x, int y);
 	static int getSize(char type);//return ship valid size by given type
 	void updateErrMsgArrWrongSize(char type);//updates wrong size error for given type in errMsgArr
 
 	void readPlayers();
-	std::string dllPathToPlayerName(const std::string& dllPath);
+	static std::string dllPathToPlayerName(const std::string& dllPath);
 	void buildCompetition();
 	std::vector<std::pair<int, int>> computePairsForBoard();
 	std::vector<std::pair<int, int>> getPairsOneOrder();
-	void barrleshiftClockwise(std::vector<int>& vec, bool firstFixed);
-	void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
+	static void barrleshiftClockwise(std::vector<int>& vec, bool firstFixed);
+	static void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
 	void handleGameResult(Match match, MatchResult matchResult);
 	bool allPlayersPlayedInCurrentRound();
 	void printCurrentScores();

@@ -51,7 +51,7 @@ void BattleshipCompetitionManager::startCompetition()
 	
 }
 
-bool BattleshipCompetitionManager::tryExtractInputFilesNames()
+bool BattleshipCompetitionManager::tryExtractInputFilesNames() const
 {
 	bool boardFilesExists = inputProcessor.tryExtractBoardFileNames();
 
@@ -88,7 +88,7 @@ void BattleshipCompetitionManager::readBoards()
 
 bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFile, BattleBoard& output)
 {
-	//reads board from boardFile to output. true\ false if reading succeeded or failed.
+	//reads board from boardFile to "output". return true\false if reading succeeded or failed.
 	std::ifstream fin(boardFile);
 	if (!fin.is_open())
 	{
@@ -99,13 +99,13 @@ bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFil
 	//read dimensions
 	std::string dimensions;
 	std::getline(fin, dimensions);//get dimentions line (first line)
-	std::vector<std::string> dimResult;//
+	std::vector<std::string> dimResult;
 	StringUtils::split(dimensions, "x", dimResult);
 	output.setCols(std::stoi(dimResult[0]));
 	output.setRows(std::stoi(dimResult[1]));
 	output.setDepth(std::stoi(dimResult[2]));
 
-	output.matrix = new std::string*[output.depth()];
+	output.matrix = new std::string*[output.depth()];//TODO: if output.matrix != nullptr -> delete it first
 
 	//read each layer
 	for (int k = 0; k < output.depth(); k++)
@@ -251,7 +251,7 @@ bool BattleshipCompetitionManager::isValid(const BattleBoard& board)
 	return (valid);
 }
 
-bool BattleshipCompetitionManager::isValidShipRight(const BattleBoard& board, int d, int x, int y) const {
+bool BattleshipCompetitionManager::isValidShipRight(const BattleBoard& board, int d, int x, int y) {
 	char type = board.matrix[d][x][y];
 	int size = 0;
 
@@ -272,7 +272,7 @@ bool BattleshipCompetitionManager::isValidShipRight(const BattleBoard& board, in
 	return (size == getSize(type));
 }
 
-bool BattleshipCompetitionManager::isValidShipDown(const BattleBoard& board, int d, int x, int y) const {
+bool BattleshipCompetitionManager::isValidShipDown(const BattleBoard& board, int d, int x, int y) {
 	char type = board.matrix[d][x][y];
 	int size = 0;
 
@@ -293,7 +293,7 @@ bool BattleshipCompetitionManager::isValidShipDown(const BattleBoard& board, int
 	return (size == getSize(type));
 }
 
-bool BattleshipCompetitionManager::isValidShipUnder(const BattleBoard& board, int d, int x, int y) const {
+bool BattleshipCompetitionManager::isValidShipUnder(const BattleBoard& board, int d, int x, int y) {
 	char type = board.matrix[d][x][y];
 	int size = 0;
 
