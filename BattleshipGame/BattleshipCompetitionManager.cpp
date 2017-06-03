@@ -201,20 +201,6 @@ bool BattleshipCompetitionManager::isValid(const BattleBoard& board)
 		}
 	}
 
-	//Check valid number of ships
-	if (Acount < VALID_SHIP_NUM) {
-		errMsgArr[int(ErrorMsg::TOO_FEW_A)].first = true;
-	}
-	else if (Acount > VALID_SHIP_NUM) {
-		errMsgArr[int(ErrorMsg::TOO_MANY_A)].first = true;
-	}
-	if (Bcount < VALID_SHIP_NUM) {
-		errMsgArr[int(ErrorMsg::TOO_FEW_B)].first = true;
-	}
-	else if (Bcount > VALID_SHIP_NUM) {
-		errMsgArr[int(ErrorMsg::TOO_MANY_B)].first = true;
-	}
-
 	//Check for adjacent
 	bool brk = false;
 	for (int k = 0; k < board.depth(); k++) {
