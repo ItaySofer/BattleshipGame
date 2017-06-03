@@ -2,6 +2,7 @@
 #define BattleBoardH
 
 #include <string>
+#include <iostream>
 
 class BattleBoard : public BoardData
 {
@@ -49,7 +50,7 @@ public:
 
 	char charAt(Coordinate c) const override //returns only selected players' chars
 	{
-		return matrix[c.depth][c.row][c.col];
+		return matrix[c.depth-1][c.row-1][c.col-1];
 	}
 
 	void setRows(int rows) { _rows = rows; }

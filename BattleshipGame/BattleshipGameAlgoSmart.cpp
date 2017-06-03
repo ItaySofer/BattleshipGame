@@ -74,7 +74,7 @@ Coordinate BattleshipGameAlgoSmart::attack() {
 						}
 					}
 				}
-				//In case we got here - can't attack up&down&left&right
+				//In case we got here - can't attack up&down&left&right&above&under
 				resetAttack();
 				return attack();
 				break;
@@ -255,7 +255,7 @@ Coordinate BattleshipGameAlgoSmart::attackAbove(bool done) {
 		currPos.depth--;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
-			lastAttackedDirection = Direction::left;
+			lastAttackedDirection = Direction::above;
 			attackPosVec.erase(pos);
 			adjustPosStartFrom1(currPos);
 			return currPos;
@@ -273,7 +273,7 @@ Coordinate BattleshipGameAlgoSmart::attackUnder(bool done) {
 		currPos.depth++;
 		auto pos = std::find(attackPosVec.begin(), attackPosVec.end(), currPos);
 		if (pos != attackPosVec.end()) {//can attack in currPos
-			lastAttackedDirection = Direction::right;
+			lastAttackedDirection = Direction::under;
 			attackPosVec.erase(pos);
 			adjustPosStartFrom1(currPos);
 			return currPos;
@@ -284,11 +284,11 @@ Coordinate BattleshipGameAlgoSmart::attackUnder(bool done) {
 }
 
 Coordinate BattleshipGameAlgoSmart::attackAboveUnder(bool done) {
-	return attackBothDirections(&BattleshipGameAlgoSmart::attackAbove, &BattleshipGameAlgoSmart::attackUnder, done, Direction::right);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackAbove, &BattleshipGameAlgoSmart::attackUnder, done, Direction::under);
 }
 
 Coordinate BattleshipGameAlgoSmart::attackUnderAbove(bool done) {
-	return attackBothDirections(&BattleshipGameAlgoSmart::attackUnder, &BattleshipGameAlgoSmart::attackAbove, done, Direction::left);
+	return attackBothDirections(&BattleshipGameAlgoSmart::attackUnder, &BattleshipGameAlgoSmart::attackAbove, done, Direction::above);
 }
 
 Coordinate BattleshipGameAlgoSmart::attackBothDirections(Coordinate(BattleshipGameAlgoSmart::*firstAttackDirection)(bool),

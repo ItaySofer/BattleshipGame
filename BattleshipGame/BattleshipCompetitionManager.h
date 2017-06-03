@@ -24,7 +24,9 @@ public:
 	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc), currRound(0) {}
 	~BattleshipCompetitionManager()
 	{
-		//TODO: release all memory if needed
+		for (int i = 0; i < hInstances.size(); i++) {
+			FreeLibrary(hInstances[i]);
+		}
 	}
 
 	BattleshipCompetitionManager(const BattleshipCompetitionManager&) = delete;
@@ -82,6 +84,7 @@ private:
 	bool allPlayersPlayedInCurrentRound();
 	void printCurrentScores();
 
+	std::vector<HINSTANCE> hInstances;
 	InputProcessor& inputProcessor;
 	std::vector<BattleBoard> gameBoards;
 	std::vector<GetAlgorithmFuncType> players;

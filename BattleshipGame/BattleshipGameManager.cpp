@@ -56,22 +56,21 @@ MatchResult BattleshipGameManager::playGame() {
 	int doneAttackingPlayers = 0;
 	while (numActivePlayers() > 1 && doneAttackingPlayers < NUM_PLAYERS) {
 		Coordinate currAttack = (currPlayer % 2 == 0) ? playerA->attack() : playerB->attack();
-		Coordinate zeroIndexed = Coordinate(currAttack.row - 1, currAttack.col - 1, currAttack.depth - 1);
 		if (currAttack.row == -1 && currAttack.col == -1 && currAttack.depth == -1) {
 			// currPlayer is done attacking
 			doneAttackingPlayers += 1;
 			currPlayer += 1;
 			continue;
 		}
-		currAttack.row--;
-		currAttack.col--;
-		currAttack.depth--;
-		if (zeroIndexed.row < 0 || zeroIndexed.col < 0 || zeroIndexed.depth < 0 || zeroIndexed.row >= gameBoard.rows() ||
-			zeroIndexed.col >= gameBoard.cols() || zeroIndexed.depth >= gameBoard.depth()) {
+
+		if (currAttack.row < 1 || currAttack.col < 1 || currAttack.depth < 1 || 
+			currAttack.row > gameBoard.rows() || currAttack.col > gameBoard.cols() || currAttack.depth > gameBoard.depth()) {
 			// illegal attack
 			continue;
 		}
-		int roundResult = handleMove(currPlayer, gameBoard, zeroIndexed);
+
+		int roundResult = handleMove(currPlayer, gameBoard, currAttack);
+
 		if (std::abs(roundResult) > 1) {
 			// currPlayer sink
 			playerA->notifyOnAttackResult(currPlayer % NUM_PLAYERS, currAttack, AttackResult::Sink);
@@ -119,13 +118,13 @@ bool BattleshipGameManager::isActivePlayer(int playerIndex) const{
 	return numShips[playerIndex] > 0;
 }
 
-bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate coor) {
+bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, const Coordinate& coor) {
 	int row = coor.row, col = coor.col, depth = coor.depth;
 	int rowIndexDown = row + 1, rowIndexUp = row - 1, colIndexLeft = col - 1, colIndexRight = col + 1;
 	int depthIndexBack = depth - 1, depthIndexFront = depth + 1;
 	Coordinate travel = Coordinate(row, col, depth);
 	char travelChar;
-	while (rowIndexDown < gameBoard.rows()) {
+	while (rowIndexDown <= gameBoard.rows()) {
 		travel.row = rowIndexDown;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -136,7 +135,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 		}
 		rowIndexDown++;
 	}
-	while (rowIndexUp >= 0) {
+	while (rowIndexUp > 0) {
 		travel.row = rowIndexUp;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -148,7 +147,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 		rowIndexUp--;
 	}
 	travel.row = row;
-	while (colIndexLeft >= 0) {
+	while (colIndexLeft > 0) {
 		travel.col = colIndexLeft;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -159,7 +158,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 		}
 		colIndexLeft--;
 	}
-	while (colIndexRight < gameBoard.cols()) {
+	while (colIndexRight <= gameBoard.cols()) {
 		travel.col = colIndexRight;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -171,7 +170,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 		colIndexRight++;
 	}
 	travel.col = col;
-	while (depthIndexBack >= 0) {
+	while (depthIndexBack > 0) {
 		travel.depth = depthIndexBack;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -182,7 +181,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 		}
 		depthIndexBack--;
 	}
-	while (depthIndexFront < gameBoard.depth()) {
+	while (depthIndexFront <= gameBoard.depth()) {
 		travel.depth = depthIndexFront;
 		travelChar = gameBoard.charAt(travel);
 		if (travelChar == ' ') {
@@ -196,7 +195,7 @@ bool BattleshipGameManager::isLonely(const BattleBoard& gameBoard, Coordinate co
 	return true;
 }
 
-int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, Coordinate coor) {
+int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, const Coordinate& coor) {
 	char c = gameBoard.charAt(coor);
 	bool starFlag = c == '*';
 	bool lonelyFlag = isLonely(gameBoard, coor);
@@ -220,7 +219,7 @@ int BattleshipGameManager::handleMove(int currPlayer, BattleBoard& gameBoard, Co
 
 	// if we reached here, that means a ship was hit
 	bool lowerFlag = islower(c) == 0 ? false : true;
-	gameBoard.matrix[coor.depth][coor.row][coor.col] = '*';		// mark coordinate as a hit
+	gameBoard.matrix[coor.depth - 1][coor.row - 1][coor.col - 1] = '*';		// mark coordinate as a hit
 	if (((currPlayer % 2 == 0 && lowerFlag) || (currPlayer % 2 == 1 && !lowerFlag))) {
 		if (lonelyFlag) {
 			// report sink

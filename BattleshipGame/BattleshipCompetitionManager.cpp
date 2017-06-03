@@ -3,11 +3,12 @@
 #include "BattleshipGameManager.h"
 #include "PlayerStatus.h"
 #include <iomanip>
+#include <algorithm>
+#include "BattleshipGameAlgoSmart.h"
 
 
 bool BattleshipCompetitionManager::initCompetition()
 {
-
 	if (!tryExtractInputFilesNames())
 	{
 		return false;
@@ -27,6 +28,10 @@ bool BattleshipCompetitionManager::initCompetition()
 
 void BattleshipCompetitionManager::startCompetition()
 {
+//	BattleshipGameManager manager(this->gameBoards.at(0), this->players.at(0)(), this->players.at(1)()); 
+//	manager.initGame();
+//	MatchResult matchResult = manager.playGame();
+
 	ThreadPool resultsPool(1);
 	ThreadPool gamesPool(inputProcessor.threads);
 	for (int i = 0; i < matches.size(); i++)
@@ -42,7 +47,7 @@ void BattleshipCompetitionManager::startCompetition()
 				this->handleGameResult(match, matchResult);
 			});
 		});
-}
+	}
 
 	gamesPool.finishCurentTasksAndStop();
 	resultsPool.finishCurentTasksAndStop();
@@ -79,9 +84,12 @@ void BattleshipCompetitionManager::readBoards()
 	for (int i = 0; i < boardFilesPaths.size(); i++)
 	{
 		BattleBoard board;
-		if (readBoardFromFile(boardFilesPaths.at(i), board) && isValid(board))
+		if (readBoardFromFile(boardFilesPaths.at(i), board))
 		{
-			gameBoards.push_back(board);
+			if (isValid(board))
+			{
+				gameBoards.push_back(board);
+			}
 		}
 	}
 }
@@ -99,20 +107,22 @@ bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFil
 	//read dimensions
 	std::string dimensions;
 	std::getline(fin, dimensions);//get dimentions line (first line)
+	std::transform(dimensions.begin(), dimensions.end(), dimensions.begin(), ::tolower);
 	std::vector<std::string> dimResult;
 	StringUtils::split(dimensions, "x", dimResult);
 	output.setCols(std::stoi(dimResult[0]));
 	output.setRows(std::stoi(dimResult[1]));
 	output.setDepth(std::stoi(dimResult[2]));
 
-	output.matrix = new std::string*[output.depth()];//TODO: if output.matrix != nullptr -> delete it first
+	output.matrix = new std::string*[output.depth()]; // assumes output.matrix == nullptr 
 
 	//read each layer
 	for (int k = 0; k < output.depth(); k++)
 {
 		output.matrix[k] = new std::string[output.rows()];
 		//Read space line first
-		std::getline(fin, output.matrix[k][0]);
+		std::string temp;
+		std::getline(fin, temp);
 		//Read the k'th layer matrix
 		for (int i = 0; i < output.rows(); i++)
 		{
@@ -243,11 +253,11 @@ bool BattleshipCompetitionManager::isValid(const BattleBoard& board)
 	bool valid = true;
 	for (int i = 0; i < int(ErrorMsg::ERR_MGS_MAX); i++) {
 		if (errMsgArr[i].first == true) {
-			////Print the relevant error message
-			//std::cout << errMsgArr[i].second << std::endl;
+			errMsgArr[i].first = false; //reset errorMsgArr for next boards
 			valid = false;
 		}
 	}
+	 
 	return (valid);
 }
 
@@ -278,9 +288,9 @@ bool BattleshipCompetitionManager::isValidShipDown(const BattleBoard& board, int
 
 	while ((x < board.rows()) && (board.matrix[d][x][y] == type)) {
 		size++;
-		//if same type up/down - return false
-		if (((x != 0) && (board.matrix[d][x - 1][y] == type)) ||
-			((x != board.rows() - 1) && (board.matrix[d][x + 1][y] == type))) {
+		//if same type above/under - return false
+		if (((d != 0) && (board.matrix[d - 1][x][y] == type)) ||
+			((d != board.depth() - 1) && (board.matrix[d + 1][x][y] == type))) {
 			return false;
 		}
 		//if same type left/right - return false
@@ -288,7 +298,7 @@ bool BattleshipCompetitionManager::isValidShipDown(const BattleBoard& board, int
 			((y != board.cols() - 1) && (board.matrix[d][x][y + 1] == type))) {
 			return false;
 		}
-		d++;
+		x++;
 	}
 	return (size == getSize(type));
 }
@@ -304,12 +314,12 @@ bool BattleshipCompetitionManager::isValidShipUnder(const BattleBoard& board, in
 			((y != board.cols() - 1) && (board.matrix[d][x][y + 1] == type))) {
 			return false;
 		}
-		//if same type above/under - return false
-		if (((d != 0) && (board.matrix[d - 1][x][y] == type)) ||
-			((d != board.depth() - 1) && (board.matrix[d + 1][x][y] == type))) {
+		//if same type up/down - return false
+		if (((x != 0) && (board.matrix[d][x - 1][y] == type)) ||
+			((x != board.rows() - 1) && (board.matrix[d][x + 1][y] == type))) {
 			return false;
 		}
-		x++;
+		d++;
 	}
 	return (size == getSize(type));
 }
@@ -399,7 +409,6 @@ void BattleshipCompetitionManager::updateErrMsgArrWrongSize(char type) {
 void BattleshipCompetitionManager::readPlayers()
 {
 	//reads all dll into players vector (as unique_ptrs)
-	std::vector<HINSTANCE> hInstances;
 
 	for (int currDllPath = 0; currDllPath < inputProcessor.dllFilesPaths.size(); currDllPath++) {
 		// Load dynamic library
@@ -411,7 +420,7 @@ void BattleshipCompetitionManager::readPlayers()
 		hInstances.push_back(hDll);
 
 		// Get function pointer
-		GetAlgorithmFuncType initPlayerFunc = (GetAlgorithmFuncType)GetProcAddress(hDll, "GetAlgorithm");
+		GetAlgorithmFuncType initPlayerFunc = GetAlgorithmFuncType(GetProcAddress(hDll, "GetAlgorithm"));
 		if (!initPlayerFunc) {
 			continue;
 		}
@@ -523,8 +532,8 @@ void BattleshipCompetitionManager::handleGameResult(Match match, MatchResult mat
 		playersStatus.at(match.playerAIndex).loses++;
 	}
 
-	playersStatus.at(match.playerAIndex).percent = playersStatus.at(match.playerAIndex).wins / (playersStatus.at(match.playerAIndex).wins + playersStatus.at(match.playerAIndex).loses);
-	playersStatus.at(match.playerBIndex).percent = playersStatus.at(match.playerBIndex).wins / (playersStatus.at(match.playerBIndex).wins + playersStatus.at(match.playerBIndex).loses);
+	playersStatus.at(match.playerAIndex).percent = double(playersStatus.at(match.playerAIndex).wins) / (playersStatus.at(match.playerAIndex).wins + playersStatus.at(match.playerAIndex).loses) * 100;
+	playersStatus.at(match.playerBIndex).percent = double(playersStatus.at(match.playerBIndex).wins) / (playersStatus.at(match.playerBIndex).wins + playersStatus.at(match.playerBIndex).loses) * 100;
 
 	playersStatus.at(match.playerAIndex).pointsFor += matchResult.playerAScore;
 	playersStatus.at(match.playerBIndex).pointsFor += matchResult.playerBScore;
@@ -558,12 +567,13 @@ void BattleshipCompetitionManager::printCurrentScores()
 	std::sort(sorted.begin(), sorted.end(), [](PlayerStatus& first, PlayerStatus& second) {return first.percent > second.percent; });
 
 	std::cout << std::endl << std::endl;
-	std::cout << std::setw(8) << "#" << std::setw(24) << "Team Name" << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
+	std::cout << std::left << std::setw(8) << "#" << std::setw(24) << "Team Name" << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
 
-	for (int i = 0; i < playersStatus.size(); i++)
+	for (int i = 0; i < sorted.size(); i++)
 	{
-		PlayerStatus currPlayer = playersStatus.at(i);
-		std::cout << std::setw(8) << i + 1 << "." << std::setw(24) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(3) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
+		PlayerStatus currPlayer = sorted.at(i);
+		std::string index = std::to_string(i + 1) + ".";
+		std::cout << std::left << std::setw(8) << index << std::setw(24) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(4) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
 	}
 }
 

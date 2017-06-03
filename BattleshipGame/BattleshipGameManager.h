@@ -17,18 +17,13 @@
 class BattleshipGameManager {
 
 public:
-	BattleshipGameManager(BattleBoard& board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerABoard(board), playerBBoard(board), playerA(playerA), playerB(playerB)
+	BattleshipGameManager(const BattleBoard& board, IBattleshipGameAlgo* playerA, IBattleshipGameAlgo* playerB) : gameBoard(board), playerABoard(board), playerBBoard(board), playerA(playerA), playerB(playerB)
 	{
 		modifyBoard(playerABoard, true);
 		modifyBoard(playerBBoard, false);
 	}
-	~BattleshipGameManager() {
-		
-//		// Free dynamic libs //TODO: move to the right place in code
-//		for (int i = 0; i < NUM_PLAYERS; i++) {
-//			FreeLibrary(hInstances[i]);
-//		}
-	};
+
+	~BattleshipGameManager() = default;
 
 	BattleshipGameManager(const BattleshipGameManager&) = delete;
 	BattleshipGameManager& operator=(const BattleshipGameManager&) = delete;
@@ -48,8 +43,8 @@ private:
 
 	int getSinkScoreByChar(char c);
 	bool isActivePlayer(int playerIndex) const;
-	static bool isLonely(const BattleBoard& gameBoard, Coordinate coor);
-	int handleMove(int currPlayer, BattleBoard& gameBoard, Coordinate coor);
+	static bool isLonely(const BattleBoard& gameBoard, const Coordinate& coor);
+	int handleMove(int currPlayer, BattleBoard& gameBoard, const Coordinate& coor);
 	int numActivePlayers() const;
 
 	//Variables

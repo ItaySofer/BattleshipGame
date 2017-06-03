@@ -21,7 +21,6 @@
 
 #define NUM_THREADS 4
 #define THREADS_PARAM "-threads "
-#define TEST false
 
 template<typename T>
 std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec)
