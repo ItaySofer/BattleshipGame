@@ -420,7 +420,7 @@ void BattleshipCompetitionManager::readPlayers()
 		hInstances.push_back(hDll);
 
 		// Get function pointer
-		GetAlgorithmFuncType initPlayerFunc = GetAlgorithmFuncType(GetProcAddress(hDll, "GetAlgorithm"));
+		GetAlgorithmFuncType initPlayerFunc = reinterpret_cast<GetAlgorithmFuncType>(GetProcAddress(hDll, "GetAlgorithm"));
 		if (!initPlayerFunc) {
 			continue;
 		}

@@ -44,8 +44,8 @@ public:
 					delete[] matrix[i];
 				}
 			}
+			delete[] matrix;
 		}
-		delete[] matrix;
 	}
 
 	char charAt(Coordinate c) const override //returns only selected players' chars
