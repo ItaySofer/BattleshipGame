@@ -1,7 +1,7 @@
 #ifndef BattleBoardH
 #define BattleBoardH
 
-#include <string>
+//#include <string>
 #include <iostream>
 
 class BattleBoard : public BoardData

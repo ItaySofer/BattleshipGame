@@ -6,11 +6,11 @@
 #include "StringUtils.h"
 #include "Macros.h"
 #include <iostream>
-#include <cstring>
+//#include <cstring>
 #include <fstream>
 #include "InputProcessor.h"
 #include <windows.h>
-#include <stdlib.h>
+//#include <stdlib.h>
 #include <memory>
 #include "Match.h"
 #include "MatchResult.h"
@@ -76,8 +76,8 @@ private:
 	void readPlayers();
 	static std::string dllPathToPlayerName(const std::string& dllPath);
 	void buildCompetition();
-	std::vector<std::pair<int, int>> computePairsForBoard();
-	std::vector<std::pair<int, int>> getPairsOneOrder();
+	std::vector<std::pair<int, int>> computePairsForBoard() const;
+	std::vector<std::pair<int, int>> getPairsOneOrder() const;
 	static void barrleshiftClockwise(std::vector<int>& vec, bool firstFixed);
 	static void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
 	void handleGameResult(Match match, MatchResult matchResult);

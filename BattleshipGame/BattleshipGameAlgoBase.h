@@ -3,7 +3,7 @@
 
 #include "IBattleshipGameAlgo.h"
 #include <vector>
-#include <iostream>
+//#include <iostream>
 
 class BattleshipGameAlgoBase : public IBattleshipGameAlgo {
 

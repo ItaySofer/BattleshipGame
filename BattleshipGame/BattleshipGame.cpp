@@ -1,9 +1,9 @@
-#include "BattleshipGameManager.h"
-#include "BattleshipGameManagerTest.h"
+//#include "BattleshipGameManager.h"
+//#include "BattleshipGameManagerTest.h"
 #include "InputProcessor.h"
-#include "StringUtilsTest.h"
-#include "InputProcessorTest.h"
-#include "FileUtilsTest.h"
+//#include "StringUtilsTest.h"
+//#include "InputProcessorTest.h"
+//#include "FileUtilsTest.h"
 #include "BattleshipCompetitionManager.h"
 
 int main(int argc, char* argv[])

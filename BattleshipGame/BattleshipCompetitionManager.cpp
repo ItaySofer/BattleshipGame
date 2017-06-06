@@ -4,7 +4,7 @@
 #include "PlayerStatus.h"
 #include <iomanip>
 #include <algorithm>
-#include "BattleshipGameAlgoSmart.h"
+//#include "BattleshipGameAlgoSmart.h"
 
 
 bool BattleshipCompetitionManager::initCompetition()
@@ -110,6 +110,12 @@ bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFil
 	std::transform(dimensions.begin(), dimensions.end(), dimensions.begin(), ::tolower);
 	std::vector<std::string> dimResult;
 	StringUtils::split(dimensions, "x", dimResult);
+	//Check that first line contains 3 dimensions in expected format
+	if (dimResult.size() != 3)
+	{
+		std::cout << "Error: first line of board file does not contain dimensions in the right format" << std::endl;
+		return false;
+	}
 	output.setCols(std::stoi(dimResult[0]));
 	output.setRows(std::stoi(dimResult[1]));
 	output.setDepth(std::stoi(dimResult[2]));
@@ -447,7 +453,7 @@ void BattleshipCompetitionManager::buildCompetition()
 	}
 }
 
-std::vector<std::pair<int, int>> BattleshipCompetitionManager::computePairsForBoard()
+std::vector<std::pair<int, int>> BattleshipCompetitionManager::computePairsForBoard() const
 {
 
 	std::vector<std::pair<int, int>> pairs = getPairsOneOrder();
@@ -457,7 +463,7 @@ std::vector<std::pair<int, int>> BattleshipCompetitionManager::computePairsForBo
 	return pairs;
 }
 
-std::vector<std::pair<int, int>> BattleshipCompetitionManager::getPairsOneOrder()
+std::vector<std::pair<int, int>> BattleshipCompetitionManager::getPairsOneOrder() const
 {
 	std::vector<int> playersNum;
 	size_t size = players.size();

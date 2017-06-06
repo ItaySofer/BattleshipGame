@@ -1,9 +1,9 @@
 #ifndef InputProcessorH
 #define InputProcessorH
-#include <string>
-#include <sstream>
-#include <fstream>
-#include <iostream>
+//#include <string>
+//#include <sstream>
+//#include <fstream>
+//#include <iostream>
 #include "StringUtils.h"
 #include "Macros.h"
 
@@ -30,7 +30,6 @@ public:
 
 private:
 	void updateThreadsParamIfNeeded(const std::string& arg, size_t find);
-
 
 };
 

@@ -1,6 +1,8 @@
 #ifndef MacrosH
 #define MacrosH
 
+#include <vector>
+
 #define NUM_PLAYERS 2
 #define NUM_ROWS 10
 #define NUM_COLS 10
