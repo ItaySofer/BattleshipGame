@@ -122,20 +122,54 @@ bool BattleshipCompetitionManager::readBoardFromFile(const std::string& boardFil
 
 	output.matrix = new std::string*[output.depth()]; // assumes output.matrix == nullptr 
 
+	//Read space line first
+	std::string temp;
+	std::getline(fin, temp);
+
+	//Help variables
+	int remainRows = 0;
+	int startIndex = 0;
+
 	//read each layer
 	for (int k = 0; k < output.depth(); k++)
-{
+	{
 		output.matrix[k] = new std::string[output.rows()];
-		//Read space line first
-		std::string temp;
-		std::getline(fin, temp);
 		//Read the k'th layer matrix
 		for (int i = 0; i < output.rows(); i++)
 		{
 			std::getline(fin, output.matrix[k][i]);
 			StringUtils::replaceAll(output.matrix[k][i], "\r", "");
+			//check if got to empty line before output.rows() rows
+			if (output.matrix[k][i].empty())
+			{
+				output.matrix[k][i].resize(output.cols(), ' ');
+				remainRows = output.rows() - (i + 1);
+				startIndex = i+1;
+				break;
+			}
 			//resize each matrix row to size=gameBoard.C, add ' ' if needed 
 			output.matrix[k][i].resize(output.cols(), ' ');
+		}
+		//read extra rows at the end of layer+empty line / add rows if got to empty line before reading output.rows() rows
+		if ((remainRows == 0) && (startIndex == 0))//read lines until getting to empty line between layers
+		{
+			std::getline(fin, temp);
+			StringUtils::replaceAll(temp, "\r", "");
+			while (!temp.empty())
+			{
+				std::getline(fin, temp);
+				StringUtils::replaceAll(temp, "\r", "");
+			}
+		}
+		else //got an empty line before reading output.rows() lines - complete layer with lines of spaces
+		{
+			for (int j = 0; j < remainRows; j++)
+			{
+				output.matrix[k][startIndex + j] = " ";
+				output.matrix[k][startIndex + j].resize(output.cols(), ' ');
+			}
+			remainRows = 0;
+			startIndex = 0;
 		}
 	}
 
