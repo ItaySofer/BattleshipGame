@@ -20,10 +20,10 @@ public:
 	std::vector<Coordinate> attackPosVec;
 	std::vector<Coordinate>::iterator attackPosVecIt;
 
-	int myPlayerNumber;
-	int rows;
-	int cols;
-	int depth;
+	int myPlayerNumber = -1;
+	int rows = -1;
+	int cols = -1;
+	int depth = -1;
 };
 
 #endif
