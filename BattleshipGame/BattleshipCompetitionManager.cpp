@@ -53,9 +53,7 @@ void BattleshipCompetitionManager::startCompetition()
 
 	gamesPool.finishCurentTasksAndStop();
 	resultsPool.finishCurentTasksAndStop();
-	
-//	printCurrentRoundScores();
-	
+		
 }
 
 bool BattleshipCompetitionManager::tryExtractInputFilesNames() const
