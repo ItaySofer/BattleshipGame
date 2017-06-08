@@ -50,7 +50,14 @@ public:
 
 	char charAt(Coordinate c) const override //returns only selected players' chars
 	{
-		return matrix[c.depth-1][c.row-1][c.col-1];
+		if (c.depth <= 0 || c.row <= 0 || c.col <= 0
+			|| c.depth >= depth() || c.row >= rows() || c.col >= cols())
+		{
+			return ' ';
+		} else
+		{
+			return matrix[c.depth - 1][c.row - 1][c.col - 1];
+		}
 	}
 
 	void setRows(int rows) { _rows = rows; }
