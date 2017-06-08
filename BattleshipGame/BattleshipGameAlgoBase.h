@@ -8,8 +8,8 @@
 class BattleshipGameAlgoBase : public IBattleshipGameAlgo {
 
 public:
-	BattleshipGameAlgoBase();
-	~BattleshipGameAlgoBase() override;
+	BattleshipGameAlgoBase() {};
+	virtual ~BattleshipGameAlgoBase() = default;
 
 	void setPlayer(int player) override;				// called every time the player changes his order
 	void setBoard(const BoardData& board) override;		// called every time the player changes his order

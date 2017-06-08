@@ -1,8 +1,5 @@
 #include "BattleshipGameAlgoBase.h"
 
-BattleshipGameAlgoBase::BattleshipGameAlgoBase() {}
-BattleshipGameAlgoBase::~BattleshipGameAlgoBase() {}
-
 void BattleshipGameAlgoBase::setPlayer(int player)
 {
 	myPlayerNumber = player;
