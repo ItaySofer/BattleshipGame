@@ -640,7 +640,10 @@ void BattleshipCompetitionManager::updatePlayersStatus()
 		currPlayerStatus.pointsFor += currRoundMatch.pointsFor;
 		currPlayerStatus.pointsAgainst += currRoundMatch.pointsAgainst;
 
-		currPlayerStatus.percent = double(currPlayerStatus.wins) / (currPlayerStatus.wins + currPlayerStatus.loses) * 100;
+		if (currPlayerStatus.wins + currPlayerStatus.loses > 0)
+		{
+			currPlayerStatus.percent = double(currPlayerStatus.wins) / (currPlayerStatus.wins + currPlayerStatus.loses) * 100;
+		}
 	}
 }
 

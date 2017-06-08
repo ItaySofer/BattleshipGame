@@ -50,8 +50,8 @@ public:
 
 	char charAt(Coordinate c) const override //returns only selected players' chars
 	{
-		if (c.depth <= 0 || c.row <= 0 || c.col <= 0
-			|| c.depth >= depth() || c.row >= rows() || c.col >= cols())
+		if (c.depth < 1 || c.row < 1 || c.col < 1
+			|| c.depth > depth() || c.row > rows() || c.col > cols())
 		{
 			return ' ';
 		} else
