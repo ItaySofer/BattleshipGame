@@ -15,6 +15,7 @@
 #include "Match.h"
 #include "MatchResult.h"
 #include "PlayerStatus.h"
+#include "PlayerMatches.h"
 
 typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 
@@ -82,7 +83,8 @@ private:
 	static void addPairsOtherOrder(std::vector<std::pair<int, int>>& pairs);
 	void handleGameResult(Match match, MatchResult matchResult);
 	bool allPlayersPlayedInCurrentRound();
-	void printCurrentScores();
+	void printCurrentRoundScores();
+	void updatePlayersStatus();
 
 	std::vector<HINSTANCE> hInstances;
 	InputProcessor& inputProcessor;
@@ -90,7 +92,7 @@ private:
 	std::vector<GetAlgorithmFuncType> players;
 	std::vector<Match> matches;
 	std::vector<PlayerStatus> playersStatus;
-	int maxLengthName = 0;
+	size_t maxLengthName = 0;
 	int currRound = 0;
 
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),

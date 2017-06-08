@@ -33,7 +33,7 @@ void BattleshipCompetitionManager::startCompetition()
 
 	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
 
-	int matchesThreads = matches.size() < inputProcessor.threads ? matches.size() : inputProcessor.threads;
+	int matchesThreads = matches.size() < inputProcessor.threads ? int(matches.size()) : inputProcessor.threads;
 	ThreadPool resultsPool(1);
 	ThreadPool gamesPool(matchesThreads);
 	for (int i = 0; i < matches.size(); i++)
@@ -54,7 +54,7 @@ void BattleshipCompetitionManager::startCompetition()
 	gamesPool.finishCurentTasksAndStop();
 	resultsPool.finishCurentTasksAndStop();
 	
-	printCurrentScores();
+//	printCurrentRoundScores();
 	
 }
 
@@ -558,32 +558,32 @@ void BattleshipCompetitionManager::addPairsOtherOrder(std::vector<std::pair<int,
 
 void BattleshipCompetitionManager::handleGameResult(Match match, MatchResult matchResult)
 {
-	playersStatus.at(match.playerAIndex).round++;
-	playersStatus.at(match.playerBIndex).round++;
+	PlayerMatchResult playerA;
+	PlayerMatchResult playerB;
 
 	if (matchResult.whoWon == 'A')
 	{
-		playersStatus.at(match.playerAIndex).wins++;
-		playersStatus.at(match.playerBIndex).loses++;
+		playerA.res = MatchResultEnum::Won;
+		playerB.res = MatchResultEnum::Lost;
 	}
 	else if (matchResult.whoWon == 'B') 
 	{
-		playersStatus.at(match.playerBIndex).wins++;
-		playersStatus.at(match.playerAIndex).loses++;
+		playerA.res = MatchResultEnum::Lost;
+		playerB.res = MatchResultEnum::Won;
 	}
 
-	playersStatus.at(match.playerAIndex).percent = double(playersStatus.at(match.playerAIndex).wins) / (playersStatus.at(match.playerAIndex).wins + playersStatus.at(match.playerAIndex).loses) * 100;
-	playersStatus.at(match.playerBIndex).percent = double(playersStatus.at(match.playerBIndex).wins) / (playersStatus.at(match.playerBIndex).wins + playersStatus.at(match.playerBIndex).loses) * 100;
+	playerA.pointsFor = matchResult.playerAScore;
+	playerB.pointsFor = matchResult.playerBScore;
 
-	playersStatus.at(match.playerAIndex).pointsFor += matchResult.playerAScore;
-	playersStatus.at(match.playerBIndex).pointsFor += matchResult.playerBScore;
+	playerA.pointsAgainst = matchResult.playerBScore;
+	playerB.pointsAgainst = matchResult.playerAScore;
 
-	playersStatus.at(match.playerAIndex).pointsAgainst += matchResult.playerBScore;
-	playersStatus.at(match.playerBIndex).pointsAgainst += matchResult.playerAScore;
+	playersStatus.at(match.playerAIndex).matches.push_back(playerA);
+	playersStatus.at(match.playerBIndex).matches.push_back(playerB);
 
 	if (allPlayersPlayedInCurrentRound())
 	{
-		printCurrentScores();
+		printCurrentRoundScores();
 		currRound++;
 	}
 }
@@ -592,7 +592,7 @@ bool BattleshipCompetitionManager::allPlayersPlayedInCurrentRound()
 {
 	for (int i = 0; i < playersStatus.size(); i++)
 	{
-		if (playersStatus.at(i).round < currRound)
+		if (playersStatus.at(i).matches.size() < currRound)
 		{
 			return false;
 		}
@@ -601,13 +601,15 @@ bool BattleshipCompetitionManager::allPlayersPlayedInCurrentRound()
 	return true;
 }
 
-void BattleshipCompetitionManager::printCurrentScores()
+void BattleshipCompetitionManager::printCurrentRoundScores()
 {
+
+	updatePlayersStatus();
 	std::vector<PlayerStatus> sorted = playersStatus;
 	std::sort(sorted.begin(), sorted.end(), [](PlayerStatus& first, PlayerStatus& second) {return first.percent > second.percent; });
 
 	std::string teamName = std::string("Team Name");
-	int nameWidth = maxLengthName > teamName.length() ? maxLengthName + 5 : teamName.length() + 5;
+	size_t nameWidth = maxLengthName > teamName.length() ? maxLengthName + 5 : teamName.length() + 5;
 
 	std::cout << std::endl << std::endl;
 	std::cout << std::left << std::setw(8) << "#" << std::setw(nameWidth) << teamName << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
@@ -617,6 +619,28 @@ void BattleshipCompetitionManager::printCurrentScores()
 		PlayerStatus currPlayer = sorted.at(i);
 		std::string index = std::to_string(i + 1) + ".";
 		std::cout << std::left << std::setw(8) << index << std::setw(nameWidth) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(4) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
+	}
+}
+
+void BattleshipCompetitionManager::updatePlayersStatus()
+{
+	for (int i = 0; i < playersStatus.size(); i++)
+	{
+		PlayerStatus& currPlayerStatus = playersStatus.at(i);
+
+		PlayerMatchResult currRoundMatch = currPlayerStatus.matches.at(currRound - 1);
+		if (currRoundMatch.res == MatchResultEnum::Won)
+		{
+			currPlayerStatus.wins++;
+		} 
+		else if (currRoundMatch.res == MatchResultEnum::Lost)
+		{
+			currPlayerStatus.loses ++;
+		}
+		currPlayerStatus.pointsFor += currRoundMatch.pointsFor;
+		currPlayerStatus.pointsAgainst += currRoundMatch.pointsAgainst;
+
+		currPlayerStatus.percent = double(currPlayerStatus.wins) / (currPlayerStatus.wins + currPlayerStatus.loses) * 100;
 	}
 }
 

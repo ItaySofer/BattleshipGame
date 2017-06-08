@@ -131,6 +131,7 @@
     <ClInclude Include="BattleBoard.h" />
     <ClInclude Include="BattleshipCompetitionManager.h" />
     <ClInclude Include="BattleshipGameManager.h" />
+    <ClInclude Include="PlayerMatchResult.h" />
     <ClInclude Include="PlayerStatus.h" />
     <ClInclude Include="ThreadPool.h" />
     <ClInclude Include="InputProcessor.h" />
