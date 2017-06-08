@@ -15,7 +15,6 @@
 #include "Match.h"
 #include "MatchResult.h"
 #include "PlayerStatus.h"
-#include "PlayerMatches.h"
 
 typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 
