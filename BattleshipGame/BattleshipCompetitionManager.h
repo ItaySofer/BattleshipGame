@@ -21,7 +21,7 @@ typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 class BattleshipCompetitionManager {
 
 public:
-	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc), currRound(0) {}
+	BattleshipCompetitionManager(InputProcessor& inputProc) : inputProcessor(inputProc) {}
 	~BattleshipCompetitionManager()
 	{
 		for (int i = 0; i < hInstances.size(); i++) {
