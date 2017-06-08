@@ -456,6 +456,10 @@ void BattleshipCompetitionManager::readPlayers()
 		std::string currPlayerDllPath = inputProcessor.dllFilesPaths.at(currDllPath);
 		std::string currPlayerName = dllPathToPlayerName(currPlayerDllPath);
 		playersStatus.push_back(PlayerStatus(currPlayerName));
+		if (currPlayerName.length() > maxLengthName)
+		{
+			maxLengthName = currPlayerName.length();
+		}
 	}
 }
 
@@ -592,14 +596,17 @@ void BattleshipCompetitionManager::printCurrentScores()
 	std::vector<PlayerStatus> sorted = playersStatus;
 	std::sort(sorted.begin(), sorted.end(), [](PlayerStatus& first, PlayerStatus& second) {return first.percent > second.percent; });
 
+	std::string teamName = std::string("Team Name");
+	int nameWidth = maxLengthName > teamName.length() ? maxLengthName + 5 : teamName.length() + 5;
+
 	std::cout << std::endl << std::endl;
-	std::cout << std::left << std::setw(8) << "#" << std::setw(24) << "Team Name" << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
+	std::cout << std::left << std::setw(8) << "#" << std::setw(nameWidth) << teamName << std::setw(8) << "Wins" << std::setw(8) << "Losses" << std::setw(8) << "%" << std::setw(8) << "Pts For" << std::setw(12) << "Pts Against" << std::endl << std::endl;
 
 	for (int i = 0; i < sorted.size(); i++)
 	{
 		PlayerStatus currPlayer = sorted.at(i);
 		std::string index = std::to_string(i + 1) + ".";
-		std::cout << std::left << std::setw(8) << index << std::setw(24) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(4) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
+		std::cout << std::left << std::setw(8) << index << std::setw(nameWidth) << currPlayer.name << std::setw(8) << currPlayer.wins << std::setw(8) << currPlayer.loses << std::setw(8) << std::setprecision(4) << currPlayer.percent << std::setw(8) << currPlayer.pointsFor << std::setw(12) << currPlayer.pointsAgainst << std::endl;
 	}
 }
 

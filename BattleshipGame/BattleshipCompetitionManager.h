@@ -90,7 +90,8 @@ private:
 	std::vector<GetAlgorithmFuncType> players;
 	std::vector<Match> matches;
 	std::vector<PlayerStatus> playersStatus;
-	int currRound;
+	int maxLengthName = 0;
+	int currRound = 0;
 
 	std::pair<bool, std::string> errMsgArr[NUM_OF_ERR_MESSAGE] = { std::make_pair(false, "Wrong size or shape for ship D for player A"),
 		std::make_pair(false, "Wrong size or shape for ship M for player A"),
