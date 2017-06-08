@@ -28,9 +28,10 @@ bool BattleshipCompetitionManager::initCompetition()
 
 void BattleshipCompetitionManager::startCompetition()
 {
-//	BattleshipGameManager manager(this->gameBoards.at(0), this->players.at(0)(), this->players.at(1)()); 
-//	manager.initGame();
-//	MatchResult matchResult = manager.playGame();
+
+	std::cout << "Number of legal players: " << players.size() << std::endl;
+
+	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
 
 	ThreadPool resultsPool(1);
 	ThreadPool gamesPool(inputProcessor.threads);
@@ -69,12 +70,20 @@ bool BattleshipCompetitionManager::tryExtractInputFilesNames() const
 bool BattleshipCompetitionManager::readInputFilesToObjects()
 {
 	readPlayers();
-	std::cout << "Number of legal players: " << players.size() << std::endl;
+	if (players.size() < NUM_PLAYERS)
+	{
+		std::cout << "Not enough leagal player" << std::endl;
+		return false;
+	}
 
 	readBoards();
-	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
-
-	return gameBoards.size() > 0 && players.size() >= NUM_PLAYERS;
+	if (gameBoards.size() < 1)
+	{
+		std::cout << "Not enough leagal boards" << std::endl;
+		return false;
+	}
+	
+	return true;
 
 }
 
