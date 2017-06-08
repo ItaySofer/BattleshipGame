@@ -33,8 +33,9 @@ void BattleshipCompetitionManager::startCompetition()
 
 	std::cout << "Number of legal boards: " << gameBoards.size() << std::endl;
 
+	int matchesThreads = matches.size() < inputProcessor.threads ? matches.size() : inputProcessor.threads;
 	ThreadPool resultsPool(1);
-	ThreadPool gamesPool(inputProcessor.threads);
+	ThreadPool gamesPool(matchesThreads);
 	for (int i = 0; i < matches.size(); i++)
 	{
 		Match match = matches.at(i);

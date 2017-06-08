@@ -31,7 +31,7 @@ void InputProcessor::updateThreadsParamIfNeeded(const std::string& arg, size_t f
 {
 	std::string str = arg.substr(find + std::string(THREADS_PARAM).size());
 	StringUtils::replaceAll(str, " ", "");
-	if (StringUtils::isNumber(str))
+	if (StringUtils::isNumber(str) && std::stoi(str) > 0)
 	{
 		threads = std::stoi(str);
 	}
