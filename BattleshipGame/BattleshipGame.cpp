@@ -16,7 +16,6 @@ int main(int argc, char* argv[])
 	}
 
 	battleshipCompetitionManager.startCompetition();
-	std::getchar();
 }
 
 
