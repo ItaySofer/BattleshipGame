@@ -475,12 +475,20 @@ void BattleshipCompetitionManager::readPlayers()
 
 std::string BattleshipCompetitionManager::dllPathToPlayerName(const std::string& dllPath)
 {
+	std::string name;
 	std::vector<std::string> words;
-	StringUtils::split(dllPath, ".", words);
+	std::vector<std::string> words2;
+	std::vector<std::string> words3;
 
-	if (words.size() >= 3)
+	StringUtils::split(dllPath, "\\", words);
+	name = words.at(words.size() - 1);
+	StringUtils::split(name, "/", words2);
+	name = words2.at(words2.size() - 1);
+	StringUtils::split(name, ".", words3);
+
+	if (words3.size() >= 3)
 	{
-		return words.at(words.size() - 3);
+		return words3.at(words3.size() - 3);
 	} else
 	{
 		return "MisformattedDllName";
