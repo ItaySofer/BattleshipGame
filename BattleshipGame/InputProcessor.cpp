@@ -1,6 +1,8 @@
 #include "InputProcessor.h"
 #include "FileUtils.h"
-
+#include "StringUtils.h"
+#include <iostream>
+#include <sstream>
 
 InputProcessor::InputProcessor(int argc, char* argv[])
 {
@@ -51,14 +53,6 @@ void InputProcessor::updateThreadsParamIfNeeded(const std::string& arg, size_t f
 		return true;
 	}
  }
-
-bool InputProcessor::validateInput()
-{
-	validateFolderPath();
-	bool boardFilesExists = tryExtractBoardFileNames();
-	bool dllFilesExist = tryExtractDllFileNames();
-	return boardFilesExists && dllFilesExist;
-}
 
 bool InputProcessor::tryExtractBoardFileNames()
 {

@@ -1,10 +1,6 @@
 #ifndef InputProcessorH
 #define InputProcessorH
-//#include <string>
-//#include <sstream>
-//#include <fstream>
-//#include <iostream>
-#include "StringUtils.h"
+
 #include "Macros.h"
 
 class InputProcessor
@@ -24,7 +20,6 @@ public:
 	InputProcessor(int argc, char* argv[]);
 
 	bool validateFolderPath();
-	bool validateInput(); //Validates files exist.
 	bool tryExtractBoardFileNames();
 	bool tryExtractDllFileNames();
 

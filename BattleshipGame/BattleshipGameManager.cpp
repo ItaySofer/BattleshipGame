@@ -1,11 +1,5 @@
-//#include <iostream>
-//#include <string>
 #include "BattleshipGameManager.h"
 #include "MatchResult.h"
-
-/*#include "BattleshipGameAlgoFromFile.h"
-#include "BattleshipGameAlgoNaive.h"
-#include "BattleshipGameAlgoSmart.h"*/
 
 void BattleshipGameManager::initGame(){
 	

@@ -1,6 +1,5 @@
 #include "ThreadPool.h"
 
-// the constructor just launches some amount of workers
 ThreadPool::ThreadPool(int threads) : stop(false)
 {
 	for (int i = 0; i < threads; i++)
@@ -27,10 +26,6 @@ ThreadPool::ThreadPool(int threads) : stop(false)
 		));
 }
 
-// the destructor joins all threads
-ThreadPool::~ThreadPool() {}
-
-// add new work item to the pool
 void ThreadPool::enqueue(std::function<void()> f)
 {
 	{

@@ -4,7 +4,9 @@
 #include "PlayerStatus.h"
 #include <iomanip>
 #include <algorithm>
-//#include "BattleshipGameAlgoSmart.h"
+#include "StringUtils.h"
+#include <iostream>
+#include <fstream>
 
 
 bool BattleshipCompetitionManager::initCompetition()

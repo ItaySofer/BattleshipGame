@@ -1,6 +1,6 @@
 #ifndef PlayerStatusH
 #define PlayerStatusH
-#include <string>
+
 #include "PlayerMatchResult.h"
 
 class PlayerStatus

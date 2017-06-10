@@ -3,14 +3,7 @@
 
 #include "IBattleshipGameAlgo.h"
 #include "BattleBoard.h"
-//#include "StringUtils.h"
 #include "Macros.h"
-//#include <iostream>
-//#include <cstring>
-//#include <fstream>
-//#include "InputProcessor.h"
-//#include <windows.h>
-//#include <stdlib.h>
 #include "MatchResult.h"
 #include <memory>
 

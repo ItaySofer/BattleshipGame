@@ -1,4 +1,6 @@
 #include "FileUtils.h"
+#include "StringUtils.h"
+#include <sstream>
 
 bool FileUtils::isFolderPathValid(const std::string& folderPath)
 {

@@ -3,18 +3,13 @@
 
 #include "IBattleshipGameAlgo.h"
 #include "BattleBoard.h"
-#include "StringUtils.h"
 #include "Macros.h"
-#include <iostream>
-//#include <cstring>
-#include <fstream>
 #include "InputProcessor.h"
-#include <windows.h>
-//#include <stdlib.h>
-#include <memory>
 #include "Match.h"
 #include "MatchResult.h"
 #include "PlayerStatus.h"
+#include <windows.h>
+#include <memory>
 
 typedef IBattleshipGameAlgo*(*GetAlgorithmFuncType)();
 

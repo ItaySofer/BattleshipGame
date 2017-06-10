@@ -1,6 +1,5 @@
 #ifndef MatchH
 #define MatchH
-//#include "BattleBoard.h"
 
 class Match
 {
