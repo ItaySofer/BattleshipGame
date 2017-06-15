@@ -8,6 +8,7 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 {
 	std::string arg1 = argc > 1 ? argv[1] : "";
 	std::string arg2 = argc > 2 ? argv[2] : "";
+	std::string arg3 = argc > 3 ? argv[3] : "";
 	size_t find;
 
 	if (arg1.find(THREADS_PARAM) == std::string::npos)
@@ -18,24 +19,22 @@ InputProcessor::InputProcessor(int argc, char* argv[])
 	find = arg1.find(THREADS_PARAM);
 	if (find != std::string::npos)
 	{
-		updateThreadsParamIfNeeded(arg1, find);
+		updateThreadsParamIfNeeded(arg2);
 	} else
 	{
 		find = arg2.find(THREADS_PARAM);
 		if (find != std::string::npos)
 		{
-			updateThreadsParamIfNeeded(arg2, find);
+			updateThreadsParamIfNeeded(arg3);
 		}
 	}
 }
 
-void InputProcessor::updateThreadsParamIfNeeded(const std::string& arg, size_t find)
+void InputProcessor::updateThreadsParamIfNeeded(const std::string& arg)
 {
-	std::string str = arg.substr(find + std::string(THREADS_PARAM).size());
-	StringUtils::replaceAll(str, " ", "");
-	if (StringUtils::isNumber(str) && std::stoi(str) > 0)
+	if (StringUtils::isNumber(arg) && std::stoi(arg) > 0)
 	{
-		threads = std::stoi(str);
+		threads = std::stoi(arg);
 	}
 }
 

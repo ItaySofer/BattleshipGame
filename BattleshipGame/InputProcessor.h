@@ -24,7 +24,7 @@ public:
 	bool tryExtractDllFileNames();
 
 private:
-	void updateThreadsParamIfNeeded(const std::string& arg, size_t find);
+	void updateThreadsParamIfNeeded(const std::string& arg);
 
 };
 
